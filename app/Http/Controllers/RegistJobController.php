@@ -24,8 +24,8 @@ class RegistJobController extends Controller
         $user = Auth::user();
         $jobs = RegistJob::all();
         return view('admin.job.index', [
-            'jobs'=> $jobs,
-            'user'=> $user,
+            'jobs' => $jobs,
+            'user' => $user,
         ]);
     }
 
@@ -76,7 +76,7 @@ class RegistJobController extends Controller
         try {
             $worklocName = WorkLoc::find($request->workloc_id)->workloc_name ?? null;
             $prefix = '';
-            
+
             switch ($worklocName) {
                 case 'Head Office':
                     $prefix = 'HOF';
@@ -90,7 +90,7 @@ class RegistJobController extends Controller
                 default:
                     throw new \Exception('Work location name not recognized.');
             }
-            
+
             $date = now();
 
             $entryCount = RegistJob::whereYear('created_at', $date->year)
@@ -98,29 +98,28 @@ class RegistJobController extends Controller
                 ->count();
 
             $entryNumber = str_pad($entryCount + 1, 2, '0', STR_PAD_LEFT);
-            
+
             $date = now();
-            $regId = sprintf('%s%s%s%s', 
+            $regId = sprintf(
+                '%s%s%s%s',
                 $prefix,
-                $date->format('m'),   
-                $date->format('Y'),   
-                $entryNumber   
+                $date->format('m'),
+                $date->format('Y'),
+                $entryNumber
             );
-    
+
             $validated['reg_code'] = $regId;
             $validated['reg_name'] = Str::slug($request->job_title);
             $validated['status_job'] = 'Aktif';
-    
+
             RegistJob::create($validated);
-    
+
             DB::commit();
 
             return redirect()->route('dashboard.job.index');
-        }
-        
-        catch (\Exception $e){
+        } catch (\Exception $e) {
             DB::rollBack();
-            return redirect()->back()->withErrors(['system_error' => 'System Error !'. $e->getMessage()]);
+            return redirect()->back()->withErrors(['system_error' => 'System Error !' . $e->getMessage()]);
         }
     }
 
@@ -133,9 +132,9 @@ class RegistJobController extends Controller
         $people = $job->people()->orderBy('id', 'DESC')->get();
         $user = Auth::user();
         return view('admin.job.manage', [
-            'job'=> $job,
-            'user'=> $user,
-            'people'=> $people,
+            'job' => $job,
+            'user' => $user,
+            'people' => $people,
         ]);
     }
 
@@ -152,13 +151,13 @@ class RegistJobController extends Controller
         $jobtypes = JobType::all();
         $joblevels = JobLevel::all();
         return view('admin.job.edit', [
-            'job'=> $job,
-            'user'=> $user,
-            'divisions'=> $divisions,
-            'depts'=> $depts,
-            'worklocs'=> $worklocs,
-            'jobtypes'=> $jobtypes,
-            'joblevels'=> $joblevels,
+            'job' => $job,
+            'user' => $user,
+            'divisions' => $divisions,
+            'depts' => $depts,
+            'worklocs' => $worklocs,
+            'jobtypes' => $jobtypes,
+            'joblevels' => $joblevels,
         ]);
     }
 
@@ -184,18 +183,16 @@ class RegistJobController extends Controller
 
         DB::beginTransaction();
 
-        try{
+        try {
             $validated['reg_name'] = Str::slug($request->job_title);
             $job->update($validated);
 
             DB::commit();
 
             return redirect()->route('dashboard.job.index');
-        }
-        
-        catch (\Exception $e){
+        } catch (\Exception $e) {
             DB::rollBack();
-            return redirect()->back()->withErrors(['system_error' => 'System Error !'. $e->getMessage()]);
+            return redirect()->back()->withErrors(['system_error' => 'System Error !' . $e->getMessage()]);
         }
     }
 
@@ -205,35 +202,36 @@ class RegistJobController extends Controller
     public function destroy(RegistJob $job)
     {
         //
-        try{
+        try {
             $job->delete();
             return redirect()->route('dashboard.job.index');
-        }
-        catch (\Exception $e){
+        } catch (\Exception $e) {
             DB::rollBack();
-            return redirect()->back()->withErrors(['system_error' => 'System Error !'. $e->getMessage()]);
+            return redirect()->back()->withErrors(['system_error' => 'System Error !' . $e->getMessage()]);
         }
     }
 
     public function searchJobs(Request $request)
     {
-        // Validasi input pencarian
         $request->validate([
             'searchKeyword' => 'nullable|string|max:255',
         ]);
 
-        // Ambil kata kunci pencarian
         $keyword = $request->searchKeyword;
 
-        // Query ke tabel r_registjob
         $jobs = DB::table('r_registjob')
-            ->where('status_job', 'Aktif') // Filter hanya yang aktif
+            ->where('status_job', 'Aktif')
             ->when($keyword, function ($query, $keyword) {
                 $query->where('job_title', 'LIKE', "%{$keyword}%");
             })
             ->get();
 
-        // Kembalikan hasil pencarian sebagai JSON
+        if ($keyword && $jobs->isEmpty()) {
+            return response()->json(['message' => 'No jobs found matching your search.']);
+        }
+
         return response()->json($jobs);
     }
+
+
 }
