@@ -14,6 +14,8 @@ class RegistJob extends Model
     use HasFactory, SoftDeletes;
     protected $table = 'r_registjob';
     protected $primaryKey = 'reg_id';
+    public $incrementing = false; 
+    protected $keyType = 'string';
     
     protected $fillable = [
         'reg_id',

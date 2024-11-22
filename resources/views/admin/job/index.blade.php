@@ -61,7 +61,7 @@
                         <p class="text-[#7F8190]">Job Title</p>
                     </div>
                     <div class="flex shrink-0 w-[150px] items-center justify-center">
-                        <p class="text-[#7F8190]">Vacancy Number</p>
+                        <p class="text-[#7F8190]">ID Registrasi Job</p>
                     </div>
                     <div class="flex shrink-0 w-[150px] items-center justify-center">
                         <p class="text-[#7F8190]">Status Job</p>
@@ -82,7 +82,7 @@
                             <p class="font-semibold">{{ $job->job_title }}</p>
                         </div>
                         <div class="flex shrink-0 w-[150px] items-center justify-center">
-                            <p class="font-semibold">{{ $job->vacancy_number }}</p>
+                            <p class="font-semibold">{{ $job->reg_code }}</p>
                         </div>
                         <div class="flex shrink-0 w-[150px] items-center justify-center">
                             <p class="font-semibold">{{ $job->job_respons }}</p>

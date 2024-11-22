@@ -76,18 +76,18 @@
                 @forelse($statuss as $status)
                     <div class="list-items flex flex-nowrap justify-between pr-10">
                         <div class="flex shrink-0 w-[150px] items-center justify-center">
-                            <p class="font-semibold">{{ \Carbon\Carbon::parse($status->user_id)->format('d F Y') }}</p>
+                            <p class="font-semibold">{{ $status->user_id }}</p>
                         </div>
                         <div class="flex shrink-0 w-[150px] items-center justify-center">
-                            <p class="font-semibold">{{ \Carbon\Carbon::parse($status->apply_id)->format('d F Y') }}</p>
+                            <p class="font-semibold">{{ $status->apply_id }}</p>
                         </div>
                         <div class="flex shrink-0 w-[150px] items-center justify-center">
-                            <p class="font-semibold">{{ \Carbon\Carbon::parse($status->test_id)->format('d F Y') }}</p>
+                            <p class="font-semibold">{{ $status->test_id }}</p>
                         </div>
-                        <div class="flex shrink-0 w-[300px]">
+                        <div class="flex shrink-0 w-[150px]">
                             <div class="flex items-center gap-4">
                                 <div class="flex flex-col gap-[2px]">
-                                    <p class="font-bold text-lg">{{ $status->status_administration }}</p>
+                                    <p class="font-bold text-lg">{{ $status->status_admin }}</p>
                                     {{-- <p class="text-[#7F8190]">Beginners</p> --}}
                                 </div>
                             </div>
@@ -105,7 +105,7 @@
                                     <a href="{{ route('dashboard.approval.administration.show', $status) }}" class="flex items-center justify-between font-bold text-sm w-full">
                                         Manage
                                     </a>
-                                    <a href="{{ route('dashboard.approval.administration.edit', $status) }}" class="flex items-center justify-between font-bold text-sm w-full">
+                                    <a href="{{ route('dashboard.approval.administration.edit', $status->people_status_id) }}" class="flex items-center justify-between font-bold text-sm w-full">
                                         Edit
                                     </a>
                                     <form method="POST" action="{{ route('dashboard.approval.administration.destroy', $status) }}" class="">

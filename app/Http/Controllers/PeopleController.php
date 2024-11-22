@@ -5,8 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\Courses;
 use App\Models\People;
+use App\Models\User;
+use Dotenv\Exception\ValidationException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 class PeopleController extends Controller
@@ -45,9 +48,42 @@ class PeopleController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request, Courses $course)
     {
         //
+        $request->validate([
+            'email' => 'required|string',
+        ]);
+
+        $user = User::where('email', $request->email)->first();
+
+        if($user){
+            $error = ValidationException::withMessages([
+                'system_error' => ('Email people not found'),
+            ]);
+            throw $error;
+        }
+
+        $isEnrolled = $course->peoples()->where('user_id', $user->id)->exists();
+
+        if ($isEnrolled){
+            $error = ValidationException::withMessages([
+                'system_error' => ('Email people not found'),
+            ]);
+            throw $error;
+        }
+
+        DB::beginTransaction();
+
+        try{
+            $course->people()->attach($user->id);
+            
+            return redirect()->route('dashboard.job.index');
+        }
+        catch (\Exception $e){
+            DB::rollBack();
+            return redirect()->back()->withErrors(['system_error' => 'System Error !'. $e->getMessage()]);
+        }
     }
 
     /**

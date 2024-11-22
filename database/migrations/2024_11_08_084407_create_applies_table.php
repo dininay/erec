@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('r_apply', function (Blueprint $table) {
             $table->string('apply_id')->nullable();
             $table->string('apply_det_id')->nullable();
+            $table->string('user_id')->nullable();
+            $table->string('reg_id')->nullable();
             $table->string('email')->nullable();
             $table->string('name')->nullable();
             $table->string('bb')->nullable();

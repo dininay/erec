@@ -22,7 +22,7 @@ class RegistJobController extends Controller
     {
         //
         $user = Auth::user();
-        $jobs = RegistJob::orderBy('reg_id', 'DESC')->get();
+        $jobs = RegistJob::all();
         return view('admin.job.index', [
             'jobs'=> $jobs,
             'user'=> $user,
@@ -68,14 +68,51 @@ class RegistJobController extends Controller
             'level_id' => 'required|string|max:255',
             'job_respons' => 'required|string|max:255',
             'general_req' => 'required|string|max:255',
+            'vacancy_number' => 'required|string|max:255',
         ]);
 
         DB::beginTransaction();
 
-        try{
-            $validated['reg_name'] = Str::slug($request->job_title);
-            $newRegistJob = RegistJob::create($validated);
+        try {
+            $worklocName = WorkLoc::find($request->workloc_id)->workloc_name ?? null;
+            $prefix = '';
+            
+            switch ($worklocName) {
+                case 'Head Office':
+                    $prefix = 'HOF';
+                    break;
+                case 'Resto':
+                    $prefix = 'OPS';
+                    break;
+                case 'Manufacture':
+                    $prefix = 'MAN';
+                    break;
+                default:
+                    throw new \Exception('Work location name not recognized.');
+            }
+            
+            $date = now();
 
+            $entryCount = RegistJob::whereYear('created_at', $date->year)
+                ->whereMonth('created_at', $date->month)
+                ->count();
+
+            $entryNumber = str_pad($entryCount + 1, 2, '0', STR_PAD_LEFT);
+            
+            $date = now();
+            $regId = sprintf('%s%s%s%s', 
+                $prefix,
+                $date->format('m'),   
+                $date->format('Y'),   
+                $entryNumber   
+            );
+    
+            $validated['reg_code'] = $regId;
+            $validated['reg_name'] = Str::slug($request->job_title);
+            $validated['status_job'] = 'Aktif';
+    
+            RegistJob::create($validated);
+    
             DB::commit();
 
             return redirect()->route('dashboard.job.index');
@@ -176,5 +213,27 @@ class RegistJobController extends Controller
             DB::rollBack();
             return redirect()->back()->withErrors(['system_error' => 'System Error !'. $e->getMessage()]);
         }
+    }
+
+    public function searchJobs(Request $request)
+    {
+        // Validasi input pencarian
+        $request->validate([
+            'searchKeyword' => 'nullable|string|max:255',
+        ]);
+
+        // Ambil kata kunci pencarian
+        $keyword = $request->searchKeyword;
+
+        // Query ke tabel r_registjob
+        $jobs = DB::table('r_registjob')
+            ->where('status_job', 'Aktif') // Filter hanya yang aktif
+            ->when($keyword, function ($query, $keyword) {
+                $query->where('job_title', 'LIKE', "%{$keyword}%");
+            })
+            ->get();
+
+        // Kembalikan hasil pencarian sebagai JSON
+        return response()->json($jobs);
     }
 }

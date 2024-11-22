@@ -88,11 +88,11 @@ html, body {
 }
 
 a {
-	color: #CCC;
+	color: #666;
   text-decoration: none !important;
 }
 a:hover {
-	color: #F99;
+	color: #e75e8d;
 }
 
 h1, h2, h4, h3 {
@@ -193,6 +193,26 @@ p {
   color: #e75e8d;
 }
 
+.main-button button {
+  font-size: 14px;
+  color: #ccc;
+  background-color: #e75e8d;
+  padding: 12px 30px;
+  display: inline-block;
+  border-radius: 25px;
+  font-weight: 400;
+  text-transform: capitalize;
+  letter-spacing: 0.5px;
+  transition: all .3s;
+  position: relative;
+  overflow: hidden;
+}
+
+.main-button button:hover {
+  background-color: #fff;
+  color: #e75e8d;
+}
+
 .main-border-button a {
   font-size: 14px;
   color: #ec6090;
@@ -209,10 +229,55 @@ p {
   overflow: hidden;
 }
 
+
+.main-border-button button {
+  font-size: 14px;
+  color: #ec6090;
+  background-color: transparent;
+  border: 1px solid #ec6090;
+  padding: 12px 30px;
+  display: inline-block;
+  border-radius: 25px;
+  font-weight: 400;
+  text-transform: capitalize;
+  letter-spacing: 0.5px;
+  transition: all .3s;
+  position: relative;
+  overflow: hidden;
+}
+
+.button {
+  font-size: 14px;
+  color: #eef0f1;
+  background-color: #ccc;
+  border: 1px solid #eef0f1;
+  padding: 12px 30px;
+  display: inline-block;
+  border-radius: 25px;
+  font-weight: 400;
+  text-transform: capitalize;
+  letter-spacing: 0.5px;
+  transition: all .3s;
+  position: relative;
+  overflow: hidden;
+}
+
 .main-border-button a:hover {
   border-color: #fff;
   background-color: #fff;
   color: #e75e8d;
+}
+
+.main-border-button button:hover {
+  border-color: #fff;
+  background-color: #fff;
+  color: #e75e8d;
+}
+
+.button:hover {
+  border-color: #eef0f1;
+  background-color: #e75e8d;
+  color: #eef0f1;
 }
 
 .border-no-active a {
@@ -823,6 +888,144 @@ Banner Style
   color: #ec6090;
 }
 
+/* ==============================================
+   6. Testimonials
+===============================================*/
+
+#testimonials {
+	background-color: #f6f8f9;
+	border-top: 1px solid #F8F9FB;
+	border-bottom: 1px solid #F8F9FB;
+  padding: 100px;
+}
+
+#testimonials h4 {
+  font-size: 30px;
+  justify-content: center;
+  text-align: center;
+  text-transform: uppercase;
+  margin-bottom: 25px;
+  font-style: normal;
+  color: #ec6090;
+}
+
+#testimonial p {
+  text-align: center;
+  justify-content: center;
+}
+
+.testimonial-box {
+	background-color: #ffffff;
+	box-shadow: 0 0 1px 0 rgba(0,12,32,0.04), 0 10px 16px 0 rgba(10,31,68,0.06);
+	border-radius: 20px;
+	padding: 20px 30px;
+	margin-top: 30px;
+}
+
+.testimonial-box h6 {
+	font-size: 22px;
+	font-weight: 700;
+	letter-spacing: .05em;
+	margin-top: 5px;
+	margin-bottom: 0px;
+}
+
+.testimonial-box p {
+	font-size: 16px;
+	font-weight: 300;
+	margin-top: 25px;
+	line-height: 1.8;
+	padding: 0px;
+}
+
+.testimonial-box i {
+	color: #ffffff;
+}
+
+.testimonial-box small {
+	color: #8da2b5;
+	display: inline-block;
+}
+
+.testimonial-box span {
+	font-size: 14px;
+	color: #ffffff;
+}
+
+.rating {
+	background-color: #0095f7;
+	padding: 2px 12px;
+	border-radius: 50px;
+}
+
+.profile-picture {
+  display: inline-block;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+}
+
+.review-one {
+  background-image: url('images/profile-picture-one.jpg');
+}
+
+.personal-info {
+	padding: 5px 0 20px 0;
+	border-bottom: 1px solid #edf1f2;
+}
+
+
+.about_section {
+  background-color: #9c9c9c;
+  color: #ffffff;
+  padding: 100px;
+}
+
+.about_section p {
+  color: #ffffff;
+}
+
+.about_section .heading_container {
+  margin-bottom: 45px;
+}
+
+.about_section .row {
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.about_section .img-box img {
+  max-width: 100%;
+}
+
+.about_section .detail-box h3 {
+  font-weight: bold;
+}
+
+.about_section .detail-box p {
+  margin-top: 15px;
+}
+
+.about_section .detail-box a {
+  display: inline-block;
+  padding: 10px 45px;
+  background-color: #00bbf0;
+  color: #ffffff;
+  border-radius: 0px;
+  -webkit-transition: all 0.3s;
+  transition: all 0.3s;
+  border: none;
+  margin-top: 15px;
+}
+
+.about_section .detail-box a:hover {
+  background-color: #007fa4;
+}
+
 /* 
 ---------------------------------------------
 Most Popular Style
@@ -1334,6 +1537,13 @@ Game Details Style
   text-transform: uppercase;
   text-align: center;
   margin: 60px 0px;
+  color: #666;
+}
+
+.game-details h3 {
+  font-size: 30px;
+  text-transform: uppercase;
+  color: #e75e8d;
 }
 
 .game-details .content {
@@ -1344,7 +1554,7 @@ Game Details Style
 }
 
 .game-details .content .left-info {
-  background-color: #efeff0;
+  background-color: #ccc;
   border-radius: 23px;
   padding: 30px;
   margin-bottom: 30px;
@@ -1393,7 +1603,7 @@ Game Details Style
 
 .game-details .content .right-info ul li {
   display: inline-block;
-  width: 23%;
+  width: 45%;
   text-align: center;
   font-size: 14px;
   color: #fff;
@@ -1428,18 +1638,24 @@ Other Related Style
 */
 
 .other-games {
-  border-radius: 23px;
-  padding: 30px 30px 0px 30px;
+  padding: 30px;
   /* background-color: #1f2122; */
-  background-color: #efefef;
-  margin-top: 60px;
+  border-radius: 23px;
 }
 
 .other-games .item {
-  position: relative;
-  border-bottom: 1px solid #efeff0;
-  padding-bottom: 52px;
+  background-color: #efeff0;
+  padding: 30px 15px;
+  border-radius: 23px;
   margin-bottom: 30px;
+}
+
+.other-games a {
+	color: #e75e8d !important;
+  text-decoration: none !important;
+}
+.other-games a:hover {
+	color: #efeff0;
 }
 
 .other-games .item img {
@@ -1660,6 +1876,45 @@ Profile Style
   margin-top: 10px;
   text-align: center;
 }
+
+.job-details {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px; /* Jarak antar elemen */
+  padding: 0;
+  margin: 0;
+  list-style-type: none;
+}
+
+.job-details li {
+  flex: 1 1 calc(20% - 20px); /* Setiap elemen <li> akan mengambil setengah lebar dan menyesuaikan */
+  min-width: 200px; /* Batas minimum lebar elemen */
+}
+
+.job-detail {
+  display: flex;
+  flex-direction: column; /* Menyusun label dan value secara vertikal */
+  width: 100%; /* Memastikan setiap div mengambil lebar penuh di dalam li */
+}
+
+.job-details li h6.label {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.job-details li span {
+  display: block;
+  font-size: 14px;
+  color: #333;
+  word-wrap: break-word; /* Memastikan teks yang terlalu panjang bisa terpotong dan pindah ke baris berikutnya */
+}
+
+@media (max-width: 768px) {
+  .job-details li {
+      flex: 1 1 100%; /* Pada ukuran layar lebih kecil, setiap item akan mengambil lebar penuh */
+  }
+}
+
 
 /* 
 ---------------------------------------------

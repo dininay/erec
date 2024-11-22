@@ -1,33 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 
-  <head>
-
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-
-    <title>Cyborg - Awesome HTML5 Template</title>
-
-    <!-- Bootstrap core CSS -->
-    <link href="{{ asset('front/vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
-
-
-    <!-- Additional CSS Files -->
-    <link rel="stylesheet" href="{{ asset('front/assets/css/fontawesome.css') }}">
-    <link rel="stylesheet" href="{{ asset('front/assets/css/templatemo-cyborg-gaming.css') }}">
-    <link rel="stylesheet" href="{{ asset('front/assets/css/owl.css') }}">
-    <link rel="stylesheet" href="{{ asset('front/assets/css/animate.css') }}">
-    <link rel="stylesheet"href="https://unpkg.com/swiper@7/swiper-bundle.min.css') }}"/>
-<!--
-
-TemplateMo 579 Cyborg Gaming
-
-https://templatemo.com/tm-579-cyborg-gaming
-
--->
-  </head>
+@include('layouts.head')
 
 <body>
 
@@ -69,36 +43,20 @@ https://templatemo.com/tm-579-cyborg-gaming
                     <h6>Head Office</h6>
                   </div>
                   <ul>
-                    <li>
-                      <img src="{{ asset('front/assets/images/game-01.jpg') }}" alt="" class="templatemo-item">
-                      <h5>Fortnite</h5>
-                      <h6>Sandbox</h6>
-                      <span><i class="fa fa-star" style="color: yellow;"></i> 4.9</span>
-                      <span><i class="fa fa-download" style="color: #ec6090;"></i> 2.2M</span>
-                      <div class="download">
-                        <a href="#"><i class="fa fa-download"></i></a>
-                      </div>
-                    </li>
-                    <li>
-                      <img src="{{ asset('front/assets/images/game-02.jpg') }}" alt="" class="templatemo-item">
-                      <h5>CS-GO</h5>
-                      <h6>Legendary</h6>
-                      <span><i class="fa fa-star" style="color: yellow;"></i> 4.9</span>
-                      <span><i class="fa fa-download" style="color: #ec6090;"></i> 2.2M</span>
-                      <div class="download">
-                        <a href="#"><i class="fa fa-download"></i></a>
-                      </div>
-                    </li>
-                    <li>
-                      <img src="{{ asset('front/assets/images/game-03.jpg') }}" alt="" class="templatemo-item">
-                      <h5>PugG</h5>
-                      <h6>Battle Royale</h6>
-                      <span><i class="fa fa-star" style="color: yellow;"></i> 4.9</span>
-                      <span><i class="fa fa-download" style="color: #ec6090;"></i> 2.2M</span>
-                      <div class="download">
-                        <a href="#"><i class="fa fa-download"></i></a>
-                      </div>
-                    </li>
+                    @forelse($headOfficeJobs as $job)
+                        <li>
+                            <img src="{{ asset('front/assets/images/game-01.jpg') }}" alt="" class="templatemo-item">
+                            <h5><a href="{{ route('jobdetail', ['reg_code' => $job->reg_code]) }}">{{ $job->job_title }}</a></h5>
+                            <h6>{{ $job->division->div_name }}</h6>
+                            <h6>{{ $job->dept->dept_name }}</h6>
+                            <h6>{{ $job->jobtype->jobtype_name }}</h6>
+                            <div class="download">
+                                <a href="{{ route('jobdetail', ['reg_code' => $job->reg_code]) }}"><i class="fa fa-book"></i></a>
+                            </div>
+                        </li>
+                    @empty
+                        <li>No data available</li>
+                    @endforelse
                   </ul>
                   <div class="text-button">
                     <a href="profile.html">View All in Head Office</a>
@@ -111,36 +69,20 @@ https://templatemo.com/tm-579-cyborg-gaming
                     <h6>Manufacture</h6>
                   </div>
                   <ul>
-                    <li>
-                      <img src="{{ asset('front/assets/images/game-01.jpg') }}" alt="" class="templatemo-item">
-                      <h5>Fortnite</h5>
-                      <h6>Sandbox</h6>
-                      <span><i class="fa fa-star" style="color: yellow;"></i> 4.9</span>
-                      <span><i class="fa fa-download" style="color: #ec6090;"></i> 2.2M</span>
-                      <div class="download">
-                        <a href="#"><i class="fa fa-download"></i></a>
-                      </div>
-                    </li>
-                    <li>
-                      <img src="{{ asset('front/assets/images/game-02.jpg') }}" alt="" class="templatemo-item">
-                      <h5>CS-GO</h5>
-                      <h6>Legendary</h6>
-                      <span><i class="fa fa-star" style="color: yellow;"></i> 4.9</span>
-                      <span><i class="fa fa-download" style="color: #ec6090;"></i> 2.2M</span>
-                      <div class="download">
-                        <a href="#"><i class="fa fa-download"></i></a>
-                      </div>
-                    </li>
-                    <li>
-                      <img src="{{ asset('front/assets/images/game-03.jpg') }}" alt="" class="templatemo-item">
-                      <h5>PugG</h5>
-                      <h6>Battle Royale</h6>
-                      <span><i class="fa fa-star" style="color: yellow;"></i> 4.9</span>
-                      <span><i class="fa fa-download" style="color: #ec6090;"></i> 2.2M</span>
-                      <div class="download">
-                        <a href="#"><i class="fa fa-download"></i></a>
-                      </div>
-                    </li>
+                    @forelse($manufactureJobs as $job)
+                        <li>
+                            <img src="{{ asset('front/assets/images/game-02.jpg') }}" alt="" class="templatemo-item">
+                            <h5><a href="{{ route('jobdetail', ['reg_code' => $job->reg_code]) }}">{{ $job->job_title }}</a></h5>
+                            <h6>{{ $job->division->div_name }}</h6>
+                            <h6>{{ $job->dept->dept_name }}</h6>
+                            <h6>{{ $job->jobtype->jobtype_name }}</h6>
+                            <div class="download">
+                                <a href="{{ route('jobdetail', ['reg_code' => $job->reg_code]) }}"><i class="fa fa-book"></i></a>
+                            </div>
+                        </li>
+                    @empty
+                        <li>No data available</li>
+                    @endforelse
                   </ul>
                   <div class="text-button">
                     <a href="profile.html">View All in Manufacture <br> (Supply Chain Management)</a>
@@ -153,36 +95,20 @@ https://templatemo.com/tm-579-cyborg-gaming
                     <h6>Resto</h6>
                   </div>
                   <ul>
-                    <li>
-                      <img src="{{ asset('front/assets/images/game-01.jpg') }}" alt="" class="templatemo-item">
-                      <h5>Fortnite</h5>
-                      <h6>Sandbox</h6>
-                      <span><i class="fa fa-star" style="color: yellow;"></i> 4.9</span>
-                      <span><i class="fa fa-download" style="color: #ec6090;"></i> 2.2M</span>
-                      <div class="download">
-                        <a href="#"><i class="fa fa-download"></i></a>
-                      </div>
-                    </li>
-                    <li>
-                      <img src="{{ asset('front/assets/images/game-02.jpg') }}" alt="" class="templatemo-item">
-                      <h5>CS-GO</h5>
-                      <h6>Legendary</h6>
-                      <span><i class="fa fa-star" style="color: yellow;"></i> 4.9</span>
-                      <span><i class="fa fa-download" style="color: #ec6090;"></i> 2.2M</span>
-                      <div class="download">
-                        <a href="#"><i class="fa fa-download"></i></a>
-                      </div>
-                    </li>
-                    <li>
-                      <img src="{{ asset('front/assets/images/game-03.jpg') }}" alt="" class="templatemo-item">
-                      <h5>PugG</h5>
-                      <h6>Battle Royale</h6>
-                      <span><i class="fa fa-star" style="color: yellow;"></i> 4.9</span>
-                      <span><i class="fa fa-download" style="color: #ec6090;"></i> 2.2M</span>
-                      <div class="download">
-                        <a href="#"><i class="fa fa-download"></i></a>
-                      </div>
-                    </li>
+                    @forelse($restoJobs as $job)
+                        <li>
+                            <img src="{{ asset('front/assets/images/game-03.jpg') }}" alt="" class="templatemo-item">
+                            <h5><a href="{{ route('jobdetail', ['reg_code' => $job->reg_code]) }}"> {{ $job->job_title }}</a></h5>
+                            <h6>{{ $job->division->div_name }}</h6>
+                            <h6>{{ $job->dept->dept_name }}</h6>
+                            <h6>{{ $job->jobtype->jobtype_name }}</h6>
+                            <div class="download">
+                                <a href="{{ route('jobdetail', ['reg_code' => $job->reg_code]) }}"><i class="fa fa-book"></i></a>
+                            </div>
+                        </li>
+                    @empty
+                        <li>No data available</li>
+                    @endforelse
                   </ul>
                   <div class="text-button">
                     <a href="profile.html">View All in Resto</a>
@@ -200,17 +126,28 @@ https://templatemo.com/tm-579-cyborg-gaming
                     <h4>All</h4>
                 </div>
                 <div class="row">
-                    @foreach($jobs as $job)
+                    @forelse($jobs as $job)
                     <div class="col-lg-3 col-sm-6">
                     <div class="item">
                         <img src="{{ asset('front/assets/images/popular-01.jpg') }}" alt="">
-                        <h5 class="mt-2 mx-2">{{ $job->job_title }}<br><p>{{ $job->workloc->workloc_name }}</p></h5>
-                        <h4 class="mx-2" style="border-top: 1px solid #b0b0b0; padding-top: 10px; margin-top: 15px;">
-                        <span>Diposting : <br>{{ \Carbon\Carbon::parse($job->created_at)->format('d F Y') }}</span>
+                        <h5 class="mt-2 mx-2"><a href="{{ route('jobdetail', ['reg_code' => $job->reg_code]) }}"> {{ $job->job_title }}</a><br>
+                          <p>{{ $job->workloc->workloc_name }}</p>
+                          <p>{{ $job->division->div_name }} - {{ $job->jobtype->jobtype_name }}</p>
+                        </h5>
+                        <h4 class="mx-1" style="border-top: 1px solid #b0b0b0; padding-top: 10px; margin-top: 15px;">
+                        <span>Diposting : {{ \Carbon\Carbon::parse($job->created_at)->format('d F Y') }}</span>
                         </h4>
+                        <div class="main-border-button mt-2">
+                          <a href="{{ route('jobdetail', ['reg_code' => $job->reg_code]) }}" class="btn btn-primary">Cek Details!</a>
+                          <button class="" type="button" title="Simpan">
+                              <i class="bi bi-heart"></i> 
+                          </button>
+                        </div>
                     </div>
                     </div>
-                    @endforeach
+                    @empty
+                        <li>No data available</li>
+                    @endforelse
                     {{-- <div class="col-lg-12">
                     <div class="main-button">
                         <a href="{{ route('job') }}">Telusuri Lowongan Lainnya</a>
@@ -246,7 +183,16 @@ https://templatemo.com/tm-579-cyborg-gaming
   <script src="{{ asset('front/assets/js/tabs.js') }}"></script>
   <script src="{{ asset('front/assets/js/popup.js') }}"></script>
   <script src="{{ asset('front/assets/js/custom.js') }}"></script>
-
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    @if (session('alert'))
+        <script>
+            Swal.fire({
+                icon: "{{ session('alert.type') }}", // "error", "success", "info", etc.
+                title: "{{ session('alert.title') }}",
+                text: "{{ session('alert.message') }}",
+            });
+        </script>
+    @endif
 
   </body>
 

@@ -47,13 +47,13 @@
                 <div class="breadcrumb flex items-center gap-[30px]">
                     <a href="#" class="text-[#7F8190] last:text-[#0A090B] last:font-semibold">Home</a>
                     <span class="text-[#7F8190] last:text-[#0A090B]">/</span>
-                    <a href="index.html" class="text-[#7F8190] last:text-[#0A090B] last:font-semibold">Manage Job Type</a>
+                    <a href="index.html" class="text-[#7F8190] last:text-[#0A090B] last:font-semibold">Manage Status Administration</a>
                     <span class="text-[#7F8190] last:text-[#0A090B]">/</span>
-                    <a href="#" class="text-[#7F8190] last:text-[#0A090B] last:font-semibold ">New Job Type</a>
+                    <a href="#" class="text-[#7F8190] last:text-[#0A090B] last:font-semibold ">New Status Administration</a>
                 </div>
             </div>
             <div class="header flex flex-col gap-1 px-5 mt-5">
-                <h1 class="font-extrabold text-[30px] leading-[45px]">New Job Type</h1>
+                <h1 class="font-extrabold text-[30px] leading-[45px]">New Status Administration</h1>
                 <p class="text-[#7F8190]">Provide high quality for best students</p>
             </div>
 
@@ -67,34 +67,56 @@
                 </ul>
             @endif
 
-            <form method="POST" enctype="multipart/form-data" action="{{ route('dashboard.joblevel.update', $joblevel) }}" class="flex flex-col gap-[30px] w-[500px] mx-[70px] mt-10">
+            <form method="POST" enctype="multipart/form-data" action="{{ route('dashboard.approval.administration.update', $status->people_status_id) }}" class="flex flex-col gap-[30px] w-[500px] mx-[70px] mt-10" id="updateForm">
                 @csrf
                 @method('PUT')
-                <div class="flex flex-col gap-[10px]">
-                    <p class="font-semibold">Job Type Name</p>
-                    <div class="flex items-center w-[500px] h-[52px] p-[14px_16px] rounded-full border border-[#EEEEEE] transition-all duration-300 focus-within:border-2 focus-within:border-[#0A090B]">
-                        <div class="mr-[14px] w-6 h-6 flex items-center justify-center overflow-hidden">
-                            <img src="{{asset('images/icons/note-favorite-outline.svg')}}" class="w-full h-full object-contain" alt="icon">
+                <div class="group/status flex flex-col gap-[10px]">
+                    <p class="font-semibold">Status Administration</p>
+                    <div class="peer flex items-center p-[12px_16px] rounded-full border border-[#EEEEEE] transition-all duration-300 focus-within:border-2 focus-within:border-[#0A090B]">
+                        <div class="mr-[10px] w-6 h-6 flex items-center justify-center overflow-hidden">
+                            <img src="{{asset('images/icons/security-user.svg')}}" class="w-full h-full object-contain" alt="icon">
                         </div>
-                        <input value="{{ $joblevel->joblevel_name }}" type="text" class="font-semibold placeholder:text-[#7F8190] placeholder:font-normal w-full outline-none" placeholder="Write your better course name" name="joblevel_name" required>
+                        <select id="status" class="pl-1 font-semibold focus:outline-none w-full text-[#0A090B] invalid:text-[#7F8190] invalid:font-normal appearance-none bg-[url('{{asset('images/icons/arrow-down.svg')}}')] bg-no-repeat bg-right" name="status_admin" required>
+                            <option value="{{ $status->status_admin }}" selected>{{ $status->status_admin }}</option>
+                            <option value="In Process" class="font-semibold">In Process</option>
+                            <option value="Approve" class="font-semibold">Approve</option>
+                        </select>
                     </div>
                 </div>
-                <label class="font-semibold flex items-center gap-[10px]"
-                    ><input
-                    type="radio"
-                    name="tnc"
-                    class="w-[24px] h-[24px] appearance-none checked:border-[3px] checked:border-solid checked:border-white rounded-full checked:bg-[#2B82FE] ring ring-[#EEEEEE]"
-                    checked/>
+                <label class="font-semibold flex items-center gap-[10px]">
+                    <input type="radio" name="tnc" class="w-[24px] h-[24px] appearance-none checked:border-[3px] checked:border-solid checked:border-white rounded-full checked:bg-[#2B82FE] ring ring-[#EEEEEE]" checked/>
                     I have read terms and conditions
                 </label>
                 <div class="flex items-center gap-5">
-                    {{-- <a href="" class="w-full h-[52px] p-[14px_20px] bg-[#0A090B] rounded-full font-semibold text-white transition-all duration-300 text-center">Add to Draft</a> --}}
-                    <button type="submit" class="w-full h-[52px] p-[14px_20px] bg-[#6436F1] rounded-full font-bold text-white transition-all duration-300 hover:shadow-[0_4px_15px_0_#6436F14D] text-center">Save Course</button>
+                    <button type="button" id="saveButton" class="w-full h-[52px] p-[14px_20px] bg-[#6436F1] rounded-full font-bold text-white transition-all duration-300 hover:shadow-[0_4px_15px_0_#6436F14D] text-center">Save Course</button>
                 </div>
             </form>
         </div>
     </section>
-
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        // SweetAlert2 konfirmasi sebelum submit form
+        document.getElementById('saveButton').addEventListener('click', function(e) {
+            e.preventDefault(); // Mencegah form untuk langsung disubmit
+    
+            // SweetAlert konfirmasi
+            Swal.fire({
+                title: 'Apakah Anda yakin?',
+                text: 'Data yang sudah diupdate status tidak dapat diubah lagi!',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#6436F1',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya, simpan!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Jika user mengonfirmasi, submit form
+                    document.getElementById('updateForm').submit();
+                }
+            });
+        });
+    </script>
     <script>
         document.getElementById('hours').addEventListener('input', updateCourseTime);
         document.getElementById('minutes').addEventListener('input', updateCourseTime);

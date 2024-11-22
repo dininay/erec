@@ -47,7 +47,7 @@
                 <div class="breadcrumb flex items-center gap-[30px]">
                     <a href="{{ route('dashboard.category.index') }}" class="text-[#7F8190] last:text-[#0A090B] last:font-semibold">Home</a>
                     <span class="text-[#7F8190] last:text-[#0A090B]">/</span>
-                    <a href="{{ route('dashboard.category.create', $category) }}" class="text-[#7F8190] last:text-[#0A090B] last:font-semibold">Manage Category</a>
+                    <a href="{{ route('dashboard.category.create') }}" class="text-[#7F8190] last:text-[#0A090B] last:font-semibold">Manage Category</a>
                     <span class="text-[#7F8190] last:text-[#0A090B]">/</span>
                     <a href="#" class="text-[#7F8190] last:text-[#0A090B] last:font-semibold ">New Category</a>
                 </div>

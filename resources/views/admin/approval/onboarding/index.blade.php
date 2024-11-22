@@ -105,7 +105,7 @@
                                     <a href="{{ route('dashboard.approval.onboarding.show', $status) }}" class="flex items-center justify-between font-bold text-sm w-full">
                                         Manage
                                     </a>
-                                    <a href="{{ route('dashboard.approval.onboarding.edit', $status) }}" class="flex items-center justify-between font-bold text-sm w-full">
+                                    <a href="{{ route('dashboard.approval.onboarding.edit', $status->people_status_id) }}" class="flex items-center justify-between font-bold text-sm w-full">
                                         Edit
                                     </a>
                                     <form method="POST" action="{{ route('dashboard.approval.onboarding.destroy', $status) }}" class="">

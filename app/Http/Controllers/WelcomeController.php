@@ -36,33 +36,115 @@ class WelcomeController extends Controller
         //
         $user = Auth::user();
         $jobs = RegistJob::orderBy('reg_id', 'DESC')->get();
+        $headOfficeJobs = RegistJob::where('reg_code', 'like', 'HOF%')
+        ->where('status_job', 'Aktif')
+            ->orderBy('created_at', 'DESC')
+            ->take(3)
+            ->get();
+
+        $manufactureJobs = RegistJob::where('reg_code', 'like', 'MAN%')
+        ->where('status_job', 'Aktif')
+            ->orderBy('created_at', 'DESC')
+            ->take(3)
+            ->get();
+
+        $restoJobs = RegistJob::where('reg_code', 'like', 'OPS%')
+        ->where('status_job', 'Aktif')
+            ->orderBy('created_at', 'DESC')
+            ->take(3)
+            ->get();
         $latestJobs = $jobs->take(4); 
         return view('job', [
             'jobs'=> $latestJobs,
+            'headOfficeJobs' => $headOfficeJobs,
+            'manufactureJobs' => $manufactureJobs,
+            'restoJobs' => $restoJobs,
             'user'=> $user,
         ]);
     }
     
+    public function indexjobdetail($reg_code = null)
+    {
+        // if (!Auth::check()) {
+        //     // Jika belum login, tampilkan pesan dan redirect ke halaman login
+        //     return back()->with('alert', [
+        //         'type' => 'error',
+        //         'title' => 'Anda Belum Login!',
+        //         'message' => 'Silahkan masuk menggunakan akun E-Recruitment Mie Gacoan terlebih dahulu.',
+        //     ]);
+        // }
+        
+        // $user = Auth::user();
+
+        $user = Auth::check() ? Auth::user() : null;
+        // Jika treg_code disediakan, filter data berdasarkan treg_code
+        if ($reg_code) {
+            $jobs = RegistJob::where('reg_code', $reg_code)->first();
+        } else {
+            // Jika tidak, ambil semua data
+            $jobs = RegistJob::all();
+        }
+
+        $jobrelated = RegistJob::where('reg_code', 'like', 'HOF%')
+        ->where('status_job', 'Aktif')
+            ->orderBy('created_at', 'DESC')
+            ->take(8)
+            ->get();
+
+        // Cek apakah sudah melamar
+        $applyExists = false;
+        if ($user) {
+            $applyExists = Apply::where('reg_id', $reg_code)
+                ->where('email', $user->email)
+                ->exists();
+        }
+
+        return view('crew.job.job_detail', compact('jobs', 'jobrelated', 'applyExists'));
+    }
+
     public function indexprofil()
     {
         //
         $user = Auth::check() ? Auth::user() : null;
 
-        $applys = $user 
-            ? Apply::with('registjob')
-                ->where('user_id', $user->id)
-                ->orderBy('created_at', 'DESC')
-                ->get()
-            : collect();
-    
-        $jobs = RegistJob::orderBy('reg_id', 'DESC')->get();
+        $jobs = RegistJob::leftJoin('r_apply', 'r_registjob.reg_code', '=', 'r_apply.reg_id')
+        ->leftjoin('r_people_status', 'r_apply.apply_id', '=', 'r_people_status.apply_id')
+        ->select(
+            'r_apply.*',
+            'r_people_status.*',
+            'r_registjob.*'
+        )
+        ->orderBy('r_registjob.reg_id', 'DESC')
+        ->get();
+
+        $applys = $user
+        ? $jobs->filter(fn($job) => $job->user_id === $user->id)->values()
+        : collect();
+
         $latestJobs = $jobs->take(4);
+        // Ambil data user terkait pekerjaan
+        if ($user) {
+            // Mengambil data pekerjaan yang terhubung dengan user berdasarkan email
+            $jobDetails = Apply::where('email', $user->email)
+                ->leftJoin('r_registjob', 'r_registjob.reg_code', '=', 'r_apply.reg_id')
+                ->leftJoin('r_people_status', 'r_apply.apply_id', '=', 'r_people_status.apply_id')
+                ->select(
+                    'r_apply.*',
+                    'r_people_status.*',
+                    'r_registjob.*'
+                )
+                ->orderBy('r_registjob.reg_id', 'DESC')
+                ->first(); // Mengambil data pekerjaan pertama yang ditemukan
+        } else {
+            $jobDetails = null;
+        }
     
         // Return the profile view
         return view('profile', [
-            'jobs' => $latestJobs,
             'user' => $user,
+            'jobs' => $jobs,
             'applys' => $applys,
+            'jobDetails' => $jobDetails, 
         ]);
     }
 

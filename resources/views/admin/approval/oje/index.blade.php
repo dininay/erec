@@ -105,7 +105,7 @@
                                     <a href="{{ route('dashboard.approval.oje.show', $status) }}" class="flex items-center justify-between font-bold text-sm w-full">
                                         Manage
                                     </a>
-                                    <a href="{{ route('dashboard.approval.oje.edit', $status) }}" class="flex items-center justify-between font-bold text-sm w-full">
+                                    <a href="{{ route('dashboard.approval.oje.edit', $status->people_status_id) }}" class="flex items-center justify-between font-bold text-sm w-full">
                                         Edit
                                     </a>
                                     <form method="POST" action="{{ route('dashboard.approval.oje.destroy', $status) }}" class="">

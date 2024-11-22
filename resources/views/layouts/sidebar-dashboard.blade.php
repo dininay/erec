@@ -18,7 +18,6 @@
                     </p>
                 </a>
             </li>
-            @role('Crew')
             <li>
                 <a href="{{ route('welcome') }}" class="p-[10px_16px] flex items-center gap-[14px] rounded-full h-11 transition-all duration-300 
                     @if(request()->routeIs('welcome')) bg-[#2B82FE] text-white @else hover:bg-[#2B82FE] @endif">
@@ -30,6 +29,7 @@
                     </p>
                 </a>
             </li>
+            @role('Crew')
             <li>
                 <a href="{{ route('dashboard.statusapply.index') }}" class="p-[10px_16px] flex items-center gap-[14px] rounded-full h-11 transition-all duration-300
                     @if(request()->routeIs('dashboard.statusapply.index')) bg-[#2B82FE] text-white @else hover:bg-[#2B82FE] @endif">
@@ -43,11 +43,11 @@
             </li>
             <li>
                 <a href="{{ route('dashboard.learning.index') }}" class="p-[10px_16px] flex items-center gap-[14px] rounded-full h-11 transition-all duration-300
-                    @if(request()->routeIs('dashboard.learning.index', 'dashboard.learning.create', 'dashboard.learning.edit', 'dashboard.learning.manage')) bg-[#2B82FE] text-white @else hover:bg-[#2B82FE] @endif">
+                    @if(request()->routeIs('dashboard.learning.index')) bg-[#2B82FE] text-white @else hover:bg-[#2B82FE] @endif">
                     <div>
                         <img src="{{asset('images/icons/sms.svg')}}" alt="icon">
                     </div>
-                    <p class="font-semibold transition-all duration-300 @if(request()->routeIs('dashboard.learning.index', 'dashboard.learning.create', 'dashboard.learning.edit', 'dashboard.learning.manage')) text-white @else hover:text-white @endif">
+                    <p class="font-semibold transition-all duration-300 @if(request()->routeIs('dashboard.learning.index')) text-white @else hover:text-white @endif">
                         Job Test
                     </p>
                 </a>
@@ -58,30 +58,6 @@
                         <img src="{{asset('images/icons/lock.svg')}}" alt="icon">
                     </div>
                     <p class="font-semibold transition-all duration-300 hover:text-white">Logout</p>
-                </a>
-            </li>
-            @endrole
-            @role('HR')
-            <li>
-                <a href="{{ route('dashboard.course.index') }}" class="p-[10px_16px] flex items-center gap-[14px] rounded-full h-11 transition-all duration-300
-                    @if(request()->routeIs('dashboard.course.index', 'dashboard.course.create', 'dashboard.course.edit', 'dashboard.course.manage')) bg-[#2B82FE] text-white @else hover:bg-[#2B82FE] @endif">
-                    <div>
-                        <img src="{{asset('images/icons/sms-tracking.svg')}}" alt="icon">
-                    </div>
-                    <p class="font-semibold transition-all duration-300 @if(request()->routeIs('dashboard.course.index', 'dashboard.course.create', 'dashboard.course.edit', 'dashboard.course.manage')) text-white @else hover:text-white @endif">
-                        Courses
-                    </p>
-                </a>
-            </li>
-            <li>
-                <a href="{{ route('dashboard.people.index') }}" class="p-[10px_16px] flex items-center gap-[14px] rounded-full h-11 transition-all duration-300
-                    @if(request()->routeIs('dashboard.people.index', 'dashboard.people.create', 'dashboard.people.edit', 'dashboard.people.manage')) bg-[#2B82FE] text-white @else hover:bg-[#2B82FE] @endif">
-                    <div>
-                        <img src="{{asset('images/icons/profile-2user.svg')}}" alt="icon">
-                    </div>
-                    <p class="font-semibold transition-all duration-300 @if(request()->routeIs('dashboard.people.index', 'dashboard.people.create', 'dashboard.people.edit', 'dashboard.people.manage')) text-white @else hover:text-white @endif">
-                        People
-                    </p>
                 </a>
             </li>
             @endrole
@@ -170,6 +146,35 @@
             </li>
         </ul>
         <ul class="flex flex-col gap-3">
+            @role('HR')
+            <li>
+                <h3 class="font-bold text-xs text-[#A5ABB2]">About Course</h3>
+            </li>
+            <li>
+                <a href="{{ route('dashboard.course.index') }}" class="p-[10px_16px] flex items-center gap-[14px] rounded-full h-11 transition-all duration-300
+                    @if(request()->routeIs('dashboard.course.index', 'dashboard.course.create', 'dashboard.course.edit', 'dashboard.course.manage')) bg-[#2B82FE] text-white @else hover:bg-[#2B82FE] @endif">
+                    <div>
+                        <img src="{{asset('images/icons/sms-tracking.svg')}}" alt="icon">
+                    </div>
+                    <p class="font-semibold transition-all duration-300 @if(request()->routeIs('dashboard.course.index', 'dashboard.course.create', 'dashboard.course.edit', 'dashboard.course.manage')) text-white @else hover:text-white @endif">
+                        Courses
+                    </p>
+                </a>
+            </li>
+            <li>
+                <a href="{{ route('dashboard.people.index') }}" class="p-[10px_16px] flex items-center gap-[14px] rounded-full h-11 transition-all duration-300
+                    @if(request()->routeIs('dashboard.people.index', 'dashboard.people.create', 'dashboard.people.edit', 'dashboard.people.manage')) bg-[#2B82FE] text-white @else hover:bg-[#2B82FE] @endif">
+                    <div>
+                        <img src="{{asset('images/icons/profile-2user.svg')}}" alt="icon">
+                    </div>
+                    <p class="font-semibold transition-all duration-300 @if(request()->routeIs('dashboard.people.index', 'dashboard.people.create', 'dashboard.people.edit', 'dashboard.people.manage')) text-white @else hover:text-white @endif">
+                        People
+                    </p>
+                </a>
+            </li>
+            @endrole
+        </ul>
+        <ul class="flex flex-col gap-3">
             <li>
                 <h3 class="font-bold text-xs text-[#A5ABB2]">Master Data</h3>
             </li>
@@ -236,6 +241,22 @@
                     </div>
                     <p class="font-semibold transition-all duration-300 @if(request()->routeIs('dashboard.dept.index', 'dashboard.dept.create', 'dashboard.dept.edit', 'dashboard.dept.manage')) text-white @else hover:text-white @endif">
                         Department
+                    </p>
+                </a>
+            </li>
+        </ul>
+        <ul class="flex flex-col gap-3">
+            <li>
+                <h3 class="font-bold text-xs text-[#A5ABB2]">Manage User</h3>
+            </li>
+            <li>
+                <a href="{{ route('dashboard.user.index') }}" class="p-[10px_16px] flex items-center gap-[14px] rounded-full h-11 transition-all duration-300
+                    @if(request()->routeIs('dashboard.user.index', 'dashboard.user.create', 'dashboard.user.edit', 'dashboard.user.manage')) bg-[#2B82FE] text-white @else hover:bg-[#2B82FE] @endif">
+                    <div>
+                        <img src="{{asset('images/icons/profile-2user-outline.svg')}}" alt="icon">
+                    </div>
+                    <p class="font-semibold transition-all duration-300 @if(request()->routeIs('dashboard.user.index', 'dashboard.user.create', 'dashboard.user.edit', 'dashboard.user.manage')) text-white @else hover:text-white @endif">
+                        Users
                     </p>
                 </a>
             </li>

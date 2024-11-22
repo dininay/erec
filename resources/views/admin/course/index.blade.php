@@ -96,9 +96,9 @@
                                     <a href="{{ route('dashboard.course.show', $course) }}" class="flex items-center justify-between font-bold text-sm w-full">
                                         Manage
                                     </a>
-                                    <a href="course-students.html" class="flex items-center justify-between font-bold text-sm w-full">
+                                    {{-- <a href="course-students.html" class="flex items-center justify-between font-bold text-sm w-full">
                                         Students
-                                    </a>
+                                    </a> --}}
                                     <a href="{{ route('dashboard.course.edit', $course) }}" class="flex items-center justify-between font-bold text-sm w-full">
                                         Edit Course
                                     </a>

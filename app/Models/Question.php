@@ -57,4 +57,9 @@ class Question extends Model
     public function people(){
         return $this->belongsToMany(User::class, 'r_people', 'course_id', 'user_id');
     }
+    
+    public function peopleAnswers()
+    {
+        return $this->hasMany(PeopleAnswer::class, 'question_id');
+    }
 }

@@ -96,6 +96,21 @@ class CoursesController extends Controller
         ]);
     }
 
+    public function showessay(Courses $course)
+    {
+        //
+        $user = Auth::user();
+        $people = $course->people()->orderBy('id', 'DESC')->get();
+        $questions = $course->questions()->orderBy('question_id', 'DESC')->get();
+
+        return view('admin.course.manageessay', [
+            'course'=> $course,
+            'people'=> $people,
+            'questions'=> $questions,
+            'user'=> $user,
+        ]);
+    }
+
     /**
      * Show the form for editing the specified resource.
      */

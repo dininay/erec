@@ -105,7 +105,7 @@
                                     <a href="{{ route('dashboard.approval.docclear.show', $status) }}" class="flex items-center justify-between font-bold text-sm w-full">
                                         Manage
                                     </a>
-                                    <a href="{{ route('dashboard.approval.docclear.edit', $status) }}" class="flex items-center justify-between font-bold text-sm w-full">
+                                    <a href="{{ route('dashboard.approval.docclear.edit', $status->people_status_id) }}" class="flex items-center justify-between font-bold text-sm w-full">
                                         Edit
                                     </a>
                                     <form method="POST" action="{{ route('dashboard.approval.docclear.destroy', $status) }}" class="">

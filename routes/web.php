@@ -17,6 +17,8 @@ use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\RegistJobController;
 use App\Http\Controllers\ResultTestController;
 use App\Http\Controllers\StatusController;
+use App\Http\Controllers\Auth\UserController;
+use App\Http\Controllers\QuestionEssayController;
 use App\Http\Controllers\WelcomeController;
 use App\Http\Controllers\WorkLocController;
 use Illuminate\Support\Facades\Auth;
@@ -32,7 +34,10 @@ Route::get('/', function () {
 
 Route::get('/', [WelcomeController::class, 'index'])->name('welcome');
 Route::get('/job', [WelcomeController::class, 'indexjob'])->name('job');
+Route::get('/job/{reg_code}', [WelcomeController::class, 'indexjobdetail'])->name('jobdetail');
 Route::get('/profil', [WelcomeController::class, 'indexprofil'])->name('profil');
+Route::get('/applyjob/{reg_code}', [ApplyController::class, 'applyjob'])->name('applyjob');
+Route::post('/submit-apply', [ApplyController::class, 'submitApply'])->name('submitapply');
 
 Route::get('/logout', function () {
     Auth::logout();
@@ -44,7 +49,7 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-
+Route::get('/search-jobs', [RegistJobController::class, 'searchJobs'])->name('search.jobs');
 
 Route::get('/dashboard-crew', function () {
     return view('dashboard-crew');
@@ -68,56 +73,63 @@ Route::middleware('auth')->group(function () {
         Route::resource('division', DivisionController::class)->middleware('role:HR');
         Route::resource('dept', DeptController::class)->middleware('role:HR');
         Route::resource('job', RegistJobController::class)->middleware('role:HR');
+        Route::resource('apply', ApplyController::class)->middleware('role:HR');
+        Route::resource('user', UserController::class)->middleware('role:HR');
+        Route::get('user/{id}/reset', [UserController::class, 'reset'])->name('user.reset');
+        Route::put('user/{id}', [UserController::class, 'ubah'])->name('user.ubah');
 
         Route::prefix('approval')->name('approval.')->group(function () {
             // Rute untuk 'administration'
             Route::get('administration', [StatusController::class, 'indexadmin'])->name('administration.index');
             Route::get('administration/create', [StatusController::class, 'create'])->name('administration.create');
             Route::post('administration', [StatusController::class, 'store'])->name('administration.store');
-            Route::get('administration/{id}', [StatusController::class, 'show'])->name('administration.show');
-            Route::get('administration/{id}/edit', [StatusController::class, 'edit'])->name('administration.edit');
-            Route::put('administration/{id}', [StatusController::class, 'update'])->name('administration.update');
-            Route::delete('administration/{id}', [StatusController::class, 'destroy'])->name('administration.destroy');
+            Route::get('administration/{id}', [StatusController::class, 'showadmin'])->name('administration.show');
+            Route::get('administration/{people_status_id}/edit', [StatusController::class, 'editadmin'])->name('administration.edit');
+            Route::put('administration/{people_status_id}', [StatusController::class, 'updateadmin'])->name('administration.update');
+            Route::delete('administration/{id}', [StatusController::class, 'destroyadmin'])->name('administration.destroy');
 
             // Rute untuk 'interview'
             Route::get('interview', [StatusController::class, 'indexinterview'])->name('interview.index');
             Route::get('interview/create', [StatusController::class, 'create'])->name('interview.create');
             Route::post('interview', [StatusController::class, 'store'])->name('interview.store');
-            Route::get('interview/{id}', [StatusController::class, 'show'])->name('interview.show');
-            Route::get('interview/{id}/edit', [StatusController::class, 'edit'])->name('interview.edit');
-            Route::put('interview/{id}', [StatusController::class, 'update'])->name('interview.update');
-            Route::delete('interview/{id}', [StatusController::class, 'destroy'])->name('interview.destroy');
+            Route::get('interview/{id}', [StatusController::class, 'showinterview'])->name('interview.show');
+            Route::get('interview/{people_status_id}/edit', [StatusController::class, 'editinterview'])->name('interview.edit');
+            Route::put('interview/{people_status_id}', [StatusController::class, 'updateinterview'])->name('interview.update');
+            Route::delete('interview/{id}', [StatusController::class, 'destroyinterview'])->name('interview.destroy');
 
             // Rute untuk 'docclear'
             Route::get('docclear', [StatusController::class, 'indexdocclear'])->name('docclear.index');
             Route::get('docclear/create', [StatusController::class, 'create'])->name('docclear.create');
             Route::post('docclear', [StatusController::class, 'store'])->name('docclear.store');
-            Route::get('docclear/{id}', [StatusController::class, 'show'])->name('docclear.show');
-            Route::get('docclear/{id}/edit', [StatusController::class, 'edit'])->name('docclear.edit');
-            Route::put('docclear/{id}', [StatusController::class, 'update'])->name('docclear.update');
-            Route::delete('docclear/{id}', [StatusController::class, 'destroy'])->name('docclear.destroy');
+            Route::get('docclear/{id}', [StatusController::class, 'showdocclear'])->name('docclear.show');
+            Route::get('docclear/{people_status_id}/edit', [StatusController::class, 'editdocclear'])->name('docclear.edit');
+            Route::put('docclear/{people_status_id}', [StatusController::class, 'updatedocclear'])->name('docclear.update');
+            Route::delete('docclear/{id}', [StatusController::class, 'destroydocclear'])->name('docclear.destroy');
 
             // Rute untuk 'oje'
             Route::get('oje', [StatusController::class, 'indexoje'])->name('oje.index');
             Route::get('oje/create', [StatusController::class, 'create'])->name('oje.create');
             Route::post('oje', [StatusController::class, 'store'])->name('oje.store');
-            Route::get('oje/{id}', [StatusController::class, 'show'])->name('oje.show');
-            Route::get('oje/{id}/edit', [StatusController::class, 'edit'])->name('oje.edit');
-            Route::put('oje/{id}', [StatusController::class, 'update'])->name('oje.update');
-            Route::delete('oje/{id}', [StatusController::class, 'destroy'])->name('oje.destroy');
+            Route::get('oje/{id}', [StatusController::class, 'showoje'])->name('oje.show');
+            Route::get('oje/{people_status_id}/edit', [StatusController::class, 'editoje'])->name('oje.edit');
+            Route::put('oje/{people_status_id}', [StatusController::class, 'updateoje'])->name('oje.update');
+            Route::delete('oje/{id}', [StatusController::class, 'destroyoje'])->name('oje.destroy');
 
             // Rute untuk 'onboarding'
             Route::get('onboarding', [StatusController::class, 'indexonboarding'])->name('onboarding.index');
             Route::get('onboarding/create', [StatusController::class, 'create'])->name('onboarding.create');
             Route::post('onboarding', [StatusController::class, 'store'])->name('onboarding.store');
-            Route::get('onboarding/{id}', [StatusController::class, 'show'])->name('onboarding.show');
-            Route::get('onboarding/{id}/edit', [StatusController::class, 'edit'])->name('onboarding.edit');
-            Route::put('onboarding/{id}', [StatusController::class, 'update'])->name('onboarding.update');
-            Route::delete('onboarding/{id}', [StatusController::class, 'destroy'])->name('onboarding.destroy');
+            Route::get('onboarding/{id}', [StatusController::class, 'showonboarding'])->name('onboarding.show');
+            Route::get('onboarding/{people_status_id}/edit', [StatusController::class, 'editonboarding'])->name('onboarding.edit');
+            Route::put('onboarding/{people_status_id}', [StatusController::class, 'updateonboarding'])->name('onboarding.update');
+            Route::delete('onboarding/{id}', [StatusController::class, 'destroyonboarding'])->name('onboarding.destroy');
         });
 
         // Course
         Route::resource('course', CoursesController::class)->middleware('role:HR');
+
+        // Route::get('course', [CoursesController::class, 'showessay'])
+        //     ->middleware('role:HR')->name('course.showessay');
 
         // Question
         Route::get('/course/question/create/{course}', [QuestionController::class, 'create'])
@@ -126,7 +138,20 @@ Route::middleware('auth')->group(function () {
         Route::post('/course/question/save/{course}', [QuestionController::class, 'store'])
             ->middleware('role:HR')->name('course.create.question.store');
 
+        Route::get('/course/question/createessay/{course}', [QuestionEssayController::class, 'createessay'])
+            ->middleware('role:HR')->name('course.create.questionessay');
+
+        Route::post('/course/question/saveessay/{course}', [QuestionEssayController::class, 'storeessay'])
+            ->middleware('role:HR')->name('course.create.question.storeessay');
+
+        Route::get('/course/question/createessay/{course}', [QuestionEssayController::class, 'createessay'])
+            ->middleware('role:HR')->name('course.create.questionessay');
+
+        Route::put('/course/question/saveessay/{course}', [QuestionEssayController::class, 'storeessay'])
+            ->middleware('role:HR')->name('course.create.question.storeessay');
+
         Route::resource('question', QuestionController::class)->middleware('role:HR');
+        Route::resource('questionessay', QuestionEssayController::class)->middleware('role:HR');
 
         // People
         Route::get('/course/people/show/{course}', [PeopleController::class, 'index'])
@@ -158,7 +183,7 @@ Route::middleware('auth')->group(function () {
 
         Route::get('/learning', [LearningController::class, 'index'])
             ->middleware('role:Crew')->name('learning.index');
-
+            
         Route::get('/learning/{course}/{question}', [LearningController::class, 'learning'])
             ->middleware('role:Crew')->name('learning.course');
 

@@ -17,10 +17,17 @@ class Status extends Model
     
     protected $fillable = [
         'people_status_id',
+        'status_admin',
+        'admin_date',
         'status_interview',
+        'interview_date',
         'status_docclear',
+        'docclear_date',
         'status_oje',
+        'oje_date',
         'status_onboarding',
+        'onboarding_date',
+        'join_date',
         'created_at',
         'updated_at',
         'create_by',

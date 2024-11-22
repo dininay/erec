@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('r_apply_detail', function (Blueprint $table) {
             $table->integer('apply_det_id')->autoIncrement();
             $table->string('apply_id')->nullable();
-            $table->string('reg_id')->nullable();
             $table->string('quest_1')->nullable();
             $table->string('quest_2')->nullable();
             $table->string('quest_3')->nullable();

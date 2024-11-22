@@ -47,4 +47,9 @@ class Apply extends Model
     public function applydet(){
         return $this->belongsTo(ApplyDetail::class, 'apply_id');
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'email', 'email');
+    }
 }
