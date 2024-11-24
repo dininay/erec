@@ -152,7 +152,7 @@
             <div class="header ml-[70px] pr-[70px] w-[940px] flex items-center justify-between mt-10">
                 <div class="flex gap-6 items-center">
                     <div class="w-[150px] h-[150px] flex shrink-0 relative overflow-hidden">
-                        <img src="{{ asset('images/thumbnail/Web-Development.png')}}" class="w-full h-full object-contain" alt="icon">
+                        <img src="{{ Storage::url($course->cover) }}" class="w-full h-full object-contain" alt="icon">
                         <p class="p-[8px_16px] rounded-full bg-[#FFF2E6] font-bold text-sm text-[#F6770B] absolute bottom-0 transform -translate-x-1/2 left-1/2 text-nowrap">{{ $course->category->cat_name }}</p>
                     </div>
                     <div class="flex flex-col gap-5">

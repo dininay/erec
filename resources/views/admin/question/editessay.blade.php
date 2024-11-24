@@ -152,7 +152,7 @@
             <div class="header ml-[70px] pr-[70px] w-[940px] flex items-center justify-between mt-10">
                 <div class="flex gap-6 items-center">
                     <div class="w-[150px] h-[150px] flex shrink-0 relative overflow-hidden">
-                        <img src="{{ asset('images/thumbnail/Web-Development.png')}}" class="w-full h-full object-contain" alt="icon">
+                        <img src="{{ Storage::url($course->cover) }}" class="w-full h-full object-contain" alt="icon">
                         <p class="p-[8px_16px] rounded-full bg-[#FFF2E6] font-bold text-sm text-[#F6770B] absolute bottom-0 transform -translate-x-1/2 left-1/2 text-nowrap">{{ $course->category->cat_name }}</p>
                     </div>
                     <div class="flex flex-col gap-5">
@@ -185,7 +185,7 @@
                 </ul>
             @endif
 
-            <form method="POST" action="{{ route('dashboard.question.update', $question) }}" id="add-question" class="mx-[70px] mt-[30px] flex flex-col gap-5">
+            <form method="POST" action="{{ route('dashboard.questionessay.update', $questionessay) }}" id="add-question" class="mx-[70px] mt-[30px] flex flex-col gap-5">
                 @csrf
                 @method('PUT')
                 <h2 class="font-bold text-2xl">Edit Question</h2>
@@ -195,7 +195,7 @@
                         <div class="mr-[14px] w-6 h-6 flex items-center justify-center overflow-hidden">
                             <img src="{{ asset('images/icons/note-text.svg')}}" class="h-full w-full object-contain" alt="icon">
                         </div>
-                        <input type="text" class="font-semibold placeholder:text-[#7F8190] placeholder:font-normal w-full outline-none" placeholder="Write the question" value="{{ $question->question_name }}" name="question_name">
+                        <input type="text" class="font-semibold placeholder:text-[#7F8190] placeholder:font-normal w-full outline-none" placeholder="Write the question" value="{{ $questionessay->question_name }}" name="question_name">
                     </div>
                 </div>
                 <div class="flex flex-col gap-[10px]">
@@ -204,7 +204,7 @@
                         <div class="mr-[14px] w-6 h-6 flex items-center justify-center overflow-hidden">
                             <img src="{{ asset('images/icons/note-text.svg')}}" class="h-full w-full object-contain" alt="icon">
                         </div>
-                        <input type="text" class="font-semibold placeholder:text-[#7F8190] placeholder:font-normal w-full outline-none" placeholder="Write the answer" name="answer_name">
+                        <input type="text" class="font-semibold placeholder:text-[#7F8190] placeholder:font-normal w-full outline-none" placeholder="Write the answer" value="{{ $questionessay->answers->first()?->answer_name }}" name="answer_name">
                     </div>
                 </div>
                 <button type="submit" class="w-[500px] h-[52px] p-[14px_20px] bg-[#6436F1] rounded-full font-bold text-white transition-all duration-300 hover:shadow-[0_4px_15px_0_#6436F14D] text-center">Save Question</button>

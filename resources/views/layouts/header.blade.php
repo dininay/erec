@@ -11,11 +11,11 @@
                     <!-- ***** Logo End ***** -->
                     <!-- ***** Search End ***** -->
                     <div class="search-input">
-                      <form id="search" action="#">
-                        <input type="text" placeholder="Cari Lowongan Kerja" id='searchText' name="searchKeyword" onkeypress="handle" />
-                        <i class="fa fa-search"></i>
-                      </form>
-                    </div>
+                        <form id="search" action="#">
+                            <input type="text" placeholder="Cari Lowongan Kerja" id='searchText' name="searchKeyword" />
+                            <i class="fa fa-search"></i>
+                        </form>
+                    </div> 
                     <!-- ***** Search End ***** -->
                     <!-- ***** Menu Start ***** -->
                     <ul class="nav">

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Courses;
-use App\Models\Question;
+use App\Models\QuestionEssay;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -37,7 +37,7 @@ class QuestionEssayController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function storeessay(Request $request, Courses $course, Question $question)
+    public function storeessay(Request $request, Courses $course, QuestionEssay $question)
     {
         //
         $validated = $request->validate([
@@ -73,7 +73,7 @@ class QuestionEssayController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Question $question)
+    public function show(QuestionEssay $question)
     {
         //
     }
@@ -81,14 +81,14 @@ class QuestionEssayController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Question $question)
+    public function edit(QuestionEssay $questionessay)
     {
         //
         $user = Auth::user();
-        $people = $question->people()->orderBy('id', 'DESC')->get();
-        $course = $question->course;
+        $people = $questionessay->people()->orderBy('id', 'DESC')->get();
+        $course = Courses::with('category')->find($questionessay->course_id);
         return view('admin.question.editessay', [ 
-            'question' => $question,
+            'questionessay' => $questionessay,
             'course' => $course,
             'people' => $people,
             'user' => $user,
@@ -98,7 +98,7 @@ class QuestionEssayController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Question $question)
+    public function update(Request $request, QuestionEssay $questionessay)
     {
         //
         $validated = $request->validate([
@@ -109,20 +109,20 @@ class QuestionEssayController extends Controller
         DB::beginTransaction();
 
         try{
-            $question->update([
+            $questionessay->update([
                 'question_name' => $request->question_name,
             ]);
 
-            $question->answers()->delete();
-            $question->answers()->create([
+            $questionessay->answers()->delete();
+            $questionessay->answers()->create([
                 'answer_name' => $request->answer_name,
                 'is_correct' => $request->answer_name,
-                'question_id' => $question->question_id
+                'question_id' => $questionessay->question_id
             ]);
     
             DB::commit();
 
-            return redirect()->route('dashboard.course.show', $question->course_id);
+            return redirect()->route('dashboard.course.show', $questionessay->course_id);
         }
         
         catch (\Exception $e){
@@ -134,12 +134,12 @@ class QuestionEssayController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Question $question)
+    public function destroy(QuestionEssay $questionessay)
     {
         //
         try{
-            $question->delete();
-            return redirect()->route('dashboard.course.show', $question->course_id);
+            $questionessay->delete();
+            return redirect()->route('dashboard.course.show', $questionessay->course_id);
         }
         catch (\Exception $e){
             DB::rollBack();

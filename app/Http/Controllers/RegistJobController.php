@@ -217,23 +217,23 @@ class RegistJobController extends Controller
 
     public function searchJobs(Request $request)
     {
-        // Validasi input pencarian
         $request->validate([
             'searchKeyword' => 'nullable|string|max:255',
         ]);
 
-        // Ambil kata kunci pencarian
         $keyword = $request->searchKeyword;
 
-        // Query ke tabel r_registjob
         $jobs = DB::table('r_registjob')
-            ->where('status_job', 'Aktif') // Filter hanya yang aktif
+            ->where('status_job', 'Aktif')
             ->when($keyword, function ($query, $keyword) {
                 $query->where('job_title', 'LIKE', "%{$keyword}%");
             })
             ->get();
 
-        // Kembalikan hasil pencarian sebagai JSON
+        if ($keyword && $jobs->isEmpty()) {
+            return response()->json(['message' => 'No jobs found matching your search.']);
+        }
+
         return response()->json($jobs);
     }
 }

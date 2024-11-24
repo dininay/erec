@@ -91,15 +91,113 @@
                         </div>
                         <div class="flex shrink-0 w-[120px] items-center">
                             @if($course->nextQuestionId != null)
-                            <a href="{{ route('dashboard.learning.course', ['course' => $course->course_id, 'question' => $course->nextQuestionId]) }}" 
-                               class="w-full h-[41px] p-[10px_20px] bg-[#6436F1] rounded-full font-bold text-sm text-white transition-all duration-300 hover:shadow-[0_4px_15px_0_#6436F14D] text-center">
-                                Start Test
-                            </a>
+                                @if($course->ordinal == 1)
+                                    @if($course->is_completed)
+                                        <a href="{{ route('dashboard.learning.finished.course', $course) }}" 
+                                        class="w-full h-[41px] p-[10px_20px] bg-[#6436F1] rounded-full font-bold text-sm text-white transition-all duration-300 hover:shadow-[0_4px_15px_0_#6436F14D] text-center">
+                                            Result
+                                        </a>
+                                    @else
+                                        <a href="{{ route('dashboard.learning.course', ['course' => $course->course_id, 'question' => $course->nextQuestionId]) }}" 
+                                        class="w-full h-[41px] p-[10px_20px] bg-[#6436F1] rounded-full font-bold text-sm text-white transition-all duration-300 hover:shadow-[0_4px_15px_0_#6436F14D] text-center">
+                                            Start Test
+                                        </a>
+                                    @endif
+                                @elseif($course->ordinal == 2)
+                                    @if($course->is_completed)
+                                    <a href="{{ route('dashboard.learning.finished.course', $course) }}" 
+                                    class="w-full h-[41px] p-[10px_20px] bg-[#6436F1] rounded-full font-bold text-sm text-white transition-all duration-300 hover:shadow-[0_4px_15px_0_#6436F14D] text-center">
+                                        Result
+                                    </a>
+                                    @else
+                                        <a href="{{ route('dashboard.learning.course', ['course' => $course->course_id, 'question' => $course->nextQuestionId]) }}" 
+                                        class="w-full h-[41px] p-[10px_20px] bg-[#6436F1] rounded-full font-bold text-sm text-white transition-all duration-300 hover:shadow-[0_4px_15px_0_#6436F14D] text-center">
+                                            Start Test
+                                        </a>
+                                    @endif
+                                @elseif($course->ordinal == 3)
+                                    @if($course->is_completed)
+                                    <a href="{{ route('dashboard.learning.finished.course', $course) }}" 
+                                    class="w-full h-[41px] p-[10px_20px] bg-[#6436F1] rounded-full font-bold text-sm text-white transition-all duration-300 hover:shadow-[0_4px_15px_0_#6436F14D] text-center">
+                                        Result
+                                    </a>
+                                    @else
+                                        <a href="{{ route('dashboard.learning.course', ['course' => $course->course_id, 'question' => $course->nextQuestionId]) }}" 
+                                        class="w-full h-[41px] p-[10px_20px] bg-[#6436F1] rounded-full font-bold text-sm text-white transition-all duration-300 hover:shadow-[0_4px_15px_0_#6436F14D] text-center">
+                                            Start Test
+                                        </a>
+                                    @endif
+                                @elseif($course->ordinal == 4)
+                                    @if($course->is_completed)
+                                    <a href="{{ route('dashboard.learning.finished.course', $course) }}" 
+                                    class="w-full h-[41px] p-[10px_20px] bg-[#6436F1] rounded-full font-bold text-sm text-white transition-all duration-300 hover:shadow-[0_4px_15px_0_#6436F14D] text-center">
+                                        Result
+                                    </a>
+                                    @else
+                                        <a href="{{ route('dashboard.learning.course', ['course' => $course->course_id, 'question' => $course->nextQuestionId]) }}" 
+                                        class="w-full h-[41px] p-[10px_20px] bg-[#6436F1] rounded-full font-bold text-sm text-white transition-all duration-300 hover:shadow-[0_4px_15px_0_#6436F14D] text-center">
+                                            Start Test
+                                        </a>
+                                    @endif
+                                @endif
                             @else
-                            <a href="{{ route('dashboard.learning.finished.course', $course) }}" 
-                               class="w-full h-[41px] p-[10px_20px] bg-[#6436F1] rounded-full font-bold text-sm text-white transition-all duration-300 hover:shadow-[0_4px_15px_0_#6436F14D] text-center">
-                                Result
-                            </a>
+                                @if($course->ordinal == 1)
+                                    @if($course->is_completed)
+                                        <!-- Jika kursus pertama sudah selesai, tampilkan tombol "View Result" -->
+                                        <a href="{{ route('dashboard.learning.finished.course', $course) }}" 
+                                        class="w-full h-[41px] p-[10px_20px] bg-[#6436F1] rounded-full font-bold text-sm text-white transition-all duration-300 hover:shadow-[0_4px_15px_0_#6436F14D] text-center">
+                                            Result
+                                        </a>
+                                    @else
+                                        <!-- Jika kursus pertama belum selesai, tampilkan tombol "Start Test" -->
+                                        <a href="{{ route('dashboard.learning.course', ['course' => $course->course_id, 'question' => $course->nextQuestionId]) }}" 
+                                        class="w-full h-[41px] p-[10px_20px] bg-[#6436F1] rounded-full font-bold text-sm text-white transition-all duration-300 hover:shadow-[0_4px_15px_0_#6436F14D] text-center">
+                                            Start Test
+                                        </a>
+                                    @endif
+                                @elseif($course->ordinal == 2)
+                                    @if($course->is_completed)
+                                        <!-- Jika kursus kedua dapat dimulai -->
+                                        <a href="{{ route('dashboard.learning.finished.course', $course) }}" 
+                                        class="w-full h-[41px] p-[10px_20px] bg-[#6436F1] rounded-full font-bold text-sm text-white transition-all duration-300 hover:shadow-[0_4px_15px_0_#6436F14D] text-center">
+                                            Result
+                                        </a>
+                                    @else
+                                        <!-- Jika kursus kedua belum bisa dimulai -->
+                                        <a href="{{ route('dashboard.learning.course', ['course' => $course->course_id, 'question' => $course->nextQuestionId]) }}" 
+                                            class="w-full h-[41px] p-[10px_20px] bg-[#6436F1] rounded-full font-bold text-sm text-white transition-all duration-300 hover:shadow-[0_4px_15px_0_#6436F14D] text-center">
+                                                Start Test
+                                        </a>
+                                    @endif
+                                @elseif($course->ordinal == 3)
+                                    @if($course->is_completed)
+                                        <!-- Jika kursus kedua dapat dimulai -->
+                                        <a href="{{ route('dashboard.learning.finished.course', $course) }}" 
+                                        class="w-full h-[41px] p-[10px_20px] bg-[#6436F1] rounded-full font-bold text-sm text-white transition-all duration-300 hover:shadow-[0_4px_15px_0_#6436F14D] text-center">
+                                            Result
+                                        </a>
+                                    @else
+                                        <!-- Jika kursus kedua belum bisa dimulai -->
+                                        <a href="{{ route('dashboard.learning.course', ['course' => $course->course_id, 'question' => $course->nextQuestionId]) }}" 
+                                            class="w-full h-[41px] p-[10px_20px] bg-[#6436F1] rounded-full font-bold text-sm text-white transition-all duration-300 hover:shadow-[0_4px_15px_0_#6436F14D] text-center">
+                                                Start Test
+                                        </a>
+                                    @endif
+                                    @elseif($course->ordinal == 4)
+                                        @if($course->is_completed)
+                                            <!-- Jika kursus kedua dapat dimulai -->
+                                            <a href="{{ route('dashboard.learning.finished.course', $course) }}" 
+                                            class="w-full h-[41px] p-[10px_20px] bg-[#6436F1] rounded-full font-bold text-sm text-white transition-all duration-300 hover:shadow-[0_4px_15px_0_#6436F14D] text-center">
+                                                Result
+                                            </a>
+                                        @else
+                                            <!-- Jika kursus kedua belum bisa dimulai -->
+                                            <a href="{{ route('dashboard.learning.course', ['course' => $course->course_id, 'question' => $course->nextQuestionId]) }}" 
+                                                class="w-full h-[41px] p-[10px_20px] bg-[#6436F1] rounded-full font-bold text-sm text-white transition-all duration-300 hover:shadow-[0_4px_15px_0_#6436F14D] text-center">
+                                                    Start Test
+                                            </a>
+                                        @endif
+                                @endif
                             @endif
                         </div>
                     </div>
