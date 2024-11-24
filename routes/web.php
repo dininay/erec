@@ -142,13 +142,7 @@ Route::middleware('auth')->group(function () {
             ->middleware('role:HR')->name('course.create.questionessay');
 
         Route::post('/course/question/saveessay/{course}', [QuestionEssayController::class, 'storeessay'])
-            ->middleware('role:HR')->name('course.create.question.storeessay');
-
-        Route::get('/course/question/createessay/{course}', [QuestionEssayController::class, 'createessay'])
-            ->middleware('role:HR')->name('course.create.questionessay');
-
-        Route::put('/course/question/saveessay/{course}', [QuestionEssayController::class, 'storeessay'])
-            ->middleware('role:HR')->name('course.create.question.storeessay');
+            ->middleware('role:HR')->name('course.create.question.storeessay'); 
 
         Route::resource('question', QuestionController::class)->middleware('role:HR');
         Route::resource('questionessay', QuestionEssayController::class)->middleware('role:HR');
@@ -189,6 +183,9 @@ Route::middleware('auth')->group(function () {
 
         Route::post('/learning/{course}/{question}', [PeopleAnswerController::class, 'store'])
             ->middleware('role:Crew')->name('learning.course.answer.store');
+
+        Route::post('/learning/{course}/{question}', [PeopleAnswerController::class, 'storeessay'])
+            ->middleware('role:Crew')->name('learning.course.answer.storeessay');
     });
 });
 

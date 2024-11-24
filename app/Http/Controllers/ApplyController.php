@@ -83,7 +83,6 @@ class ApplyController extends Controller
 
         // Kirim variabel $applyExists ke view
         if ($applyExists) {
-            // Jika sudah melamar, tampilkan SweetAlert di frontend
             return view('job.detail', compact('jobs', 'applyExists'));
         }
 

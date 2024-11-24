@@ -30,29 +30,26 @@
                 </div>
             </div>
         </div>
-        <!-- Ini adalah tempat untuk menampilkan countdown -->
         <div id="countdownSection" class="text-center mt-4">
             <p id="countdownDisplay" class="text-lg font-bold">00:00</p>
         </div>
-
         <form method="POST" action="{{ route ('dashboard.learning.course.answer.storeessay', ['course' => $course->course_id, 'question' => $question->question_id]) }}" class="learning flex flex-col gap-[50px] items-center mt-[50px] w-full pb-[30px]">
             @csrf
             <h1 class="w-[821px] font-extrabold text-[46px] leading-[69px] text-center">
                 {{ $question->question_name }}
             </h1>
             <div class="flex flex-col gap-[30px] max-w-[750px] w-full">
-                @foreach($question->answers as $answer)
-                <label for="{{ $answer->answer_id }}" class="group flex items-center justify-between rounded-full w-full border border-[#EEEEEE] p-[18px_20px] gap-[14px] transition-all duration-300 has-[:checked]:border-2 has-[:checked]:border-[#0A090B]">
+                <label for="a" class="group flex items-center justify-between rounded-full w-full border border-[#EEEEEE] p-[18px_20px] gap-[14px] transition-all duration-300 has-[:checked]:border-2 has-[:checked]:border-[#0A090B]">
                     <div class="flex items-center gap-[14px]">
                         <img src="{{ asset('images/icons/arrow-circle-right.svg') }}" alt="icon">
-                        <span class="font-semibold text-xl leading-[30px]">{{ $answer->answer_name }}</span>
+                        <span class="font-semibold text-xl leading-[30px]"></span>
                     </div>
                     <div class="hidden group-has-[:checked]:block">
                         <img src="{{ asset('images/icons/tick-circle.svg') }}" alt="icon">
                     </div>
-                    <input type="radio" name="answer" id="{{ $answer->answer_id }}" value="{{ $answer->answer_id }}" class="hidden">
+                    <!-- Input text biasa -->
+                    <input type="text" name="answer" id="a" class="w-full px-4 py-2 rounded-md focus:outline-none focus:border-[#6436F1]" placeholder="Your answer here...">
                 </label>
-                @endforeach
             </div>
             <button type="submit" href="learning-finished.html" class="w-fit p-[14px_40px] bg-[#6436F1] rounded-full font-bold text-sm text-white transition-all duration-300 hover:shadow-[0_4px_15px_0_#6436F14D] text-center align-middle">Save & Next Question</button>
         </form>
@@ -75,34 +72,35 @@
                 }
             });
         }
-    </script><script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Ambil waktu yang dikirim dari backend
-        var countdownTime = @json($timeLimit); // Waktu dalam detik (misalnya 300 detik)
-        
-        // Ambil elemen untuk menampilkan countdown
-        var countdownDisplay = document.getElementById('countdownDisplay');
-
-        // Fungsi untuk update hitung mundur setiap detik
-        var countdownInterval = setInterval(function() {
-            var minutes = Math.floor(countdownTime / 60);
-            var seconds = countdownTime % 60;
-
-            // Format waktu dengan 2 digit
-            countdownDisplay.textContent = 
-                (minutes < 10 ? '0' : '') + minutes + ':' + 
-                (seconds < 10 ? '0' : '') + seconds;
-
-            if (countdownTime <= 0) {
-                clearInterval(countdownInterval);
-                countdownDisplay.textContent = 'Time\'s up!';
-                // Di sini Anda bisa menambahkan logika untuk mengarahkan pengguna ke halaman lain setelah waktu habis
-            } else {
-                countdownTime--;
-            }
-        }, 1000); // Update setiap detik
-    });
-</script>
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Ambil waktu yang dikirim dari backend
+            var countdownTime = @json($timeLimit); // Waktu dalam detik (misalnya 300 detik)
+            
+            // Ambil elemen untuk menampilkan countdown
+            var countdownDisplay = document.getElementById('countdownDisplay');
+    
+            // Fungsi untuk update hitung mundur setiap detik
+            var countdownInterval = setInterval(function() {
+                var minutes = Math.floor(countdownTime / 60);
+                var seconds = countdownTime % 60;
+    
+                // Format waktu dengan 2 digit
+                countdownDisplay.textContent = 
+                    (minutes < 10 ? '0' : '') + minutes + ':' + 
+                    (seconds < 10 ? '0' : '') + seconds;
+    
+                if (countdownTime <= 0) {
+                    clearInterval(countdownInterval);
+                    countdownDisplay.textContent = 'Time\'s up!';
+                    // Di sini Anda bisa menambahkan logika untuk mengarahkan pengguna ke halaman lain setelah waktu habis
+                } else {
+                    countdownTime--;
+                }
+            }, 1000); // Update setiap detik
+        });
+    </script>
     
 </body>
 </html>

@@ -181,19 +181,38 @@ class StatusController extends Controller
 
             $user_id = $people_status_id->user_id;
             $apply_id = $people_status_id->apply_id;
-            
-            $people_id = $people_status_id->people_status_id;
-            DB::table('r_people')->insert([
-                'people_id' => $people_id,
-                'user_id' => $user_id,
-                'apply_id' => $apply_id,
-                'course_id' => 1,
-            ]);
+            // $people_id = $people_status_id->people_status_id;
 
             $reg_code = DB::table('r_apply')
             ->where('apply_id', $apply_id)
             ->value('reg_id');
 
+            $jobtype_id = DB::table('r_registjob')
+            ->where('reg_code', $reg_code)
+            ->value('type_id');
+
+            if (in_array($jobtype_id, [1, 2])) {
+                $courses = DB::table('r_course')
+                    ->where('course_type', $jobtype_id)
+                    ->get(['course_id']);
+
+                if ($courses->isEmpty()) {
+                    throw new \Exception("No courses found with course_type = $jobtype_id");
+                }
+                $last_people_id = DB::table('r_people')
+                ->max('people_id') ?? 0;
+                foreach ($courses as $course) {
+                    $last_people_id++; 
+                    DB::table('r_people')->insert([
+                        'people_id' => $last_people_id,
+                        'user_id' => $user_id,
+                        'apply_id' => $apply_id,
+                        'course_id' => $course->course_id,
+                    ]);
+                }
+            }
+
+            $people_id = $people_status_id->people_status_id;
             DB::table('r_test')->insert([
                 'test_id' => $people_id,
                 'reg_code' => $reg_code,

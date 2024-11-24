@@ -29,41 +29,98 @@ class LearningController extends Controller
         ->orderBy('r_course.course_id', 'DESC') 
         ->get();
     
+        // foreach ($my_course as $course) {
+        //     $totalQuestionCount = $course->questions()->count();
+    
+        //     // cek pertanyaan yang sudah dijawab
+        //     $answeredQuestionCount = PeopleAnswer::where('user_id', $user->id)
+        //     ->whereIn('question_id', function ($query) use ($course) {
+        //         $query->select('question_id')->from('r_question')
+        //             ->where('course_id', $course->course_id);
+        //     })
+        //     ->count();
+    
+        //         if ($answeredQuestionCount == 0) {
+        //             $firstUnansweredQuestion = Question::where('course_id', $course->course_id)
+        //                 ->orderBy('question_id', 'ASC')
+        //                 ->first();
+        //             $course->nextQuestionId = $firstUnansweredQuestion ? $firstUnansweredQuestion->course_id : null;
+        //         } else {
+        //             // Jika sudah ada yang dijawab, cari pertanyaan yang belum dijawab
+        //             if ($answeredQuestionCount < $totalQuestionCount) {
+        //                 $firstUnansweredQuestion = Question::where('course_id', $course->course_id)
+        //                     ->whereNotIn('question_id', function ($query) use ($user) {
+        //                         $query->select('question_id')->from('r_people_answers')
+        //                             ->where('user_id', $user->id);
+        //                     })->orderBy('question_id', 'ASC')->first();
+        //                 $course->nextQuestionId = $firstUnansweredQuestion ? $firstUnansweredQuestion->id : null;
+        //             } else {
+        //                 $course->nextQuestionId = null;
+        //             }
+        //         }
+        //     }
+
         foreach ($my_course as $course) {
+            // Total pertanyaan di kursus
             $totalQuestionCount = $course->questions()->count();
-    
-            // cek pertanyaan yang sudah dijawab
+        
+            // Cek pertanyaan yang sudah dijawab
             $answeredQuestionCount = PeopleAnswer::where('user_id', $user->id)
-            ->whereIn('question_id', function ($query) use ($course) {
-                $query->select('question_id')->from('r_question')
-                    ->where('course_id', $course->course_id);
-            })
-            ->count();
-    
-                if ($answeredQuestionCount == 0) {
+                ->whereIn('question_id', function ($query) use ($course) {
+                    $query->select('question_id')->from('r_question')
+                        ->where('course_id', $course->course_id);
+                })
+                ->count();
+        
+            // Tentukan apakah kursus sudah selesai
+            $course->is_completed = ($answeredQuestionCount == $totalQuestionCount);
+        
+            // Tentukan pertanyaan yang belum dijawab
+            if ($answeredQuestionCount == 0) {
+                $firstUnansweredQuestion = Question::where('course_id', $course->course_id)
+                    ->orderBy('question_id', 'ASC')
+                    ->first();
+                $course->nextQuestionId = $firstUnansweredQuestion ? $firstUnansweredQuestion->question_id : null;
+            } else {
+                // Jika sudah ada yang dijawab, cari pertanyaan yang belum dijawab
+                if ($answeredQuestionCount < $totalQuestionCount) {
                     $firstUnansweredQuestion = Question::where('course_id', $course->course_id)
+                        ->whereNotIn('question_id', function ($query) use ($user) {
+                            $query->select('question_id')->from('r_people_answers')
+                                ->where('user_id', $user->id);
+                        })
                         ->orderBy('question_id', 'ASC')
                         ->first();
-                    $course->nextQuestionId = $firstUnansweredQuestion ? $firstUnansweredQuestion->course_id : null;
+                    $course->nextQuestionId = $firstUnansweredQuestion ? $firstUnansweredQuestion->question_id : null;
                 } else {
-                    // Jika sudah ada yang dijawab, cari pertanyaan yang belum dijawab
-                    if ($answeredQuestionCount < $totalQuestionCount) {
-                        $firstUnansweredQuestion = Question::where('course_id', $course->course_id)
-                            ->whereNotIn('question_id', function ($query) use ($user) {
-                                $query->select('question_id')->from('r_people_answers')
-                                    ->where('user_id', $user->id);
-                            })->orderBy('question_id', 'ASC')->first();
-                        $course->nextQuestionId = $firstUnansweredQuestion ? $firstUnansweredQuestion->id : null;
-                    } else {
-                        $course->nextQuestionId = null;
-                    }
+                    $course->nextQuestionId = null;
                 }
             }
-    
+        
+            // Logika untuk kursus selanjutnya (berdasarkan ordinal)
+            $next_course = Courses::where('ordinal', $course->ordinal + 1)->first();
+        
+            if ($next_course) {
+                // Jika kursus pertama sudah selesai (nextQuestionId == null), maka kursus kedua bisa dimulai
+                if ($course->nextQuestionId == null) {
+                    // Kursus pertama selesai, set can_start untuk kursus kedua menjadi true
+                    $next_course->can_start = true;
+                } else {
+                    // Kursus pertama belum selesai, set can_start untuk kursus kedua menjadi false
+                    $next_course->can_start = false;
+                }
+            }
+        }
+
+        $courseTime = DB::table('r_course')
+        ->where('course_id', $course->course_id)
+        ->value('course_time');
+        
         return view('crew.course.learning', [
             'courses' => $courses,
             'my_course' => $my_course,
             'user' => $user,
+            'courseTime' => $courseTime,
         ]);
     }
     
@@ -98,13 +155,38 @@ class LearningController extends Controller
             abort(404);
         }
 
-        $currentQuestion = Question::where('course_id', $course->course_id)->where('question_id', $question)->firstOrFail();
+        $cat_id = DB::table('r_course')
+        ->where('course_id', $course->course_id)
+        ->value('cat_id');
         
-        return view('crew.course.learning_test', [
-            'course' => $course,
-            'question' => $currentQuestion,
-            'user' => $user,
-        ]);
+        $timeLimit = DB::table('r_course')
+        ->where('course_id', $course->course_id)
+        ->value('course_time');
+
+        if ($cat_id == 1) {
+            return view('crew.course.learning_test', [
+                'course' => $course,
+                'question' => $this->getCurrentQuestion($course, $question),
+                'user' => $user,
+                'timeLimit' => $timeLimit,
+            ]);
+        } elseif ($cat_id == 2) {
+            return view('crew.course.learning_testessay', [
+                'course' => $course,
+                'question' => $this->getCurrentQuestion($course, $question),
+                'user' => $user,
+                'timeLimit' => $timeLimit,
+            ]);
+        } else {
+            abort(404); 
+        }
+    }
+
+    private function getCurrentQuestion(Courses $course, $question)
+    {
+        return Question::where('course_id', $course->course_id)
+            ->where('question_id', $question)
+            ->firstOrFail(); // Mengambil pertanyaan atau 404 jika tidak ditemukan
     }
 
     public function learning_rapport(Courses $course)

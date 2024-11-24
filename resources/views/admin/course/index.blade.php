@@ -84,8 +84,17 @@
                             <p class="font-semibold">{{ \Carbon\Carbon::parse($course->created_at)->format('d F Y') }}</p>
                         </div>
                         <div class="flex shrink-0 w-[170px] items-center justify-center">
-                            <p class="p-[8px_16px] rounded-full bg-[#FFF2E6] font-bold text-sm text-[#F6770B]">{{ $course->category->cat_name }}</p>
+                            @if ($course->category->cat_id == 1)
+                                <p class="p-[8px_16px] rounded-full bg-[#FFF2E6] font-bold text-sm text-[#F6770B]">
+                                    {{ $course->category->cat_name }}
+                                </p>
+                            @elseif ($course->category->cat_id == 2)
+                                <p class="p-[8px_16px] rounded-full bg-[#EAE8FE] font-bold text-sm text-[#6436F1]">
+                                    {{ $course->category->cat_name }}
+                                </p>
+                            @endif
                         </div>
+                        
                         <div class="flex shrink-0 w-[120px] items-center">
                             <div class="relative h-[41px]">
                                 <div class="menu-dropdown w-[120px] max-h-[41px] overflow-hidden absolute top-0 p-[10px_16px] bg-white flex flex-col gap-3 border border-[#EEEEEE] transition-all duration-300 hover:shadow-[0_10px_16px_0_#0A090B0D] rounded-[18px]">

@@ -108,13 +108,13 @@
                                     <a href="{{ route('dashboard.approval.administration.edit', $status->people_status_id) }}" class="flex items-center justify-between font-bold text-sm w-full">
                                         Edit
                                     </a>
-                                    <form method="POST" action="{{ route('dashboard.approval.administration.destroy', $status) }}" class="">
+                                    {{-- <form method="POST" action="{{ route('dashboard.approval.administration.destroy', $status) }}" class="">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="flex items-center justify-between font-bold text-sm w-full text-[#FD445E]">
                                             Delete
                                         </button>
-                                    </form>
+                                    </form> --}}
                                 </div>
                             </div>
                         </div>
