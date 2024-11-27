@@ -23,6 +23,7 @@ use App\Http\Controllers\WelcomeController;
 use App\Http\Controllers\WorkLocController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\DataExportController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -64,6 +65,8 @@ Route::middleware('auth')->group(function () {
 
     Route::prefix('dashboard')->name('dashboard.')->group(function () {
 
+        Route::get('/export-excel', [DataExportController::class, 'downloadExcel'])->name('data.download.excel');
+
         // Master Data
         Route::resource('category', CategoryController::class)->middleware('role:HR');
         Route::resource('jobtype', JobTypeController::class)->middleware('role:HR');
@@ -73,7 +76,10 @@ Route::middleware('auth')->group(function () {
         Route::resource('division', DivisionController::class)->middleware('role:HR');
         Route::resource('dept', DeptController::class)->middleware('role:HR');
         Route::resource('job', RegistJobController::class)->middleware('role:HR');
-        Route::resource('apply', ApplyController::class)->middleware('role:HR');
+        // Route::resource('apply', ApplyController::class)->middleware('role:HR');
+        Route::get('apply', [ApplyController::class, 'index'])->name('apply.index')->middleware('role:HR');
+        Route::get('apply/{apply}', [ApplyController::class, 'show'])->name('apply.show')->middleware('role:HR');
+
         Route::resource('user', UserController::class)->middleware('role:HR');
         Route::get('user/{id}/reset', [UserController::class, 'reset'])->name('user.reset');
         Route::put('user/{id}', [UserController::class, 'ubah'])->name('user.ubah');
@@ -173,7 +179,7 @@ Route::middleware('auth')->group(function () {
             ->middleware('role:Crew')->name('learning.finished.course');
 
         Route::get('/learning/rapport/{course}', [LearningController::class, 'learning_rapport'])
-            ->middleware('role:Crew')->name('learning.rapport.course');
+            ->middleware('role:HR')->name('learning.rapport.course');
 
         Route::get('/learning', [LearningController::class, 'index'])
             ->middleware('role:Crew')->name('learning.index');

@@ -84,4 +84,9 @@ class RegistJob extends Model
     public function joblevel(){
         return $this->belongsTo(JobLevel::class, 'level_id');
     }
+
+    public function apply()
+    {
+        return $this->hasMany(Apply::class, 'reg_code');
+    }
 }

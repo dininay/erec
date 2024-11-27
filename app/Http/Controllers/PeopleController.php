@@ -23,6 +23,7 @@ class PeopleController extends Controller
         $user = Auth::user();
         $peoples = People::orderBy('people_id', 'DESC')->get();
         $courses = Courses::all();
+        
         return view('admin.people.index', [
             'peoples'=> $peoples,
             'user'=> $user,
@@ -91,7 +92,17 @@ class PeopleController extends Controller
      */
     public function show(People $people)
     {
-        //
+        $peoples = People::find($apply->id);
+        
+        $user = Auth::user();
+
+        // Return data ke view
+        return view('admin.apply.manage', [
+            'peoples' => $peoples,
+            'people' => $apply,
+            'user' => $user,
+            // 'people' => $people,
+        ]);
     }
 
     /**

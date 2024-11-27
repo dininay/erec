@@ -41,7 +41,7 @@ class Apply extends Model
     ];
 
     public function registjob(){
-        return $this->belongsTo(RegistJob::class, 'reg_id', 'reg_id');
+        return $this->belongsTo(RegistJob::class, 'reg_id', 'reg_code');
     }
 
     public function applydet(){
@@ -52,4 +52,15 @@ class Apply extends Model
     {
         return $this->belongsTo(User::class, 'email', 'email');
     }
+
+    public function details()
+    {
+        return $this->hasOne(ApplyDetail::class, 'apply_id', 'apply_id');
+    }
+
+    public function users()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'user_id');
+    }
+
 }

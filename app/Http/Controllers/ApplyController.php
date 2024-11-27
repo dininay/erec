@@ -51,7 +51,7 @@ class ApplyController extends Controller
             $jobDetails = null;
         }
         return view('admin.apply.index', [
-            'statusapplys'=> $statusapplys,
+            'statusapplys'=> $statusapplys,         
             'user'=> $user,
         ]);
     }
@@ -225,7 +225,17 @@ class ApplyController extends Controller
      */
     public function show(Apply $apply)
     {
-        //
+        $statusapplys = Apply::with('details')->find($apply->id);
+        
+        $user = Auth::user();
+
+        // Return data ke view
+        return view('admin.apply.manage', [
+            'statusapplys' => $statusapplys,
+            'statusapply' => $apply,
+            'user' => $user,
+            // 'people' => $people,
+        ]);
     }
 
     /**

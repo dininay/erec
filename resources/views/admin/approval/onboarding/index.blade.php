@@ -55,19 +55,22 @@
             <div class="course-list-container flex flex-col px-5 mt-[30px] gap-[30px]">
                 <div class="course-list-header flex flex-nowrap justify-between pb-4 pr-10 border-b border-[#EEEEEE]">
                     <div class="flex shrink-0 w-[150px]">
-                        <p class="text-[#7F8190]">User</p>
+                        <p class="text-[#7F8190]">Nama Applicant</p>
                     </div>
                     <div class="flex shrink-0 w-[150px]">
                         <p class="text-[#7F8190]">ID Apply</p>
                     </div>
                     <div class="flex shrink-0 w-[150px]">
-                        <p class="text-[#7F8190]">ID Test</p>
+                        <p class="text-[#7F8190]">Job Title</p>
                     </div>
                     <div class="flex shrink-0 w-[150px]">
                         <p class="text-[#7F8190]">Status Onboarding</p>
                     </div>
+                    <div class="flex shrink-0 w-[150px]">
+                        <p class="text-[#7F8190]">Join Date</p>
+                    </div>
                     <div class="flex justify-center shrink-0 w-[150px]">
-                        <p class="text-[#7F8190]">Date Created</p>
+                        <p class="text-[#7F8190]">Onboarding Date</p>
                     </div>
                     <div class="flex justify-center shrink-0 w-[120px]">
                         <p class="text-[#7F8190]">Action</p>
@@ -76,15 +79,15 @@
                 @forelse($statuss as $status)
                     <div class="list-items flex flex-nowrap justify-between pr-10">
                         <div class="flex shrink-0 w-[150px] items-center justify-center">
-                            <p class="font-semibold">{{ \Carbon\Carbon::parse($status->user_id)->format('d F Y') }}</p>
+                            <p class="font-semibold">{{ $status->apply->user->name }}</p>
                         </div>
                         <div class="flex shrink-0 w-[150px] items-center justify-center">
-                            <p class="font-semibold">{{ \Carbon\Carbon::parse($status->apply_id)->format('d F Y') }}</p>
+                            <p class="font-semibold">{{ $status->apply_id }}</p>
                         </div>
                         <div class="flex shrink-0 w-[150px] items-center justify-center">
-                            <p class="font-semibold">{{ \Carbon\Carbon::parse($status->test_id)->format('d F Y') }}</p>
+                            <p class="font-semibold">{{ $status->apply->registjob->job_title }}</p>
                         </div>
-                        <div class="flex shrink-0 w-[300px]">
+                        <div class="flex shrink-0 w-[150px]">
                             <div class="flex items-center gap-4">
                                 <div class="flex flex-col gap-[2px]">
                                     <p class="font-bold text-lg">{{ $status->status_onboarding }}</p>
@@ -93,7 +96,10 @@
                             </div>
                         </div>
                         <div class="flex shrink-0 w-[150px] items-center justify-center">
-                            <p class="font-semibold">{{ \Carbon\Carbon::parse($status->created_at)->format('d F Y') }}</p>
+                            <p class="font-semibold">{{ \Carbon\Carbon::parse($status->join_date)->format('d F Y') }}</p>
+                        </div>
+                        <div class="flex shrink-0 w-[150px] items-center justify-center">
+                            <p class="font-semibold">{{ \Carbon\Carbon::parse($status->onboarding_date)->format('d F Y') }}</p>
                         </div>
                         <div class="flex shrink-0 w-[120px] items-center">
                             <div class="relative h-[41px]">
@@ -108,13 +114,6 @@
                                     <a href="{{ route('dashboard.approval.onboarding.edit', $status->people_status_id) }}" class="flex items-center justify-between font-bold text-sm w-full">
                                         Edit
                                     </a>
-                                    <form method="POST" action="{{ route('dashboard.approval.onboarding.destroy', $status) }}" class="">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="flex items-center justify-between font-bold text-sm w-full text-[#FD445E]">
-                                            Delete
-                                        </button>
-                                    </form>
                                 </div>
                             </div>
                         </div>

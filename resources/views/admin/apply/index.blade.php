@@ -49,6 +49,12 @@
                         <p class="font-extrabold text-[30px] leading-[45px]">Information Status Applicant</p>
                         <p class="text-[#7F8190]">Provide high quality for best students</p>
                     </div>
+                    <div class="relative">
+                        <a href="{{ route('dashboard.data.download.excel') }}" class="btn btn-primary">
+                            <p class="font-semibold text-sm">Unduh Data (Excel)</p>
+                        </a>
+                    </div>
+                    
                     {{-- <a href="{{ route('dashboard.joblevel.create') }}" class="h-[52px] p-[14px_20px] bg-[#6436F1] rounded-full font-bold text-white transition-all duration-300 hover:shadow-[0_4px_15px_0_#6436F14D]">Add New Status</a> --}}
                 </div>
             </div>
@@ -125,12 +131,12 @@
                                         menu
                                         <img src="{{asset('images/icons/arrow-down.svg')}}" alt="icon">
                                     </button>
-                                    <a href="{{ route('dashboard.statusapply.show', $status) }}" class="flex items-center justify-between font-bold text-sm w-full">
+                                    <a href="{{ route('dashboard.apply.show', ['apply' => $status->apply_id]) }}" class="flex items-center justify-between font-bold text-sm w-full">
                                         Detail
                                     </a>
-                                    <a href="{{ route('dashboard.statusapply.edit', $status) }}" class="flex items-center justify-between font-bold text-sm w-full">
+                                    {{-- <a href="{{ route('dashboard.statusapply.edit', $status) }}" class="flex items-center justify-between font-bold text-sm w-full">
                                         Update
-                                    </a>
+                                    </a> --}}
                                 </div>
                             </div>
                         </div>

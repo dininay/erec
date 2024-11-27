@@ -49,7 +49,7 @@
                         <p class="font-extrabold text-[30px] leading-[45px]">Manage People</p>
                         <p class="text-[#7F8190]">Provide high quality for best students</p>
                     </div>
-                    <a href="{{ route('dashboard.people.create') }}" class="h-[52px] p-[14px_20px] bg-[#6436F1] rounded-full font-bold text-white transition-all duration-300 hover:shadow-[0_4px_15px_0_#6436F14D]">Add New People</a>
+                    {{-- <a href="{{ route('dashboard.people.create') }}" class="h-[52px] p-[14px_20px] bg-[#6436F1] rounded-full font-bold text-white transition-all duration-300 hover:shadow-[0_4px_15px_0_#6436F14D]">Add New People</a> --}}
                 </div>
             </div>
             <div class="course-list-container flex flex-col px-5 mt-[30px] gap-[30px]">
@@ -58,10 +58,10 @@
                         <p class="text-[#7F8190]">People</p>
                     </div>
                     <div class="flex justify-center shrink-0 w-[150px]">
-                        <p class="text-[#7F8190]">Date Created</p>
+                        <p class="text-[#7F8190]">Done Date</p>
                     </div>
-                    <div class="flex justify-center shrink-0 w-[170px]">
-                        <p class="text-[#7F8190]">Category</p>
+                    <div class="flex justify-center shrink-0 w-[150px]">
+                        <p class="text-[#7F8190]">Course Name</p>
                     </div>
                     <div class="flex justify-center shrink-0 w-[120px]">
                         <p class="text-[#7F8190]">Action</p>
@@ -72,19 +72,19 @@
                         <div class="flex shrink-0 w-[300px]">
                             <div class="flex items-center gap-4">
                                 <div class="w-16 h-16 flex shrink-0 overflow-hidden rounded-full">
-                                    <img src="{{ Storage::url($people->cover) }}" class="object-cover" alt="thumbnail">
+                                    <img src="{{ Storage::url($people->course->cover) }}" class="object-cover" alt="thumbnail">
                                 </div>
                                 <div class="flex flex-col gap-[2px]">
-                                    <p class="font-bold text-lg">{{ $people->people_name }}</p>
-                                    <p class="text-[#7F8190]">Beginners</p>
+                                    <p class="font-bold text-lg">{{ $people->apply->name }}</p>
+                                    <p class="text-[#7F8190]">{{ $people->apply->registjob->job_title }}</p>
                                 </div>
                             </div>
                         </div>
                         <div class="flex shrink-0 w-[150px] items-center justify-center">
                             <p class="font-semibold">{{ \Carbon\Carbon::parse($people->created_at)->format('d F Y') }}</p>
                         </div>
-                        <div class="flex shrink-0 w-[170px] items-center justify-center">
-                            <p class="p-[8px_16px] rounded-full bg-[#FFF2E6] font-bold text-sm text-[#F6770B]">{{ $people->category->cat_name }}</p>
+                        <div class="flex shrink-0 w-[150px] items-center justify-center">
+                            <p class="p-[8px_16px] rounded-full bg-[#FFF2E6] font-bold text-sm text-[#F6770B]">{{ $people->course->course_name }}</p>
                         </div>
                         <div class="flex shrink-0 w-[120px] items-center">
                             <div class="relative h-[41px]">
@@ -93,22 +93,9 @@
                                         menu
                                         <img src="{{asset('images/icons/arrow-down.svg')}}" alt="icon">
                                     </button>
-                                    <a href="{{ route('dashboard.people.show', $people) }}" class="flex items-center justify-between font-bold text-sm w-full">
+                                    <a href="{{ route('dashboard.learning.rapport.course', $people->course->course_id) }}" class="flex items-center justify-between font-bold text-sm w-full">
                                         Manage
                                     </a>
-                                    <a href="people-students.html" class="flex items-center justify-between font-bold text-sm w-full">
-                                        Students
-                                    </a>
-                                    <a href="{{ route('dashboard.people.edit', $people) }}" class="flex items-center justify-between font-bold text-sm w-full">
-                                        Edit people
-                                    </a>
-                                    <form method="POST" action="{{ route('dashboard.people.destroy', $people) }}" class="">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="flex items-center justify-between font-bold text-sm w-full text-[#FD445E]">
-                                            Delete
-                                        </button>
-                                    </form>
                                 </div>
                             </div>
                         </div>

@@ -58,4 +58,10 @@ class Status extends Model
     public function people(){
         return $this->belongsToMany(User::class, 'r_people', 'course_id', 'user_id');
     }
+
+    public function apply()
+    {
+        return $this->belongsTo(Apply::class, 'apply_id', 'apply_id');
+    }
+
 }

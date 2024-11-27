@@ -27,4 +27,10 @@ class ApplyDetail extends Model
         'photo',
         'info_vacancy'
     ];
+
+    public function apply()
+    {
+        return $this->belongsTo(Apply::class, 'apply_id', 'apply_id');
+    }
+
 }

@@ -168,7 +168,7 @@
                         <img src="{{asset('images/icons/profile-2user.svg')}}" alt="icon">
                     </div>
                     <p class="font-semibold transition-all duration-300 @if(request()->routeIs('dashboard.people.index', 'dashboard.people.create', 'dashboard.people.edit', 'dashboard.people.manage')) text-white @else hover:text-white @endif">
-                        People
+                        Result Test
                     </p>
                 </a>
             </li>

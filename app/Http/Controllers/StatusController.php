@@ -24,10 +24,54 @@ class StatusController extends Controller
     public function indexinterview()
     {
         $user = Auth::user();
-        $statuss = Status::whereIn('status_interview', ['In Process', 'Approve'])->orderBy('people_status_id', 'DESC')->get();
+        $statuss = Status::whereIn('status_admin', ['Approve'])->orderBy('people_status_id', 'DESC')->get();
+
+        $completedUsers = [];
+
+        foreach ($statuss as $status) {
+            $userId = $status->user_id;
+    
+            // Ambil semua course_id dari r_people berdasarkan user_id
+            $courseIds = DB::table('r_people')
+                ->where('user_id', $userId)
+                ->pluck('course_id');
+    
+            // Asumsikan user telah menyelesaikan semua course
+            $allCoursesCompleted = true;
+    
+            foreach ($courseIds as $courseId) {
+                // Ambil semua question_id berdasarkan course_id dari tabel r_question
+                $questionIds = DB::table('r_question')
+                    ->where('course_id', $courseId)
+                    ->pluck('question_id');
+    
+                // Ambil semua question_id yang dijawab user pada course ini
+                $answeredQuestionIds = DB::table('r_people_answers')
+                    ->where('user_id', $userId)
+                    ->pluck('question_id');
+    
+                // Cek apakah semua question_id dalam course sudah dijawab
+                if ($questionIds->diff($answeredQuestionIds)->isNotEmpty()) {
+                    $allCoursesCompleted = false;
+                    break;
+                }
+            }
+    
+            // Jika semua course selesai, tambahkan user_id ke daftar completedUsers
+            if ($allCoursesCompleted) {
+                $completedUsers[] = $userId;
+            }
+        }
+
+        // Ambil data user yang telah menyelesaikan semua course
+        $users = DB::table('r_people_status')
+            ->whereIn('user_id', $completedUsers)
+            ->get();
+
         return view('admin.approval.interview.index', [
             'statuss'=> $statuss,
             'user'=> $user,
+            'users'=> $users,
         ]);
     }
     
@@ -226,6 +270,118 @@ class StatusController extends Controller
             DB::commit();
 
             return redirect()->route('dashboard.approval.administration.index');
+        }
+        
+        catch (\Exception $e){
+            DB::rollBack();
+            return redirect()->back()->withErrors(['system_error' => 'System Error !'. $e->getMessage()]);
+        }
+    }
+
+    public function updateinterview(Request $request, Status $people_status_id)
+    {
+        //
+        $validated = $request->validate([
+            'status_interview' => 'required|string|max:255',
+        ]);
+
+        DB::beginTransaction();
+
+        try{
+            $validated['reg_name'] = Str::slug($request->status_interview);
+            $people_status_id->update($validated);
+            $people_status_id->update([
+                'interview_date' => Carbon::now()->toDateString(), 
+                'status_docclear' => 'In Process',
+            ]);
+
+            DB::commit();
+
+            return redirect()->route('dashboard.approval.interview.index');
+        }
+        
+        catch (\Exception $e){
+            DB::rollBack();
+            return redirect()->back()->withErrors(['system_error' => 'System Error !'. $e->getMessage()]);
+        }
+    }
+    
+    public function updatedocclear(Request $request, Status $people_status_id)
+    {
+        //
+        $validated = $request->validate([
+            'status_docclear' => 'required|string|max:255',
+        ]);
+
+        DB::beginTransaction();
+
+        try{
+            $validated['reg_name'] = Str::slug($request->status_docclear);
+            $people_status_id->update($validated);
+            $people_status_id->update([
+                'docclear_date' => Carbon::now()->toDateString(), 
+                'status_oje' => 'In Process',
+            ]);
+
+            DB::commit();
+
+            return redirect()->route('dashboard.approval.docclear.index');
+        }
+        
+        catch (\Exception $e){
+            DB::rollBack();
+            return redirect()->back()->withErrors(['system_error' => 'System Error !'. $e->getMessage()]);
+        }
+    }
+    
+    public function updateoje(Request $request, Status $people_status_id)
+    {
+        //
+        $validated = $request->validate([
+            'status_oje' => 'required|string|max:255',
+        ]);
+
+        DB::beginTransaction();
+
+        try{
+            $validated['reg_name'] = Str::slug($request->status_oje);
+            $people_status_id->update($validated);
+            $people_status_id->update([
+                'oje_date' => Carbon::now()->toDateString(), 
+                'status_onboarding' => 'In Process',
+            ]);
+
+            DB::commit();
+
+            return redirect()->route('dashboard.approval.oje.index');
+        }
+        
+        catch (\Exception $e){
+            DB::rollBack();
+            return redirect()->back()->withErrors(['system_error' => 'System Error !'. $e->getMessage()]);
+        }
+    }
+    
+    public function updateonboarding(Request $request, Status $people_status_id)
+    {
+        //
+        $validated = $request->validate([
+            'status_onboarding' => 'required|string|max:255',
+            'join_date' => 'required|string|max:255',
+        ]);
+
+        DB::beginTransaction();
+
+        try{
+            $people_status_id->update([
+                'onboarding_date' => Carbon::now()->toDateString(), 
+                'join_date' => $request->join_date,
+                'status_onboarding' => $request->status_onboarding,
+            ]);
+
+            DB::commit();
+
+            return redirect()->route('dashboard.approval.interview.index');
         }
         
         catch (\Exception $e){

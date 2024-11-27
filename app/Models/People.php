@@ -48,4 +48,16 @@ class People extends Model
     public function category(){
         return $this->belongsTo(Category::class, 'cat_id');
     }
+
+    public function course(){
+        return $this->belongsTo(Courses::class, 'course_id');
+    }
+
+    public function apply(){
+        return $this->belongsTo(Apply::class, 'apply_id');
+    }
+
+    public function registjob(){
+        return $this->belongsToThrough(RegistJob::class, Apply::class, 'apply_id', 'reg_code', 'reg_id');
+    }
 }

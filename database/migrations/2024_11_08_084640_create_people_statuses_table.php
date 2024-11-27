@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('status_admin')->nullable();
             $table->datetime('admin_date')->nullable();
             $table->string('status_interview')->nullable();
-            $table->datetime('admin_interview')->nullable();
+            $table->datetime('interview_date')->nullable();
             $table->string('status_docclear')->nullable();
             $table->datetime('docclear_date')->nullable();
             $table->string('status_oje')->nullable();

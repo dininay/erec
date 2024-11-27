@@ -28,37 +28,6 @@ class LearningController extends Controller
         ->select('r_course.*') 
         ->orderBy('r_course.course_id', 'DESC') 
         ->get();
-    
-        // foreach ($my_course as $course) {
-        //     $totalQuestionCount = $course->questions()->count();
-    
-        //     // cek pertanyaan yang sudah dijawab
-        //     $answeredQuestionCount = PeopleAnswer::where('user_id', $user->id)
-        //     ->whereIn('question_id', function ($query) use ($course) {
-        //         $query->select('question_id')->from('r_question')
-        //             ->where('course_id', $course->course_id);
-        //     })
-        //     ->count();
-    
-        //         if ($answeredQuestionCount == 0) {
-        //             $firstUnansweredQuestion = Question::where('course_id', $course->course_id)
-        //                 ->orderBy('question_id', 'ASC')
-        //                 ->first();
-        //             $course->nextQuestionId = $firstUnansweredQuestion ? $firstUnansweredQuestion->course_id : null;
-        //         } else {
-        //             // Jika sudah ada yang dijawab, cari pertanyaan yang belum dijawab
-        //             if ($answeredQuestionCount < $totalQuestionCount) {
-        //                 $firstUnansweredQuestion = Question::where('course_id', $course->course_id)
-        //                     ->whereNotIn('question_id', function ($query) use ($user) {
-        //                         $query->select('question_id')->from('r_people_answers')
-        //                             ->where('user_id', $user->id);
-        //                     })->orderBy('question_id', 'ASC')->first();
-        //                 $course->nextQuestionId = $firstUnansweredQuestion ? $firstUnansweredQuestion->id : null;
-        //             } else {
-        //                 $course->nextQuestionId = null;
-        //             }
-        //         }
-        //     }
 
         foreach ($my_course as $course) {
             // Total pertanyaan di kursus
@@ -193,10 +162,13 @@ class LearningController extends Controller
     {
         $user = Auth::user();
 
-        $peopleAnswers = PeopleAnswer::with('question')
-        ->whereHas('question', function ($query) use ($course){
-            $query->where('course_id', $course->course_id);
-        })->where('user_id', $user->id)->get();
+        $peopleAnswers = PeopleAnswer::with('questions')
+        ->whereHas('questions', function ($query) use ($course) {
+            $query->where('course_id', $course->course_id)
+                ->whereNull('r_question.deleted_at');
+        })
+        ->whereNull('r_people_answers.deleted_at')
+        ->get();
 
         $totalQuestions = Question::where('course_id', $course->course_id)->count();
         
