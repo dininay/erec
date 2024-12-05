@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('div_id')->nullable();
             $table->string('dept_id')->nullable();
             $table->string('workloc_id')->nullable();
+            $table->string('specwork_id')->nullable();
             $table->string('job_respons')->nullable();
             $table->string('type_id')->nullable();
             $table->string('level_id')->nullable();

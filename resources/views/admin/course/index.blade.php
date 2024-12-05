@@ -49,7 +49,7 @@
                         <p class="font-extrabold text-[30px] leading-[45px]">Manage Course</p>
                         <p class="text-[#7F8190]">Provide high quality for best students</p>
                     </div>
-                    <a href="{{ route('dashboard.course.create') }}" class="h-[52px] p-[14px_20px] bg-[#6436F1] rounded-full font-bold text-white transition-all duration-300 hover:shadow-[0_4px_15px_0_#6436F14D]">Add New Course</a>
+                    <a href="{{ route('dashboard.course.create') }}" class="h-[52px] p-[14px_20px] bg-[#6436F1] rounded-full font-bold text-white transition-all duration-300 hover:shadow-[0_4px_15px_0_#6436F14D]">Add New Course</a>                    
                 </div>
             </div>
             <div class="course-list-container flex flex-col px-5 mt-[30px] gap-[30px]">
@@ -102,12 +102,20 @@
                                         menu
                                         <img src="{{asset('images/icons/arrow-down.svg')}}" alt="icon">
                                     </button>
+                                    <button type="button" id="addFileButton" class="flex items-center justify-between font-bold text-sm w-full text-[#0B84A5]">
+                                        Add File
+                                    </button>
+                                    <form id="uploadExcelForm" method="POST" action="{{ route('dashboard.upload.excel') }}" enctype="multipart/form-data" class="">
+                                        @csrf
+                                        <input type="file" id="fileInput" name="file" accept=".xlsx, .xls" class="hidden">
+                                        <button type="submit" class="flex items-center justify-between font-bold text-sm w-full text-[#0B84A5]">
+                                            Upload
+                                        </button>
+                                    </form>
+                                                                   
                                     <a href="{{ route('dashboard.course.show', $course) }}" class="flex items-center justify-between font-bold text-sm w-full">
                                         Manage
                                     </a>
-                                    {{-- <a href="course-students.html" class="flex items-center justify-between font-bold text-sm w-full">
-                                        Students
-                                    </a> --}}
                                     <a href="{{ route('dashboard.course.edit', $course) }}" class="flex items-center justify-between font-bold text-sm w-full">
                                         Edit Course
                                     </a>
@@ -118,6 +126,26 @@
                                             Delete
                                         </button>
                                     </form>
+
+                                    {{-- <form action="{{ route('dashboard.upload.excel') }}" method="POST" enctype="multipart/form-data" class="mt-4 space-y-4">
+                                        @csrf
+                                        <div>
+                                            <label for="file" class="block text-sm font-medium text-gray-700 mb-1"></label>
+                                            <input
+                                                type="file"
+                                                name="file"
+                                                accept=".xls,.xlsx"
+                                                required
+                                                class="mt-1 block w-full text-sm text-gray-800 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                                        </div>
+                                        <div>
+                                            <button
+                                                type="submit"
+                                                class="w-full bg-blue-1000 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300 focus:ring-opacity-50">
+                                                Upload
+                                            </button>
+                                        </div>
+                                    </form>          --}}
                                 </div>
                             </div>
                         </div>
@@ -158,6 +186,32 @@
                 });
             }
         });
+    </script>
+    <script>
+        document.getElementById('addFileButton').addEventListener('click', function () {
+            // Klik otomatis pada input file ketika tombol ditekan
+            document.getElementById('fileInput').click();
+        });
+
+        // Tambahkan event listener untuk memproses file yang dipilih
+        document.getElementById('fileInput').addEventListener('change', function () {
+            const form = document.getElementById('uploadExcelForm');
+            const file = this.files[0];
+
+            if (file) {
+                // Validasi tipe file
+                const allowedExtensions = ['xlsx', 'xls'];
+                const fileExtension = file.name.split('.').pop().toLowerCase();
+                if (!allowedExtensions.includes(fileExtension)) {
+                    alert('Hanya file Excel (.xlsx, .xls) yang diizinkan!');
+                    return;
+                }
+
+                // Submit form secara otomatis
+                form.submit();
+            }
+        });
+
     </script>
 </body>
 </html>

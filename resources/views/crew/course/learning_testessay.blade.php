@@ -30,8 +30,8 @@
                 </div>
             </div>
         </div>
-        <div id="countdownSection" class="text-center mt-4">
-            <p id="countdownDisplay" class="text-lg font-bold">00:00</p>
+        <div id="countdownSection" class="text-center mt-10">
+            <p id="countdownDisplay" class="text-lg font-bold"></p>
         </div>
         <form method="POST" action="{{ route ('dashboard.learning.course.answer.storeessay', ['course' => $course->course_id, 'question' => $question->question_id]) }}" class="learning flex flex-col gap-[50px] items-center mt-[50px] w-full pb-[30px]">
             @csrf
@@ -48,10 +48,54 @@
                         <img src="{{ asset('images/icons/tick-circle.svg') }}" alt="icon">
                     </div>
                     <!-- Input text biasa -->
-                    <input type="text" name="answer" id="a" class="w-full px-4 py-2 rounded-md focus:outline-none focus:border-[#6436F1]" placeholder="Your answer here...">
+                    <input type="text" name="answer" id="a" class="w-full px-4 py-2 rounded-md focus:outline-none focus:border-[#6436F1]" placeholder="Your answer here..." value="{{ old('answer', $existingAnswer ? $existingAnswer->answer : '') }}">
                 </label>
             </div>
-            <button type="submit" href="learning-finished.html" class="w-fit p-[14px_40px] bg-[#6436F1] rounded-full font-bold text-sm text-white transition-all duration-300 hover:shadow-[0_4px_15px_0_#6436F14D] text-center align-middle">Save & Next Question</button>
+            {{-- <button type="submit" href="learning-finished.html" class="w-fit p-[14px_40px] bg-[#6436F1] rounded-full font-bold text-sm text-white transition-all duration-300 hover:shadow-[0_4px_15px_0_#6436F14D] text-center align-middle">Save & Next Question</button> --}}
+            
+            <div class="flex gap-4">
+                <a href="{{ route('dashboard.learning.course', ['course' => $course->course_id, 'question' => $prevQuestion->question_id ?? $question->question_id]) }}" class="w-fit p-[14px_40px] bg-[#6436F1] rounded-full font-bold text-sm text-white transition-all duration-300 hover:shadow-[0_4px_15px_0_#6436F14D] text-center align-middle">Previous</a>
+                
+                <button type="submit" class="w-fit p-[14px_40px] bg-[#6436F1] rounded-full font-bold text-sm text-white transition-all duration-300 hover:shadow-[0_4px_15px_0_#6436F14D] text-center align-middle">Save & Next Question</button>
+            </div>
+            @if (session('lastQuestion'))
+                <!-- SweetAlert will trigger when it's the last question -->
+                <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+                <script>
+                    Swal.fire({
+                        title: 'Are you sure you want to submit?',
+                        // text: "Once submitted, you won't be able to change your answers.",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonText: 'Yes, submit!',
+                        cancelButtonText: 'No, keep editing!',
+                        customClass: {
+                            confirmButton: 'btn-yes',
+                            cancelButton: 'btn-no'
+                        },
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.href = "{{ route('dashboard.learning.index') }}";
+                        }
+                    });
+                </script>
+                <style>
+                    .swal2-confirm.btn-yes {
+                        background-color: #0056b3; 
+                        border-color: #0056b3;
+                    }
+            
+                    .swal2-cancel.btn-no {
+                        background-color: #ffc107; 
+                        border-color: #ffc107;
+                    }
+            
+                    .swal2-confirm.btn-yes, .swal2-cancel.btn-no {
+                        color: #fff;
+                        font-weight: bold;
+                    }
+                </style>
+            @endif
         </form>
     </section>
 
@@ -74,32 +118,43 @@
         }
     </script>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Ambil waktu yang dikirim dari backend
-            var countdownTime = @json($timeLimit); // Waktu dalam detik (misalnya 300 detik)
-            
-            // Ambil elemen untuk menampilkan countdown
-            var countdownDisplay = document.getElementById('countdownDisplay');
+        // Ambil waktu batas dari server
+        const countdownDisplay = document.getElementById("countdownDisplay");
+        const timeLimit = "{{ $timeLimit }}"; // Format HH:MM:SS
     
-            // Fungsi untuk update hitung mundur setiap detik
-            var countdownInterval = setInterval(function() {
-                var minutes = Math.floor(countdownTime / 60);
-                var seconds = countdownTime % 60;
+        // Konversi HH:MM:SS ke detik
+        function timeToSeconds(time) {
+            const [hours, minutes, seconds] = time.split(":").map(Number);
+            return hours * 3600 + minutes * 60 + seconds;
+        }
     
-                // Format waktu dengan 2 digit
-                countdownDisplay.textContent = 
-                    (minutes < 10 ? '0' : '') + minutes + ':' + 
-                    (seconds < 10 ? '0' : '') + seconds;
+        // Hitung mundur
+        // let remainingTime = timeToSeconds(timeLimit);
+        let remainingTime = localStorage.getItem('remainingTime') ? parseInt(localStorage.getItem('remainingTime')) : timeToSeconds(timeLimit);
+
+        function updateCountdown() {
+            if (remainingTime <= 0) {
+                countdownDisplay.textContent = "Waktu Habis!";
+                // Opsional: Hentikan formulir atau kirim otomatis
+                document.querySelector("form").submit();
+                clearInterval(countdownInterval);
+                return;
+            }
     
-                if (countdownTime <= 0) {
-                    clearInterval(countdownInterval);
-                    countdownDisplay.textContent = 'Time\'s up!';
-                    // Di sini Anda bisa menambahkan logika untuk mengarahkan pengguna ke halaman lain setelah waktu habis
-                } else {
-                    countdownTime--;
-                }
-            }, 1000); // Update setiap detik
-        });
+            // Format ke HH:MM:SS
+            const hours = String(Math.floor(remainingTime / 3600)).padStart(2, "0");
+            const minutes = String(Math.floor((remainingTime % 3600) / 60)).padStart(2, "0");
+            const seconds = String(remainingTime % 60).padStart(2, "0");
+    
+            countdownDisplay.textContent = `${hours}:${minutes}:${seconds}`;
+            remainingTime--;
+
+            localStorage.setItem('remainingTime', remainingTime);
+        }
+    
+        // Update countdown setiap detik
+        const countdownInterval = setInterval(updateCountdown, 1000);
+        updateCountdown(); // Update segera saat dimuat
     </script>
     
 </body>

@@ -79,7 +79,7 @@
                         <input value="{{ $job->job_title }}" type="text" class="font-semibold placeholder:text-[#7F8190] placeholder:font-normal w-full outline-none" placeholder="Write your better job title" name="job_title" required>
                     </div>
                 </div>
-                <div class="flex flex-col gap-[10px]">
+                {{-- <div class="flex flex-col gap-[10px]">
                     <p class="font-semibold">Job Desc</p>
                     <div class="flex items-center w-[500px] h-[52px] p-[14px_16px] rounded-full border border-[#EEEEEE] transition-all duration-300 focus-within:border-2 focus-within:border-[#0A090B]">
                         <div class="mr-[14px] w-6 h-6 flex items-center justify-center overflow-hidden">
@@ -87,32 +87,35 @@
                         </div>
                         <input value="{{ $job->job_desc }}" type="text" class="font-semibold placeholder:text-[#7F8190] placeholder:font-normal w-full outline-none" placeholder="Write your better job desc" name="job_desc" required>
                     </div>
-                </div>
+                </div> --}}
                 <div class="flex flex-col gap-[10px]">
                     <p class="font-semibold">Job Qualification</p>
-                    <div class="flex items-center w-[500px] h-[52px] p-[14px_16px] rounded-full border border-[#EEEEEE] transition-all duration-300 focus-within:border-2 focus-within:border-[#0A090B]">
+                    <div class="flex items-center w-[500px] h-[200px] p-[14px_16px] rounded-full border border-[#EEEEEE] transition-all duration-300 focus-within:border-2 focus-within:border-[#0A090B]">
                         <div class="mr-[14px] w-6 h-6 flex items-center justify-center overflow-hidden">
                             <img src="{{asset('images/icons/note-favorite-outline.svg')}}" class="w-full h-full object-contain" alt="icon">
                         </div>
-                        <input value="{{ $job->qualification }}" type="text" class="font-semibold placeholder:text-[#7F8190] placeholder:font-normal w-full outline-none" placeholder="Write your better job qualification" name="qualification" required>
+                        <textarea value="{{ $job->qualification }}" type="text" class="font-semibold placeholder:text-[#7F8190] placeholder:font-normal w-full h-full outline-none" placeholder="Write your better job qualification" name="qualification" required>
+                        </textarea>
                     </div>
                 </div>
                 <div class="flex flex-col gap-[10px]">
                     <p class="font-semibold">Job Responsibilities</p>
-                    <div class="flex items-center w-[500px] h-[52px] p-[14px_16px] rounded-full border border-[#EEEEEE] transition-all duration-300 focus-within:border-2 focus-within:border-[#0A090B]">
+                    <div class="flex items-center w-[500px] h-[200px] p-[14px_16px] rounded-full border border-[#EEEEEE] transition-all duration-300 focus-within:border-2 focus-within:border-[#0A090B]">
                         <div class="mr-[14px] w-6 h-6 flex items-center justify-center overflow-hidden">
                             <img src="{{asset('images/icons/note-favorite-outline.svg')}}" class="w-full h-full object-contain" alt="icon">
                         </div>
-                        <input value="{{ $job->job_respons }}" type="text" class="font-semibold placeholder:text-[#7F8190] placeholder:font-normal w-full outline-none" placeholder="Write your better job responsibilities" name="job_respons" required>
+                        <textarea value="{{ $job->job_respons }}" type="text" class="font-semibold placeholder:text-[#7F8190] placeholder:font-normal w-full h-full outline-none" placeholder="Write your better job responsibilities" name="job_respons" required>
+                        </textarea>
                     </div>
                 </div>
                 <div class="flex flex-col gap-[10px]">
                     <p class="font-semibold">General Requirement</p>
-                    <div class="flex items-center w-[500px] h-[52px] p-[14px_16px] rounded-full border border-[#EEEEEE] transition-all duration-300 focus-within:border-2 focus-within:border-[#0A090B]">
+                    <div class="flex items-center w-[500px] h-[200px] p-[14px_16px] rounded-full border border-[#EEEEEE] transition-all duration-300 focus-within:border-2 focus-within:border-[#0A090B]">
                         <div class="mr-[14px] w-6 h-6 flex items-center justify-center overflow-hidden">
                             <img src="{{asset('images/icons/note-favorite-outline.svg')}}" class="w-full h-full object-contain" alt="icon">
                         </div>
-                        <input value="{{ $job->general_req }}" type="text" class="font-semibold placeholder:text-[#7F8190] placeholder:font-normal w-full outline-none" placeholder="Write your better general requirement" name="general_req" required>
+                        <textarea value="{{ $job->general_req }}" type="text" class="font-semibold placeholder:text-[#7F8190] placeholder:font-normal w-full h-full outline-none" placeholder="Write your better general requirement" name="general_req" required>
+                        </textarea>
                     </div>
                 </div>
                 <div class="flex flex-col gap-[10px]">
@@ -164,6 +167,21 @@
                             <option value="{{ $job->workloc->workloc_id }}" selected>{{ $job->workloc->workloc_name }}</option>
                             @forelse($worklocs as $workloc)
                             <option value="{{ $workloc->workloc_id }}" class="font-semibold">{{ $workloc->workloc_name }}</option>
+                            @empty
+                            @endforelse
+                        </select>
+                    </div>
+                </div>
+                <div class="group/specwork flex flex-col gap-[10px]">
+                    <p class="font-semibold">Specified Work Area</p>
+                    <div class="peer flex items-center p-[12px_16px] rounded-full border border-[#EEEEEE] transition-all duration-300 focus-within:border-2 focus-within:border-[#0A090B]">
+                        <div class="mr-[10px] w-6 h-6 flex items-center justify-center overflow-hidden">
+                            <img src="{{asset('images/icons/bill.svg')}}" class="w-full h-full object-contain" alt="icon">
+                        </div>
+                        <select id="specwork" class="pl-1 font-semibold focus:outline-none w-full text-[#0A090B] invalid:text-[#7F8190] invalid:font-normal appearance-none bg-[url('{{asset('images/icons/arrow-down.svg')}}')] bg-no-repeat bg-right" name="specwork_id" required>
+                            <option value="{{ $job->specwork->city_id }}" selected>{{ $job->specwork->city }}</option>
+                            @forelse($specworks as $specwork)
+                            <option value="{{ $specwork->city_id }}" class="font-semibold">{{ $specwork->city }}</option>
                             @empty
                             @endforelse
                         </select>

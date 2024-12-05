@@ -26,11 +26,11 @@ class RegistJob extends Model
         'div_id',
         'dept_id',
         'workloc_id',
+        'specwork_id',
         'job_respons',
         'type_id',
         'level_id',
         'vacancy_number',
-        'job_desc',
         'qualification',
         'general_req',
         'status_job',
@@ -75,6 +75,10 @@ class RegistJob extends Model
 
     public function workloc(){
         return $this->belongsTo(WorkLoc::class, 'workloc_id');
+    }
+
+    public function specwork(){
+        return $this->belongsTo(City::class, 'specwork_id', 'city_id');
     }
 
     public function jobtype(){

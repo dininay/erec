@@ -57,7 +57,17 @@ class People extends Model
         return $this->belongsTo(Apply::class, 'apply_id');
     }
 
+    public function peopleAnswers(){
+        return $this->belongsTo(PeopleAnswer::class, 'user_id');
+    }
+
     public function registjob(){
         return $this->belongsToThrough(RegistJob::class, Apply::class, 'apply_id', 'reg_code', 'reg_id');
     }
+
+    public function applies()
+    {
+        return $this->hasMany(Apply::class, 'user_id', 'user_id');
+    }
+
 }

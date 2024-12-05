@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\City;
 use App\Models\Dept;
 use App\Models\Division;
 use App\Models\JobLevel;
@@ -39,6 +40,7 @@ class RegistJobController extends Controller
         $divisions = Division::all();
         $depts = Dept::all();
         $worklocs = WorkLoc::all();
+        $specworks = City::all();
         $jobtypes = JobType::all();
         $joblevels = JobLevel::all();
         return view('admin.job.create', [
@@ -48,6 +50,7 @@ class RegistJobController extends Controller
             'worklocs' => $worklocs,
             'jobtypes' => $jobtypes,
             'joblevels' => $joblevels,
+            'specworks' => $specworks,
         ]);
     }
 
@@ -59,11 +62,12 @@ class RegistJobController extends Controller
         //
         $validated = $request->validate([
             'job_title' => 'required|string|max:255',
-            'job_desc' => 'required|string|max:255',
+            // 'job_desc' => 'required|string|max:255',
             'qualification' => 'required|string|max:255',
             'div_id' => 'required|string|max:255',
             'dept_id' => 'required|string|max:255',
             'workloc_id' => 'required|string|max:255',
+            'specwork_id' => 'required|string|max:255',
             'type_id' => 'required|string|max:255',
             'level_id' => 'required|string|max:255',
             'job_respons' => 'required|string|max:255',
@@ -148,6 +152,7 @@ class RegistJobController extends Controller
         $divisions = Division::all();
         $depts = Dept::all();
         $worklocs = WorkLoc::all();
+        $specworks = City::all();
         $jobtypes = JobType::all();
         $joblevels = JobLevel::all();
         return view('admin.job.edit', [
@@ -156,6 +161,7 @@ class RegistJobController extends Controller
             'divisions' => $divisions,
             'depts' => $depts,
             'worklocs' => $worklocs,
+            'specworks' => $specworks,
             'jobtypes' => $jobtypes,
             'joblevels' => $joblevels,
         ]);
@@ -174,6 +180,7 @@ class RegistJobController extends Controller
             'div_id' => 'required|string|max:255',
             'dept_id' => 'required|string|max:255',
             'workloc_id' => 'required|string|max:255',
+            'specwork_id' => 'required|string|max:255',
             'type_id' => 'required|string|max:255',
             'level_id' => 'required|string|max:255',
             'job_respons' => 'required|string|max:255',

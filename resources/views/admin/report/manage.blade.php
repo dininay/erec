@@ -53,151 +53,136 @@
                 </div>
             </div>
             <div class="header ml-[70px] pr-[70px] w-[940px] flex items-center justify-between mt-10">
-                <div class="container mx-auto px-4 py-6">
-                    <h1 class="font-extrabold text-[30px] leading-[45px] mb-6">ID Apply : {{ $statusapply->status->apply_id }}</h1>
+                <div class="flex gap-6 items-center">
                     
-                    <!-- Wrapper for the details -->
-                    <div class="grid grid-cols-1 gap-6">
-                        <div class="flex flex-col gap-4">
-                            <div class="flex flex-col gap">
-                                <h4 class="font-medium">User ID</h4>
+                    <div class="flex flex-col gap-5">
+                        <h1 class="font-extrabold text-[30px] leading-[45px]">ID Apply : {{ $statusapply->status->apply_id }}</h1>
+                        <div class="flex items-center gap-5">
+                            <h4>User ID</h4>
+                            <div class="flex gap-[10px] items-center">
                                 <p class="font-semibold">{{ $statusapply->user_id }}</p>
                             </div>
-                            <div class="flex justify-between items-center">
-                                <h4 class="font-medium">Register ID</h4>
+                        </div>
+                        <div class="flex items-center gap-5">
+                            <h4>Register ID</h4>
+                            <div class="flex gap-[10px] items-center">
                                 <p class="font-semibold">{{ $statusapply->reg_id }}</p>
                             </div>
-                            <div class="flex justify-between items-center">
-                                <h4 class="font-medium">Email</h4>
+                        </div>
+                        <div class="flex items-center gap-5">
+                            <h4>Email</h4>
+                            <div class="flex gap-[10px] items-center">
                                 <p class="font-semibold">{{ $statusapply->email }}</p>
                             </div>
-                            <div class="flex justify-between items-center">
-                                <h4 class="font-medium">Nama Lengkap</h4>
+                        </div>
+                        <div class="flex items-center gap-5">
+                            <h4>Nama Lengkap</h4>
+                            <div class="flex gap-[10px] items-center">
                                 <p class="font-semibold">{{ $statusapply->name }}</p>
                             </div>
-                            <div class="flex justify-between items-center">
-                                <h4 class="font-medium">Berat Badan</h4>
-                                <p class="font-semibold">{{ $statusapply->bb }}</p>
-                            </div>
-                            <div class="flex justify-between items-center">
-                                <h4 class="font-medium">Tinggi Badan</h4>
-                                <p class="font-semibold">{{ $statusapply->tb }}</p>
-                            </div>
-                            <div class="flex justify-between items-center">
-                                <h4 class="font-medium">Jenis Kelamin</h4>
-                                <p class="font-semibold">{{ $statusapply->jk }}</p>
-                            </div>
-                            <div class="flex justify-between items-center">
-                                <h4 class="font-medium">Umur</h4>
-                                <p class="font-semibold">{{ $statusapply->age }}</p>
-                            </div>
                         </div>
-                
-                        <div class="flex flex-col gap-4">
-                            <div class="flex justify-between items-center">
-                                <h4 class="font-medium">Alamat Domisili</h4>
-                                <p class="font-semibold">{{ $statusapply->domisili }}</p>
-                            </div>
-                            <div class="flex justify-between items-center">
-                                <h4 class="font-medium">NIK KTP</h4>
-                                <p class="font-semibold">{{ $statusapply->nik_ktp }}</p>
-                            </div>
-                            <div class="flex justify-between items-center">
-                                <h4 class="font-medium">Status Nikah</h4>
-                                <p class="font-semibold">{{ $statusapply->status_nikah }}</p>
-                            </div>
-                            <div class="flex justify-between items-center">
-                                <h4 class="font-medium">Jumlah Anak</h4>
-                                <p class="font-semibold">{{ $statusapply->jml_anak }}</p>
-                            </div>
-                            <div class="flex justify-between items-center">
-                                <h4 class="font-medium">Riwayat Kesehatan</h4>
-                                <p class="font-semibold">{{ $statusapply->riwayat_kesehatan }}</p>
-                            </div>
-                            <div class="flex justify-between items-center">
-                                <h4 class="font-medium">Pendidikan Terakhir</h4>
-                                <p class="font-semibold">{{ $statusapply->last_pendidikan }}</p>
-                            </div>
-                            <div class="flex justify-between items-center">
-                                <h4 class="font-medium">Asal Sekolah</h4>
-                                <p class="font-semibold">{{ $statusapply->asal_sekolah }}</p>
-                            </div>
-                            <div class="flex justify-between items-center">
-                                <h4 class="font-medium">Jurusan</h4>
-                                <p class="font-semibold">{{ $statusapply->jurusan }}</p>
-                            </div>
-                        </div>
-                
-                        <div class="flex flex-col gap-4">
-                            <div class="flex justify-between items-center">
-                                <h4 class="font-medium">Tahun Lulus</h4>
-                                <p class="font-semibold">{{ $statusapply->th_lulus }}</p>
-                            </div>
-                            <div class="flex justify-between items-center">
-                                <h4 class="font-medium">IPK / Nilai Rata-Rata</h4>
-                                <p class="font-semibold">{{ $statusapply->ipk }}</p>
-                            </div>
-                            <div class="flex justify-between items-center">
-                                <h4 class="font-medium">No Whatsapp Aktif</h4>
+                        <div class="flex items-center gap-5">
+                            <h4>No Whatsapp Aktif</h4>
+                            <div class="flex gap-[10px] items-center">
                                 <p class="font-semibold">{{ $statusapply->wa_aktif }}</p>
                             </div>
-                            <div class="flex justify-between items-center">
-                                <h4 class="font-medium">APAKAH SAUDARA SUDAH PERNAH BEKERJA DI MIE GACOAN?</h4>
-                                <p class="font-semibold">{{ $statusapply->details->quest_1 }}</p>
-                            </div>
-                            <div class="flex justify-between items-center">
-                                <h4 class="font-medium">KAPAN SAUDARA BEKERJA DI GACOAN?</h4>
-                                <p class="font-semibold">{{ $statusapply->details->quest_2 }}</p>
-                            </div>
-                            <div class="flex justify-between items-center">
-                                <h4 class="font-medium">APA POSISI TERAKHIR SAUDARA SAAT BEKERJA DI GACOAN?</h4>
-                                <p class="font-semibold">{{ $statusapply->details->quest_3 }}</p>
-                            </div>
-                            <div class="flex justify-between items-center">
-                                <h4 class="font-medium">APA ALASAN SAUDARA RESIGN DARI GACOAN?</h4>
-                                <p class="font-semibold">{{ $statusapply->details->quest_4 }}</p>
+                        </div>
+                        <div class="flex items-center gap-5">
+                            <h4>Applied Department</h4>
+                            <div class="flex gap-[10px] items-center">
+                                <p class="font-semibold">{{ $statusapply->registjob->dept->dept_name }}</p>
                             </div>
                         </div>
-                    </div>
-                    
-                    <div class="flex flex-col gap-4 mt-6">
-                        <div class="flex justify-between items-center">
-                            <h4 class="font-medium">APAKAH SAUDARA SEBELUMNYA SUDAH PERNAH MELAMAR PEKERJAAN DI MIE GACOAN?</h4>
-                            <p class="font-semibold">{{ $statusapply->details->quest_5 }}</p>
+                        <div class="flex items-center gap-5">
+                            <h4>Applied Job Title</h4>
+                            <div class="flex gap-[10px] items-center">
+                                <p class="font-semibold">{{ $statusapply->registjob->job_title }}</p>
+                            </div>
                         </div>
-                        <div class="flex justify-between items-center">
-                            <h4 class="font-medium">Pengalaman Kerja 1</h4>
-                            <p class="font-semibold">{{ $statusapply->details->experience_1 }}</p>
+                        <div class="flex items-center gap-5">
+                            <h4>Job Expertise</h4>
+                            <div class="flex gap-[10px] items-center">
+                                <p class="font-semibold">{{ $statusapply->registjob->job_desc }}</p>
+                            </div>
                         </div>
-                        <div class="flex justify-between items-center">
-                            <h4 class="font-medium">Pengalaman Kerja 2</h4>
-                            <p class="font-semibold">{{ $statusapply->details->experience_2 }}</p>
+                        <div class="flex items-center gap-5">
+                            <h4>Applied Work Location</h4>
+                            <div class="flex gap-[10px] items-center">
+                                <p class="font-semibold">{{ $statusapply->registjob->workloc->workloc_name }}</p>
+                            </div>
                         </div>
-                        <div class="flex justify-between items-center">
-                            <h4 class="font-medium">Informasi Lowongan Kerja</h4>
-                            <p class="font-semibold">{{ $statusapply->details->info_vacancy }}</p>
+                        <div class="flex items-center gap-5">
+                            <h4>Specified Work Area</h4>
+                            <div class="flex gap-[10px] items-center">
+                                <p class="font-semibold">{{ $statusapply->registjob->workloc->workloc_name }}</p>
+                            </div>
                         </div>
-                        <div class="flex justify-between items-center">
-                            <h4 class="font-medium">CV</h4>
-                            <div class="flex gap-4 items-center">
-                                <a href="{{ asset('images/' . $statusapply->reg_id . '/' . $statusapply->details->cv) }}" target="_blank" class="text-blue-500 hover:text-blue-700 font-semibold">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                        <path d="M8 2a1 1 0 00-1 1v4a1 1 0 102 0V4h6v12H9v-1a1 1 0 10-2 0v2a1 1 0 001 1h8a1 1 0 001-1V3a1 1 0 00-1-1H8z" />
-                                        <path d="M3.707 9.293a1 1 0 00-1.414 1.414l4 4a1 1 0 001.414 0l4-4a1 1 0 10-1.414-1.414L7 11.586 3.707 9.293z" />
-                                    </svg>
-                                    Lihat CV
-                                </a>
-                                <a href="{{ asset('images/' . $statusapply->reg_id . '/' . $statusapply->details->cv) }}" download class="text-green-500 hover:text-green-700 font-semibold">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                        <path d="M3.707 9.293a1 1 0 00-1.414 1.414l4 4a1 1 0 001.414 0l4-4a1 1 0 10-1.414-1.414L7 11.586 3.707 9.293z" />
-                                    </svg>
-                                    Download CV
-                                </a>
+                        <div class="flex items-center gap-5">
+                            <h4>Application Date</h4>
+                            <div class="flex gap-[10px] items-center">
+                                <p class="font-semibold">{{ $statusapply->created_at }}</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-5">
+                            <h4>Administration Screening Status</h4>
+                            <div class="flex gap-[10px] items-center">
+                                <p class="font-semibold">{{ $statusapply->status->status_admin }}</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-5">
+                            <h4>Psychotest Status Psychotest Status </h4>
+                            <div class="flex gap-[10px] items-center">
+                                @if($statusapply->status === 'Passed')
+                                    <p class="bg-green-500 font-semibold">Passed</p>
+                                @else
+                                    <p class="bg-red-500 font-semibold">Not Passed</p>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-5">
+                            <h4>Interview Status</h4>
+                            <div class="flex gap-[10px] items-center">
+                                <p class="font-semibold">{{ $statusapply->status->status_interview }}</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-5">
+                            <h4>Document Clearance Status</h4>
+                            <div class="flex gap-[10px] items-center">
+                                <p class="font-semibold">{{ $statusapply->status->status_docclear }}</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-5">
+                            <h4>OJE Status</h4>
+                            <div class="flex gap-[10px] items-center">
+                                <p class="font-semibold">{{ $statusapply->status->status_oje }}</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-5">
+                            <h4>Onboarding Status</h4>
+                            <div class="flex gap-[10px] items-center">
+                                <p class="font-semibold">{{ $statusapply->status->status_onboarding }}</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-5">
+                            <h4>Join Date</h4>
+                            <div class="flex gap-[10px] items-center">
+                                <p class="font-semibold">{{ $statusapply->status->join_date }}</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-5">
+                            <h4>Last Modified By</h4>
+                            <div class="flex gap-[10px] items-center">
+                                <p class="font-semibold">{{ $statusapply->status->modified_by }}</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-5">
+                            <h4>Modified date</h4>
+                            <div class="flex gap-[10px] items-center">
+                                <p class="font-semibold">{{ $statusapply->status->updated_at }}</p>
                             </div>
                         </div>
                     </div>
                 </div>
-                
                 {{-- <div class="relative">
                     <a href="#" id="more-button" class="toggle-button w-[46px] h-[46px] flex shrink-0 rounded-full items-center justify-center border border-[#EEEEEE]">
                         <img src="{{ asset('images/icons/more.svg')}}" alt="icon">

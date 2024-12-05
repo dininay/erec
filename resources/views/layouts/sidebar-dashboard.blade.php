@@ -74,18 +74,18 @@
                         <img src="{{asset('images/icons/arrow-circle-right.svg')}}" alt="icon">
                     </div>
                     <p class="font-semibold transition-all duration-300 @if(request()->routeIs('dashboard.job.index', 'dashboard.job.create', 'dashboard.job.edit', 'dashboard.job.manage')) text-white @else hover:text-white @endif">
-                        Regist Job
+                        Job Registration
                     </p>
                 </a>
             </li>
             <li>
-                <a href="{{ route('dashboard.apply.index') }}" class="p-[10px_16px] flex items-center gap-[14px] rounded-full h-11 transition-all duration-300
+                <a href="{{ route('dashboard.apply.index') }}" class="p-[10px_16px] flex items-center gap-[14px] rounded-full h-120 transition-all duration-300
                     @if(request()->routeIs('dashboard.apply.index', 'dashboard.apply.create', 'dashboard.apply.edit', 'dashboard.apply.manage')) bg-[#2B82FE] text-white @else hover:bg-[#2B82FE] @endif">
                     <div>
                         <img src="{{asset('images/icons/profile.svg')}}" alt="icon">
                     </div>
                     <p class="font-semibold transition-all duration-300 @if(request()->routeIs('dashboard.apply.index', 'dashboard.apply.create', 'dashboard.apply.edit', 'dashboard.apply.manage')) text-white @else hover:text-white @endif">
-                        List Applicant
+                        Applicant Data Report Summary - Operations
                     </p>
                 </a>
             </li>
@@ -144,6 +144,17 @@
                     </p>
                 </a>
             </li>
+            <li>
+                <a href="{{ route('dashboard.report.index') }}" class="p-[10px_16px] flex items-center gap-[14px] rounded-full h-11 transition-all duration-300
+                    @if(request()->routeIs('dashboard.report.index')) bg-[#2B82FE] text-white @else hover:bg-[#2B82FE] @endif">
+                    <div>
+                        <img src="{{asset('images/icons/more.svg')}}" alt="icon">
+                    </div>
+                    <p class="font-semibold transition-all duration-300 @if(request()->routeIs('dashboard.report.index')) text-white @else hover:text-white @endif">
+                        Report Detail
+                    </p>
+                </a>
+            </li>
         </ul>
         <ul class="flex flex-col gap-3">
             @role('HR')
@@ -178,7 +189,7 @@
             <li>
                 <h3 class="font-bold text-xs text-[#A5ABB2]">Master Data</h3>
             </li>
-            <li>
+            {{-- <li>
                 <a href="{{ route('dashboard.category.index') }}" class="p-[10px_16px] flex items-center gap-[14px] rounded-full h-11 transition-all duration-300
                     @if(request()->routeIs('dashboard.category.index', 'dashboard.category.create', 'dashboard.category.edit', 'dashboard.category.manage')) bg-[#2B82FE] text-white @else hover:bg-[#2B82FE] @endif">
                     <div>
@@ -188,7 +199,7 @@
                         Category
                     </p>
                 </a>
-            </li>
+            </li> --}}
             <li>
                 <a href="{{ route('dashboard.jobtype.index') }}" class="p-[10px_16px] flex items-center gap-[14px] rounded-full h-11 transition-all duration-300
                     @if(request()->routeIs('dashboard.jobtype.index', 'dashboard.jobtype.create', 'dashboard.jobtype.edit', 'dashboard.jobtype.manage')) bg-[#2B82FE] text-white @else hover:bg-[#2B82FE] @endif">
@@ -261,7 +272,7 @@
                 </a>
             </li>
             <li>
-                <a href="{{ route('logout') }}" class="p-[10px_16px] flex items-center gap-[14px] rounded-full h-11 transition-all duration-300 hover:bg-[#2B82FE]">
+                <a href="{{ route('custom_logout') }}" class="p-[10px_16px] flex items-center gap-[14px] rounded-full h-11 transition-all duration-300 hover:bg-[#2B82FE]">
                     <div>
                         <img src="{{asset('images/icons/lock.svg')}}" alt="icon">
                     </div>

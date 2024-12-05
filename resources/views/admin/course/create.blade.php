@@ -104,30 +104,15 @@
                             <input type="hidden" name="course_time" id="courseTimeHidden">
                         </div>
                     </div>
-                <div class="group/category flex flex-col gap-[10px]">
-                    <p class="font-semibold">Category</p>
-                    <div class="peer flex items-center p-[12px_16px] rounded-full border border-[#EEEEEE] transition-all duration-300 focus-within:border-2 focus-within:border-[#0A090B]">
-                        <div class="mr-[10px] w-6 h-6 flex items-center justify-center overflow-hidden">
-                            <img src="{{asset('images/icons/bill.svg')}}" class="w-full h-full object-contain" alt="icon">
-                        </div>
-                        <select id="category" class="pl-1 font-semibold focus:outline-none w-full text-[#0A090B] invalid:text-[#7F8190] invalid:font-normal appearance-none bg-[url('{{asset('images/icons/arrow-down.svg')}}')] bg-no-repeat bg-right" name="cat_id" required>
-                            <option value="" disabled selected hidden>Choose one of category</option>
-                            @forelse($categories as $category)
-                            <option value="{{ $category->cat_id }}" class="font-semibold">{{ $category->cat_name }}</option>
-                            @empty
-                            @endforelse
-                        </select>
-                    </div>
-                </div>
                 <div class="flex flex-col gap-[10px]">
                     <p class="font-semibold">Course Type</p>
-                    <input type="hidden" name="course_type" id="course_type" value="">
+                    <input type="hidden" name="cat_id" id="cat_id" value="">
                     <div class="flex gap-5 items-center">
                         <a href="#" class="group relative flex flex-col w-full items-center gap-5 p-[30px_16px] border border-[#EEEEEE] rounded-[30px] transition-all duration-300 aria-checked:border-2 aria-checked:border-[#0A090B]" data-group="course-type" aria-checked="false" onclick="handleActiveAnchor(this)">
                             <div class="w-[70px] h-[70px] flex shrink-0 overflow-hidden">
                                 <img src="{{asset('images/icons/onboarding.svg')}}" class="w-full h-full" alt="icon">
                             </div>
-                            <span class="text-center mx-auto font-semibold">Onboarding</span>
+                            <span class="text-center mx-auto font-semibold">Option</span>
                             <div class="absolute transform -translate-x-1/2 -translate-y-1/2 top-[24px] right-0 hidden transition-all duration-300 group-aria-checked:block">
                                 <img src="{{asset('images/icons/tick-circle.svg')}}" alt="icon">
                             </div>
@@ -136,40 +121,8 @@
                             <div class="w-[70px] h-[70px] flex shrink-0 overflow-hidden">
                                 <img src="{{asset('images/icons/module.svg')}}" class="w-full h-full" alt="icon">
                             </div>
-                            <span class="text-center mx-auto font-semibold">CBT Module</span>
+                            <span class="text-center mx-auto font-semibold">Essay</span>
                             <div class="absolute transform -translate-x-1/2 -translate-y-1/2 top-[24px] right-0 hidden transition-all duration-300 group-aria-checked:block">
-                                <img src="{{asset('images/icons/tick-circle.svg')}}" alt="icon">
-                            </div>
-                        </a>
-                        <a href="#" class="group relative flex flex-col w-full items-center gap-5 p-[30px_16px] border border-[#EEEEEE] rounded-[30px] transition-all duration-300 aria-checked:border-2 aria-checked:border-[#0A090B]" data-group="course-type" aria-checked="false" onclick="handleActiveAnchor(this)">
-                            <div class="w-[70px] h-[70px] flex shrink-0 overflow-hidden">
-                                <img src="{{asset('images/icons/job.svg')}}" class="w-full h-full" alt="icon">
-                            </div>
-                            <span class="text-center mx-auto font-semibold">Job-Ready</span>
-                            <div class="absolute transform -translate-x-1/2 -translate-y-1/2 top-[24px] right-0 hidden transition-all duration-300 group-aria-checked:block">
-                                <img src="{{asset('images/icons/tick-circle.svg')}}" alt="icon">
-                            </div>
-                        </a>
-                    </div>
-                </div>
-                <div class="flex flex-col gap-[10px]">
-                    <p class="font-semibold">Publish Date</p>
-                    <div class="flex gap-[10px] items-center" name="publish_date">
-                        <a href="#" class="group relative flex w-full items-center gap-[14px] p-[14px_16px] border border-[#EEEEEE] rounded-full transition-all duration-300 aria-checked:border-2 aria-checked:border-[#0A090B]" data-group="publish-date" aria-checked="false" onclick="handleActiveAnchor(this)">
-                            <div class="w-[24px] h-[24px] flex shrink-0 overflow-hidden">
-                                <img src="{{asset('images/icons/clock.svg')}}" class="w-full h-full" alt="icon">
-                            </div>
-                            <span value="Active Now" class="font-semibold">Active Now</span>
-                            <div class="absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 right-0 hidden transition-all duration-300 group-aria-checked:block">
-                                <img src="{{asset('images/icons/tick-circle.svg')}}" alt="icon">
-                            </div>
-                        </a>
-                        <a href="#" class="group relative flex w-full items-center gap-[14px] p-[14px_16px] border border-[#EEEEEE] rounded-full transition-all duration-300 aria-checked:border-2 aria-checked:border-[#0A090B] disabled:border-[#EEEEEE]" data-group="publish-date" aria-checked="false" onclick="event.preventDefault()" disabled>
-                            <div class="w-[24px] h-[24px] flex shrink-0 overflow-hidden">
-                                <img src="{{asset('images/icons/calendar-add-disabled.svg')}}" class="w-full h-full" alt="icon">
-                            </div>
-                            <span value="Schedule Later" class="font-semibold text-[#EEEEEE]">Schedule for Later</span>
-                            <div class="absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 right-0 hidden transition-all duration-300 group-aria-checked:block">
                                 <img src="{{asset('images/icons/tick-circle.svg')}}" alt="icon">
                             </div>
                         </a>
@@ -196,7 +149,7 @@
                     I have read terms and conditions
                 </label>
                 <div class="flex items-center gap-5">
-                    <a href="" class="w-full h-[52px] p-[14px_20px] bg-[#0A090B] rounded-full font-semibold text-white transition-all duration-300 text-center">Add to Draft</a>
+                    {{-- <a href="" class="w-full h-[52px] p-[14px_20px] bg-[#0A090B] rounded-full font-semibold text-white transition-all duration-300 text-center">Add to Draft</a> --}}
                     <button type="submit" class="w-full h-[52px] p-[14px_20px] bg-[#6436F1] rounded-full font-bold text-white transition-all duration-300 hover:shadow-[0_4px_15px_0_#6436F14D] text-center">Save Course</button>
                 </div>
             </form>
@@ -245,21 +198,28 @@
     </script>
 
     <script>
-        function handleActiveAnchor(element) {
-            event.preventDefault();
-
-            const group = element.getAttribute('data-group');
-            
-            // Reset all elements' aria-checked to "false" within the same data-group
-            const allElements = document.querySelectorAll(`[data-group="${group}"][aria-checked="true"]`);
-            allElements.forEach(el => {
+        function handleActiveAnchor(anchor) {
+            // Hapus status checked dari semua elemen dalam grup yang sama
+            const group = anchor.getAttribute('data-group');
+            document.querySelectorAll(`[data-group="${group}"]`).forEach(el => {
                 el.setAttribute('aria-checked', 'false');
             });
-            
-            // Set the clicked element's aria-checked to "true"
-            element.setAttribute('aria-checked', 'true');
+
+            // Tandai elemen yang dipilih
+            anchor.setAttribute('aria-checked', 'true');
+
+            // Perbarui nilai cat_id
+            const selectedType = anchor.querySelector('span').innerText.trim();
+            const catIdInput = document.getElementById('cat_id');
+
+            if (selectedType === 'Essay') {
+                catIdInput.value = '2'; // ID untuk Essay
+            } else if (selectedType === 'Option') {
+                catIdInput.value = '1'; // ID untuk Pilihan Ganda
+            }
         }
     </script>
+
     
 </body>
 </html>

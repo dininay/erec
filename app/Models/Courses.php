@@ -68,4 +68,9 @@ class Courses extends Model
     {
         return $this->hasMany(PeopleAnswer::class, 'question_id');
     }
+
+    public function apply()
+    {
+        return $this->belongsTo(Apply::class, 'apply_id');
+    }
 }

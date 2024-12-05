@@ -46,7 +46,7 @@
             <div class="flex flex-col px-5 mt-5">
                 <div class="w-full flex justify-between items-center">
                     <div class="flex flex-col gap-1">
-                        <p class="font-extrabold text-[30px] leading-[45px]">Manage People</p>
+                        <p class="font-extrabold text-[30px] leading-[45px]">Manage Result Test</p>
                         <p class="text-[#7F8190]">Provide high quality for best students</p>
                     </div>
                     {{-- <a href="{{ route('dashboard.people.create') }}" class="h-[52px] p-[14px_20px] bg-[#6436F1] rounded-full font-bold text-white transition-all duration-300 hover:shadow-[0_4px_15px_0_#6436F14D]">Add New People</a> --}}
@@ -57,34 +57,35 @@
                     <div class="flex shrink-0 w-[300px]">
                         <p class="text-[#7F8190]">People</p>
                     </div>
-                    <div class="flex justify-center shrink-0 w-[150px]">
+                    <div class="flex justify-center shrink-0 w-[200px]">
                         <p class="text-[#7F8190]">Done Date</p>
                     </div>
                     <div class="flex justify-center shrink-0 w-[150px]">
-                        <p class="text-[#7F8190]">Course Name</p>
+                        <p class="text-[#7F8190]">Status</p>
                     </div>
                     <div class="flex justify-center shrink-0 w-[120px]">
                         <p class="text-[#7F8190]">Action</p>
                     </div>
                 </div>
-                @forelse($peoples as $people)
+                @forelse($applys as $apply)
                     <div class="list-items flex flex-nowrap justify-between pr-10">
                         <div class="flex shrink-0 w-[300px]">
                             <div class="flex items-center gap-4">
-                                <div class="w-16 h-16 flex shrink-0 overflow-hidden rounded-full">
-                                    <img src="{{ Storage::url($people->course->cover) }}" class="object-cover" alt="thumbnail">
-                                </div>
                                 <div class="flex flex-col gap-[2px]">
-                                    <p class="font-bold text-lg">{{ $people->apply->name }}</p>
-                                    <p class="text-[#7F8190]">{{ $people->apply->registjob->job_title }}</p>
+                                    <p class="font-bold text-lg">{{ $apply->name }}</p>
+                                    <p class="text-[#7F8190]">{{ $apply->registjob->job_title }}</p>
                                 </div>
                             </div>
                         </div>
-                        <div class="flex shrink-0 w-[150px] items-center justify-center">
-                            <p class="font-semibold">{{ \Carbon\Carbon::parse($people->created_at)->format('d F Y') }}</p>
+                        <div class="flex shrink-0 w-[200px] items-center justify-center">
+                            <p class="font-semibold">{{ \Carbon\Carbon::parse($apply->created_at)->format('d F Y') }}</p>
                         </div>
                         <div class="flex shrink-0 w-[150px] items-center justify-center">
-                            <p class="p-[8px_16px] rounded-full bg-[#FFF2E6] font-bold text-sm text-[#F6770B]">{{ $people->course->course_name }}</p>
+                            @if($apply->status == 'Passed')
+                            <p class="p-[8px_16px] rounded-[10px] bg-[#06BC65] font-bold text-md text-white outline-[#06BC65] outline-dashed outline-[3px] outline-offset-[7px] mr-[10px]">Passed</p>
+                            @else
+                            <p class="p-[8px_16px] rounded-[10px] bg-[#FD445E] font-bold text-md text-white outline-[#FD445E] outline-dashed outline-[3px] outline-offset-[7px] mr-[10px]">Not Passed</p>
+                            @endif
                         </div>
                         <div class="flex shrink-0 w-[120px] items-center">
                             <div class="relative h-[41px]">
@@ -93,7 +94,7 @@
                                         menu
                                         <img src="{{asset('images/icons/arrow-down.svg')}}" alt="icon">
                                     </button>
-                                    <a href="{{ route('dashboard.learning.rapport.course', $people->course->course_id) }}" class="flex items-center justify-between font-bold text-sm w-full">
+                                    <a href="{{ route('dashboard.people.show', $apply->people->user_id) }}" class="flex items-center justify-between font-bold text-sm w-full">
                                         Manage
                                     </a>
                                 </div>

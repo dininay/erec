@@ -5,8 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="{{ asset('css/output.css') }}" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-
 </head>
 <body class="font-poppins text-[#0A090B]">
     <section id="content" class="flex">
@@ -48,96 +46,55 @@
             <div class="flex flex-col px-5 mt-5">
                 <div class="w-full flex justify-between items-center">
                     <div class="flex flex-col gap-1">
-                        <p class="font-extrabold text-[30px] leading-[45px]">Manage Status Administration</p>
+                        <p class="font-extrabold text-[30px] leading-[45px]">Manage Result Test</p>
                         <p class="text-[#7F8190]">Provide high quality for best students</p>
                     </div>
-                    {{-- <a href="{{ route('dashboard.joblevel.create') }}" class="h-[52px] p-[14px_20px] bg-[#6436F1] rounded-full font-bold text-white transition-all duration-300 hover:shadow-[0_4px_15px_0_#6436F14D]">Add New Status</a> --}}
+                    {{-- <a href="{{ route('dashboard.people.create') }}" class="h-[52px] p-[14px_20px] bg-[#6436F1] rounded-full font-bold text-white transition-all duration-300 hover:shadow-[0_4px_15px_0_#6436F14D]">Add New People</a> --}}
                 </div>
             </div>
             <div class="course-list-container flex flex-col px-5 mt-[30px] gap-[30px]">
                 <div class="course-list-header flex flex-nowrap justify-between pb-4 pr-10 border-b border-[#EEEEEE]">
-                    <div class="flex shrink-0 w-[150px]">
-                        <p class="text-[#7F8190]">User</p>
+                    <div class="flex shrink-0 w-[300px]">
+                        <p class="text-[#7F8190]">People</p>
                     </div>
-                    <div class="flex shrink-0 w-[200px]">
-                        <p class="text-[#7F8190]">ID Apply</p>
-                    </div>
-                    <div class="flex shrink-0 w-[150px]">
-                        <p class="text-[#7F8190]">Job Title</p>
-                    </div>
-                    <div class="flex shrink-0 w-[150px]">
-                        <p class="text-[#7F8190]">CV</p>
-                    </div>
-                    <div class="flex shrink-0 w-[150px]">
-                        <p class="text-[#7F8190]">Photos</p>
-                    </div>
-                    <div class="flex shrink-0 w-[150px]">
-                        <p class="text-[#7F8190]">Status Administration</p>
+                    <div class="flex justify-center shrink-0 w-[200px]">
+                        <p class="text-[#7F8190]">Done Date</p>
                     </div>
                     <div class="flex justify-center shrink-0 w-[150px]">
-                        <p class="text-[#7F8190]">Administration Date</p>
+                        <p class="text-[#7F8190]">Course Name</p>
+                    </div>
+                    <div class="flex justify-center shrink-0 w-[150px]">
+                        <p class="text-[#7F8190]">Status</p>
                     </div>
                     <div class="flex justify-center shrink-0 w-[120px]">
                         <p class="text-[#7F8190]">Action</p>
                     </div>
                 </div>
-                @forelse($statuss as $status)
+                @forelse($peoples as $people)
                     <div class="list-items flex flex-nowrap justify-between pr-10">
-                        <div class="flex shrink-0 w-[150px] items-center justify-center">
-                            <p class="font-semibold">{{ $status->apply->user->name }}</p>
-                        </div>
-                        <div class="flex shrink-0 w-[150px] items-center justify-center">
-                            <p class="font-semibold">{{ $status->apply_id }}</p>
-                        </div>
-                        <div class="flex shrink-0 w-[150px] items-center justify-center">
-                            <p class="font-semibold">{{ $status->apply->registjob->job_title }}</p>
-                        </div>
-                        <div class="flex shrink-0 w-[150px] items-center justify-center">
-                            <div class="flex gap-2 items-center">
-                                <a 
-                                    href="{{ asset('images/' . $status->apply->reg_id . '/' . $status->apply->details->cv) }}" 
-                                    target="_blank" 
-                                    class="text-blue-500 hover:text-blue-700"
-                                >
-                                    <i class="fa fa-eye h-6 w-6"></i>
-                                </a>
-                                <a 
-                                    href="{{ asset('images/' . $status->apply->reg_id . '/' . $status->apply->details->cv) }}" 
-                                    download 
-                                    class="text-green-500 hover:text-green-700"
-                                >
-                                    <i class="fa fa-download h-6 w-6"></i>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="flex shrink-0 w-[150px] items-center justify-center">
-                            <div class="flex gap-2 items-center">
-                                <a 
-                                    href="{{ asset('images/' . $status->apply->reg_id . '/' . $status->apply->details->photo) }}" 
-                                    target="_blank" 
-                                    class="text-blue-500 hover:text-blue-700"
-                                >
-                                    <i class="fa fa-eye h-6 w-6"></i>
-                                </a>
-                                <a 
-                                    href="{{ asset('images/' . $status->apply->reg_id . '/' . $status->apply->details->photo) }}" 
-                                    download 
-                                    class="text-green-500 hover:text-green-700"
-                                >
-                                    <i class="fa fa-download h-6 w-6"></i>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="flex shrink-0 w-[150px]">
+                        <div class="flex shrink-0 w-[300px]">
                             <div class="flex items-center gap-4">
+                                <div class="w-16 h-16 flex shrink-0 overflow-hidden rounded-full">
+                                    <img src="{{ Storage::url($people->course->cover) }}" class="object-cover" alt="thumbnail">
+                                </div>
                                 <div class="flex flex-col gap-[2px]">
-                                    <p class="font-bold text-lg">{{ $status->status_admin }}</p>
-                                    {{-- <p class="text-[#7F8190]">Beginners</p> --}}
+                                    <p class="font-bold text-lg">{{ $people->apply->name }}</p>
+                                    <p class="text-[#7F8190]">{{ $people->apply->registjob->job_title }}</p>
                                 </div>
                             </div>
                         </div>
+                        <div class="flex shrink-0 w-[200px] items-center justify-center">
+                            <p class="font-semibold">{{ \Carbon\Carbon::parse($people->created_at)->format('d F Y') }}</p>
+                        </div>
                         <div class="flex shrink-0 w-[150px] items-center justify-center">
-                            <p class="font-semibold">{{ \Carbon\Carbon::parse($status->admin_date)->format('d F Y') }}</p>
+                            <p class="p-[8px_16px] rounded-full bg-[#FFF2E6] font-bold text-sm text-[#F6770B]">{{ $people->course->course_name }}</p>
+                        </div>
+                        <div class="flex shrink-0 w-[150px] items-center justify-center">
+                            @if($people->passed)
+                            <p class="p-[8px_16px] rounded-[10px] bg-[#06BC65] font-bold text-md text-white outline-[#06BC65] outline-dashed outline-[3px] outline-offset-[7px] mr-[10px]">Passed</p>
+                            @else
+                            <p class="p-[8px_16px] rounded-[10px] bg-[#FD445E] font-bold text-md text-white outline-[#FD445E] outline-dashed outline-[3px] outline-offset-[7px] mr-[10px]">Not Passed</p>
+                            @endif
                         </div>
                         <div class="flex shrink-0 w-[120px] items-center">
                             <div class="relative h-[41px]">
@@ -146,16 +103,9 @@
                                         menu
                                         <img src="{{asset('images/icons/arrow-down.svg')}}" alt="icon">
                                     </button>
-                                    <a href="{{ route('dashboard.approval.administration.edit', $status->people_status_id) }}" class="flex items-center justify-between font-bold text-sm w-full">
-                                        Edit
+                                    <a href="{{ route('dashboard.learning.rapport.course', $people->course->course_id) }}" class="flex items-center justify-between font-bold text-sm w-full">
+                                        Manage
                                     </a>
-                                    {{-- <form method="POST" action="{{ route('dashboard.approval.administration.destroy', $status) }}" class="">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="flex items-center justify-between font-bold text-sm w-full text-[#FD445E]">
-                                            Delete
-                                        </button>
-                                    </form> --}}
                                 </div>
                             </div>
                         </div>

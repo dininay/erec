@@ -124,30 +124,47 @@ class LearningController extends Controller
             abort(404);
         }
 
-        $cat_id = DB::table('r_course')
-        ->where('course_id', $course->course_id)
-        ->value('cat_id');
-        
-        $timeLimit = DB::table('r_course')
-        ->where('course_id', $course->course_id)
-        ->value('course_time');
+        $courseDetails = DB::table('r_course')
+            ->select('cat_id', 'course_time')
+            ->where('course_id', $course->course_id)
+            ->first();
 
-        if ($cat_id == 1) {
+        if (!$courseDetails) {
+            abort(404);
+        }
+
+        $timeLimit = $courseDetails->course_time;
+        $currentQuestion = $this->getCurrentQuestion($course, $question);
+        
+        $prevQuestion = Question::where('course_id', $course->course_id)
+        ->where('question_id', '<', $question)
+        ->orderBy('question_id', 'desc')
+        ->first();
+        
+        $existingAnswer = PeopleAnswer::where('user_id', Auth::id())
+            ->where('question_id', $question)
+            ->first();
+
+        if ($courseDetails->cat_id == 1) {
             return view('crew.course.learning_test', [
                 'course' => $course,
-                'question' => $this->getCurrentQuestion($course, $question),
+                'question' => $currentQuestion,
                 'user' => $user,
                 'timeLimit' => $timeLimit,
+                'existingAnswer' => $existingAnswer,
+                'prevQuestion' => $prevQuestion,
             ]);
-        } elseif ($cat_id == 2) {
+        } elseif ($courseDetails->cat_id == 2) {
             return view('crew.course.learning_testessay', [
                 'course' => $course,
-                'question' => $this->getCurrentQuestion($course, $question),
+                'question' => $currentQuestion,
                 'user' => $user,
                 'timeLimit' => $timeLimit,
+                'existingAnswer' => $existingAnswer,
+                'prevQuestion' => $prevQuestion,
             ]);
         } else {
-            abort(404); 
+            abort(404);
         }
     }
 

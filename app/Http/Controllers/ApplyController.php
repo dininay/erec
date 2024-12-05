@@ -134,6 +134,7 @@ class ApplyController extends Controller
 
         // Insert ke tabel Apply
         $apply = new Apply();
+        $apply->user_id = Auth::id();
         $apply->name = $validated['name'];
         $apply->email = $validated['email'];
         $apply->nik_ktp = $validated['nik_ktp'];

@@ -52,8 +52,8 @@ class CoursesController extends Controller
             'course_time' => 'required|string|max:255',
             'cat_id' => 'required|string|max:255',
             'cover' => 'required|image|mimes:png,jpg,svg',
-            'course_type' => 'required|string|max:255',
-            'ordinal' => 'required|string|max:10',
+            // 'course_type' => 'required|string|max:255',
+            // 'ordinal' => 'required|string|max:10',
             'access_type' => 'required|string|max:255',
             // 'publish_date' => 'required|string|max:255',
         ]);

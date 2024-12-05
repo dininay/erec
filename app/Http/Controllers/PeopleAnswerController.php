@@ -35,7 +35,7 @@ class PeopleAnswerController extends Controller
     public function store(Request $request, Courses $course, $question)
     {
         //
-        $question_details = Question::where('question_id', $question)->first();
+        // $question_details = Question::where('question_id', $question)->first();
 
         $validated = $request->validate([
             'answer' => 'required|exists:r_answer,answer_id'
@@ -44,106 +44,148 @@ class PeopleAnswerController extends Controller
         DB::beginTransaction();
 
         try {
-            $selectedAnswer = Answer::find($validated['answer']);
+            $answerValue = $validated['answer'];
 
-            if($selectedAnswer->question_id != $question){
-                $error = ValidationException::withMessages([
-                    'system_error' => ['System error!' . ('Jawaban Tidak Tersedia Pada Pertanyaan')],
-                ]);
-                throw $error;
-            }
-
-            $existingAnswer = PeopleAnswer::where('user_id', Auth::id())->where('question_id', $question)
+            $existingAnswer = PeopleAnswer::where('user_id', Auth::id())
+            ->where('question_id', $question)
             ->first();
 
-            if($existingAnswer){
-                $error = ValidationException::withMessages([
-                    'system_error' => ['System error!' . ('Jawaban Tidak Tersedia Pada Pertanyaan')],
+            if ($existingAnswer) {
+                // Update jika jawaban berbeda
+                if ($existingAnswer->answer != $answerValue) {
+                    $existingAnswer->update([
+                        'answer' => $answerValue,
+                    ]);
+                }
+            } else {
+                // Buat jawaban baru
+                $selectedAnswer = Answer::find($answerValue);
+    
+                if ($selectedAnswer->question_id != $question) {
+                    throw ValidationException::withMessages([
+                        'system_error' => ['Jawaban tidak sesuai dengan pertanyaan yang dipilih.'],
+                    ]);
+                }
+    
+                PeopleAnswer::create([
+                    'user_id' => Auth::id(),
+                    'question_id' => $question,
+                    'answer' => $selectedAnswer->is_correct ? 'correct' : 'wrong',
                 ]);
-                throw $error;
             }
-
-            $answerValue = $selectedAnswer->is_correct ? 'correct' : 'wrong';
-
-            PeopleAnswer::create([
-                'user_id' => Auth::id(),
-                'question_id' => $question,
-                'answer' => $answerValue,
-            ]);
-            
-            DB::commit();
 
             $nextQuestion = Question::where('course_id', $course->course_id)
             ->where('question_id', '>', $question)
             ->orderBy('question_id', 'asc')
             ->first();
 
-            if($nextQuestion){
-                return redirect()->route('dashboard.learning.course', ['course' => $course->course_id, 'question' => $nextQuestion->question_id]);
-            }
-            else{
-                // return redirect()->route('dashboard.learning.finished.course', $course->course_id);
-                return redirect()->route('dashboard.learning.index')->with('success', 'All answers have been submitted.');
-            }
+            if (!$nextQuestion) {
+                DB::commit();
+    
+                session()->flash('lastQuestion', true);
 
-        } catch (\Exception $e){
-            DB::rollBack();
-            return redirect()->back()->withErrors(['system_error' => 'System Error !'. $e->getMessage()]);
-        }
-    }
-
-    public function storeessay(Request $request, Courses $course, $question)
-    {
-        // Ambil detail pertanyaan
-        $question_details = Question::where('question_id', $question)->first();
-
-        // Validasi data yang diterima
-        $validated = $request->validate([
-            'answer' => 'required|string'  // pastikan answer berupa string untuk soal essay
-        ]);
-
-        DB::beginTransaction();
-
-        try {
-            // Simpan jawaban essay ke dalam PeopleAnswer
-            $answerValue = $validated['answer'];
-
-            // Cek apakah sudah ada jawaban untuk pertanyaan ini oleh user
-            $existingAnswer = PeopleAnswer::where('user_id', Auth::id())
-                ->where('question_id', $question)
-                ->first();
-
-            if ($existingAnswer) {
-                // Jika sudah ada jawaban sebelumnya, throw error
-                $error = ValidationException::withMessages([
-                    'system_error' => ['Jawaban untuk pertanyaan ini sudah disubmit sebelumnya.']
+                return redirect()->route('dashboard.learning.course', [
+                    'course' => $course->course_id,
+                    'question' => $question
                 ]);
-                throw $error;
             }
 
-            // Tentukan apakah jawaban benar atau salah
-            $isCorrect = $this->checkEssayAnswer($question_details, $answerValue);
-
-            // Masukkan jawaban dan status ke tabel PeopleAnswer
-            PeopleAnswer::create([
-                'user_id' => Auth::id(),
-                'question_id' => $question,
-                'answer' => $isCorrect ? 'correct' : 'wrong',  // Menyimpan status benar atau salah
-            ]);
+            $prevQuestion = Question::where('course_id', $course->course_id)
+                ->where('question_id', '<', $question)
+                ->orderBy('question_id', 'desc')
+                ->first();
             
             DB::commit();
 
-            // Cari pertanyaan berikutnya untuk ditampilkan
-            $nextQuestion = Question::where('course_id', $course->course_id)
-                ->where('question_id', '>', $question)
-                ->orderBy('question_id', 'asc')
+            if ($request->has('next')) {
+                return redirect()->route('dashboard.learning.course', [
+                    'course' => $course->course_id,
+                    'question' => $nextQuestion ? $nextQuestion->question_id : $question,
+                ]);
+            }
+    
+            if ($request->has('previous')) {
+                return redirect()->route('dashboard.learning.course', [
+                    'course' => $course->course_id,
+                    'question' => $prevQuestion ? $prevQuestion->question_id : $question,
+                ]);
+            }
+    
+            // Default redirect to the course dashboard
+            return redirect()->route('dashboard.learning.index')
+                ->with('success', 'All answers have been submitted.');
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->withErrors(['system_error' => 'System Error: ' . $e->getMessage()]);
+        }
+    }
+
+        public function storeessay(Request $request, Courses $course, $question)
+        {
+            $question_details = Question::where('question_id', $question)->first();
+
+            $validated = $request->validate([
+                'answer' => 'required|string'  
+            ]);
+
+            DB::beginTransaction();
+
+            try {
+                $answerValue = $validated['answer'];
+
+                $existingAnswer = PeopleAnswer::where('user_id', Auth::id())
+                ->where('question_id', $question)
                 ->first();
 
-            if ($nextQuestion) {
-                // Arahkan ke pertanyaan berikutnya
+                if ($existingAnswer) {
+                    if ($existingAnswer->answer != $answerValue) {
+                        PeopleAnswer::where('user_id', Auth::id())
+                        ->where('question_id', $question)
+                        ->update([
+                            'answer' => $answerValue,
+                        ]);
+                    }
+                } else {
+                    PeopleAnswer::create([
+                        'user_id' => Auth::id(),
+                        'question_id' => $question,
+                        'answer' => $answerValue,
+                    ]);
+                }
+
+            $nextQuestion = Question::where('course_id', $course->course_id)
+            ->where('question_id', '>', $question)
+            ->orderBy('question_id', 'asc')
+            ->first();
+
+            if (!$nextQuestion) {
+                DB::commit();
+    
+                session()->flash('lastQuestion', true);
+
                 return redirect()->route('dashboard.learning.course', [
-                    'course' => $course->course_id, 
-                    'question' => $nextQuestion->question_id
+                    'course' => $course->course_id,
+                    'question' => $question
+                ]);
+            }
+
+            $prevQuestion = Question::where('course_id', $course->course_id)
+                ->where('question_id', '<', $question)
+                ->orderBy('question_id', 'desc')
+                ->first();
+                
+            DB::commit();
+
+            if ($nextQuestion) {
+                return redirect()->route('dashboard.learning.course', [
+                    'course' => $course->course_id,
+                    'question' => $nextQuestion->question_id,
+                ]);
+            } elseif ($prevQuestion) {
+                return redirect()->route('dashboard.learning.course', [
+                    'course' => $course->course_id,
+                    'question' => $prevQuestion->question_id,
                 ]);
             } else {
                 // Semua jawaban sudah disubmit, arahkan ke halaman selesai

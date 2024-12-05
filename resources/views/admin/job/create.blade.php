@@ -90,7 +90,7 @@
                         <input type="text" class="font-semibold placeholder:text-[#7F8190] placeholder:font-normal w-full outline-none" placeholder="Write your better job title" name="job_title" required>
                     </div>
                 </div>
-                <div class="flex flex-col gap-[10px]">
+                {{-- <div class="flex flex-col gap-[10px]">
                     <p class="font-semibold">Job Desc</p>
                     <div class="flex items-center w-[500px] h-[52px] p-[14px_16px] rounded-full border border-[#EEEEEE] transition-all duration-300 focus-within:border-2 focus-within:border-[#0A090B]">
                         <div class="mr-[14px] w-6 h-6 flex items-center justify-center overflow-hidden">
@@ -98,32 +98,35 @@
                         </div>
                         <input type="text" class="font-semibold placeholder:text-[#7F8190] placeholder:font-normal w-full outline-none" placeholder="Write your better job desc" name="job_desc" required>
                     </div>
-                </div>
+                </div> --}}
                 <div class="flex flex-col gap-[10px]">
                     <p class="font-semibold">Job Qualification</p>
-                    <div class="flex items-center w-[500px] h-[52px] p-[14px_16px] rounded-full border border-[#EEEEEE] transition-all duration-300 focus-within:border-2 focus-within:border-[#0A090B]">
+                    <div class="flex items-center w-[500px] h-[200px] p-[14px_16px] rounded-full border border-[#EEEEEE] transition-all duration-300 focus-within:border-2 focus-within:border-[#0A090B]">
                         <div class="mr-[14px] w-6 h-6 flex items-center justify-center overflow-hidden">
                             <img src="{{asset('images/icons/note-favorite-outline.svg')}}" class="w-full h-full object-contain" alt="icon">
                         </div>
-                        <input type="text" class="font-semibold placeholder:text-[#7F8190] placeholder:font-normal w-full outline-none" placeholder="Write your better job qualification" name="qualification" required>
+                        <textarea type="text" class="font-semibold placeholder:text-[#7F8190] placeholder:font-normal w-full h-full outline-none h-full" placeholder="Write your better job qualification" name="qualification" required>
+                        </textarea>
                     </div>
                 </div>
                 <div class="flex flex-col gap-[10px]">
-                    <p class="font-semibold">Job Respoonsibilities</p>
-                    <div class="flex items-center w-[500px] h-[52px] p-[14px_16px] rounded-full border border-[#EEEEEE] transition-all duration-300 focus-within:border-2 focus-within:border-[#0A090B]">
+                    <p class="font-semibold">Job Responsibilities</p>
+                    <div class="flex items-center w-[500px] h-[200px] p-[14px_16px] rounded-full border border-[#EEEEEE] transition-all duration-300 focus-within:border-2 focus-within:border-[#0A090B]">
                         <div class="mr-[14px] w-6 h-6 flex items-center justify-center overflow-hidden">
                             <img src="{{asset('images/icons/note-favorite-outline.svg')}}" class="w-full h-full object-contain" alt="icon">
                         </div>
-                        <input type="text" class="font-semibold placeholder:text-[#7F8190] placeholder:font-normal w-full outline-none" placeholder="Write your better job responsibilities" name="job_respons" required>
+                        <textarea type="text" class="font-semibold placeholder:text-[#7F8190] placeholder:font-normal w-full h-full outline-none" placeholder="Write your better job responsibilities" name="job_respons" required>
+                        </textarea>
                     </div>
                 </div>
                 <div class="flex flex-col gap-[10px]">
                     <p class="font-semibold">General Requirement</p>
-                    <div class="flex items-center w-[500px] h-[52px] p-[14px_16px] rounded-full border border-[#EEEEEE] transition-all duration-300 focus-within:border-2 focus-within:border-[#0A090B]">
+                    <div class="flex items-center w-[500px] h-[200px] p-[14px_16px] rounded-full border border-[#EEEEEE] transition-all duration-300 focus-within:border-2 focus-within:border-[#0A090B]">
                         <div class="mr-[14px] w-6 h-6 flex items-center justify-center overflow-hidden">
                             <img src="{{asset('images/icons/note-favorite-outline.svg')}}" class="w-full h-full object-contain" alt="icon">
                         </div>
-                        <input type="text" class="font-semibold placeholder:text-[#7F8190] placeholder:font-normal w-full outline-none" placeholder="Write your better general requirement" name="general_req" required>
+                        <textarea type="text" class="font-semibold placeholder:text-[#7F8190] placeholder:font-normal w-full h-full outline-none" placeholder="Write your better general requirement" name="general_req" required>
+                        </textarea>
                     </div>
                 </div>
                 <div class="flex flex-col gap-[10px]">
@@ -180,6 +183,21 @@
                         </select>
                     </div>
                 </div>
+                <div class="group/specwork flex flex-col gap-[10px]">
+                    <p class="font-semibold">Specified Work Area</p>
+                    <div class="peer flex items-center p-[12px_16px] rounded-full border border-[#EEEEEE] transition-all duration-300 focus-within:border-2 focus-within:border-[#0A090B]">
+                        <div class="mr-[10px] w-6 h-6 flex items-center justify-center overflow-hidden">
+                            <img src="{{asset('images/icons/bill.svg')}}" class="w-full h-full object-contain" alt="icon">
+                        </div>
+                        <select id="specwork" class="pl-1 font-semibold focus:outline-none w-full text-[#0A090B] invalid:text-[#7F8190] invalid:font-normal appearance-none bg-[url('{{asset('images/icons/arrow-down.svg')}}')] bg-no-repeat bg-right" name="specwork_id" required>
+                            <option value="" disabled selected hidden>Choose one of city</option>
+                            @forelse($specworks as $specwork)
+                            <option value="{{ $specwork->city_id }}" class="font-semibold">{{ $specwork->city }}</option>
+                            @empty
+                            @endforelse
+                        </select>
+                    </div>
+                </div>
                 <div class="group/jobtype flex flex-col gap-[10px]">
                     <p class="font-semibold">Job Type</p>
                     <div class="peer flex items-center p-[12px_16px] rounded-full border border-[#EEEEEE] transition-all duration-300 focus-within:border-2 focus-within:border-[#0A090B]">
@@ -210,16 +228,16 @@
                         </select>
                     </div>
                 </div>
-                <label class="font-semibold flex items-center gap-[10px]"
+                {{-- <label class="font-semibold flex items-center gap-[10px]"
                     ><input
                     type="radio"
                     name="tnc"
                     class="w-[24px] h-[24px] appearance-none checked:border-[3px] checked:border-solid checked:border-white rounded-full checked:bg-[#2B82FE] ring ring-[#EEEEEE]"
                     checked/>
                     I have read terms and conditions
-                </label>
+                </label> --}}
                 <div class="flex items-center gap-5">
-                    <a href="" class="w-full h-[52px] p-[14px_20px] bg-[#0A090B] rounded-full font-semibold text-white transition-all duration-300 text-center">Add to Draft</a>
+                    {{-- <a href="" class="w-full h-[52px] p-[14px_20px] bg-[#0A090B] rounded-full font-semibold text-white transition-all duration-300 text-center">Add to Draft</a> --}}
                     <button type="submit" class="w-full h-[52px] p-[14px_20px] bg-[#6436F1] rounded-full font-bold text-white transition-all duration-300 hover:shadow-[0_4px_15px_0_#6436F14D] text-center">Save Course</button>
                 </div>
             </form>

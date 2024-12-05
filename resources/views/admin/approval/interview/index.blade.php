@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="{{ asset('css/output.css') }}" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body class="font-poppins text-[#0A090B]">
     <section id="content" class="flex">
@@ -64,6 +65,12 @@
                         <p class="text-[#7F8190]">Job Title</p>
                     </div>
                     <div class="flex shrink-0 w-[150px]">
+                        <p class="text-[#7F8190]">CV</p>
+                    </div>
+                    <div class="flex shrink-0 w-[150px]">
+                        <p class="text-[#7F8190]">Photos</p>
+                    </div>
+                    <div class="flex shrink-0 w-[150px]">
                         <p class="text-[#7F8190]">Status Interview</p>
                     </div>
                     <div class="flex justify-center shrink-0 w-[150px]">
@@ -83,6 +90,42 @@
                         </div>
                         <div class="flex shrink-0 w-[150px] items-center justify-center">
                             <p class="font-semibold">{{ $status->apply->registjob->job_title }}</p>
+                        </div>
+                        <div class="flex shrink-0 w-[150px] items-center justify-center">
+                            <div class="flex gap-2 items-center">
+                                <a 
+                                    href="{{ asset('images/' . $status->apply->reg_id . '/' . $status->apply->details->cv) }}" 
+                                    target="_blank" 
+                                    class="text-blue-500 hover:text-blue-700"
+                                >
+                                    <i class="fa fa-eye h-6 w-6"></i>
+                                </a>
+                                <a 
+                                    href="{{ asset('images/' . $status->apply->reg_id . '/' . $status->apply->details->cv) }}" 
+                                    download 
+                                    class="text-green-500 hover:text-green-700"
+                                >
+                                    <i class="fa fa-download h-6 w-6"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="flex shrink-0 w-[150px] items-center justify-center">
+                            <div class="flex gap-2 items-center">
+                                <a 
+                                    href="{{ asset('images/' . $status->apply->reg_id . '/' . $status->apply->details->photo) }}" 
+                                    target="_blank" 
+                                    class="text-blue-500 hover:text-blue-700"
+                                >
+                                    <i class="fa fa-eye h-6 w-6"></i>
+                                </a>
+                                <a 
+                                    href="{{ asset('images/' . $status->apply->reg_id . '/' . $status->apply->details->photo) }}" 
+                                    download 
+                                    class="text-green-500 hover:text-green-700"
+                                >
+                                    <i class="fa fa-download h-6 w-6"></i>
+                                </a>
+                            </div>
                         </div>
                         <div class="flex shrink-0 w-[150px]">
                             <div class="flex items-center gap-4">

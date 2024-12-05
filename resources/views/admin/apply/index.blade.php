@@ -72,7 +72,7 @@
                     <div class="flex shrink-0 w-[150px]">
                         <p class="text-[#7F8190]">Status Akhir</p>
                     </div>
-                    <div class="flex justify-center shrink-0 w-[150px]">
+                    <div class="flex justify-center shrink-0 w-[200px]">
                         <p class="text-[#7F8190]">Date Created</p>
                     </div>
                     <div class="flex justify-center shrink-0 w-[120px]">
@@ -90,28 +90,28 @@
                         <div class="flex shrink-0 w-[150px] items-center justify-center">
                             <p class="font-semibold">{{ $status->workloc->workloc_name }}</p>
                         </div>
-                        <div class="flex shrink-0 w-[300px]">
+                        <div class="flex shrink-0 w-[150px]">
                             <div class="flex items-center gap-4">
                                 <div class="flex flex-col gap-[2px]">
                                     <p class="font-bold text-lg">
-                                        @if($status->status_admin === 'Approve')
-                                            Lolos Seleksi Administrasi
-                                        @elseif($status->status_admin === 'In Process')
+                                        @if($status->status_admin === 'In Process')
                                             In Process Seleksi Administrasi
-                                        @elseif($status->status_interview === 'Approve')
-                                            Lolos Seleksi Interview
+                                        @elseif($status->status_admin === 'Not Passed')
+                                            Tidak Lolos
                                         @elseif($status->status_interview === 'In Process')
                                             In Process Seleksi Interview
-                                        @elseif($status->status_docclear === 'Approve')
-                                            Lolos Seleksi Document Clearance
+                                        @elseif($status->status_interview === 'Not Passed')
+                                            Tidak Lolos
                                         @elseif($status->status_docclear === 'In Process')
                                             In Process Seleksi Document Clearance
-                                        @elseif($status->status_oje === 'Approve')
-                                            Lolos Seleksi OJE
-                                        @elseif($status->status_onboarding === 'Approve')
-                                            Selamat bergabung menjadi tim PT. Pesta Pora Abadi
+                                        @elseif($status->status_docclear === 'Not Passed')
+                                            Tidak Lolos
+                                        @elseif($status->status_onboarding === 'Passed')
+                                            Lolos
                                         @elseif($status->status_onboarding === 'In Process')
                                             In Process Seleksi Onboarding
+                                        @elseif($status->status_onboarding === 'Not Passed')
+                                            Tidak Lolos
                                         @else
                                             Status belum tersedia
                                         @endif
@@ -121,7 +121,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="flex shrink-0 w-[150px] items-center justify-center">
+                        <div class="flex shrink-0 w-[200px] items-center justify-center">
                             <p class="font-semibold">{{ \Carbon\Carbon::parse($status->created_at)->format('d F Y') }}</p>
                         </div>
                         <div class="flex shrink-0 w-[120px] items-center">

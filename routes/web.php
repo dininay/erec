@@ -43,7 +43,7 @@ Route::post('/submit-apply', [ApplyController::class, 'submitApply'])->name('sub
 Route::get('/logout', function () {
     Auth::logout();
     return redirect('/');
-})->middleware('auth')->name('logout');
+})->middleware('auth')->name('custom_logout');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -66,13 +66,24 @@ Route::middleware('auth')->group(function () {
     Route::prefix('dashboard')->name('dashboard.')->group(function () {
 
         Route::get('/export-excel', [DataExportController::class, 'downloadExcel'])->name('data.download.excel');
+        Route::post('/upload-excel', [DataExportController::class, 'uploadExcel'])->name('upload.excel');
+        Route::get('/unduh-excel', [DataExportController::class, 'unduhExcel'])->name('unduh.excel');
+        Route::get('report', [DataExportController::class, 'index'])->name('report.index');
+        Route::get('report/{apply}', [DataExportController::class, 'show'])->name('report.show');
 
         // Master Data
         Route::resource('category', CategoryController::class)->middleware('role:HR');
         Route::resource('jobtype', JobTypeController::class)->middleware('role:HR');
         Route::resource('joblevel', JobLevelController::class)->middleware('role:HR');
         Route::resource('workloc', WorkLocController::class)->middleware('role:HR');
-        Route::resource('people', PeopleController::class)->middleware('role:HR');
+        Route::resource('people', PeopleController::class)->except(['show'])->middleware('role:HR');
+
+        Route::get('people/{user_id}', [PeopleController::class, 'show'])
+        ->name('people.show')
+        ->middleware('role:HR');
+
+        Route::get('people/{user_id}', [PeopleController::class, 'show'])->name('people.show')->middleware('role:HR');
+
         Route::resource('division', DivisionController::class)->middleware('role:HR');
         Route::resource('dept', DeptController::class)->middleware('role:HR');
         Route::resource('job', RegistJobController::class)->middleware('role:HR');

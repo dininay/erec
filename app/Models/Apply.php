@@ -58,9 +58,33 @@ class Apply extends Model
         return $this->hasOne(ApplyDetail::class, 'apply_id', 'apply_id');
     }
 
+    public function status()
+    {
+        return $this->hasOne(Status::class, 'apply_id', 'apply_id');
+    }
+
     public function users()
     {
         return $this->belongsTo(User::class, 'user_id', 'user_id');
     }
+
+    public function course(){
+        return $this->belongsTo(Courses::class, 'course_id');
+    }
+
+    public function courses(){
+        return $this->hasMany(Courses::class, 'apply_id');
+    }
+
+    public function people()
+    {
+        return $this->belongsTo(People::class, 'user_id', 'user_id');
+    }
+
+    public function peoples()
+    {
+        return $this->hasMany(People::class); 
+    }
+
 
 }

@@ -79,7 +79,8 @@
                         <select id="status" class="pl-1 font-semibold focus:outline-none w-full text-[#0A090B] invalid:text-[#7F8190] invalid:font-normal appearance-none bg-[url('{{asset('images/icons/arrow-down.svg')}}')] bg-no-repeat bg-right" name="status_interview" required>
                             <option value="{{ $status->status_interview }}" selected >{{ $status->status_interview }}</option>
                             <option value="In Process" class="font-semibold">In Process</option>
-                            <option value="Approve" class="font-semibold">Approve</option>
+                            <option value="Passed" class="font-semibold">Passed</option>
+                            <option value="Not Passed" class="font-semibold">Not Passed</option>
                         </select>
                     </div>
                 </div>

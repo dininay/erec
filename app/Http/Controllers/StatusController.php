@@ -14,7 +14,7 @@ class StatusController extends Controller
     public function indexadmin()
     {
         $user = Auth::user();
-        $statuss = Status::whereIn('status_admin', ['In Process', 'Approve'])->orderBy('people_status_id', 'DESC')->get();
+        $statuss = Status::whereIn('status_admin', ['In Process', 'Passed', 'Not Passed', 'Not Passed'])->orderBy('people_status_id', 'DESC')->get();
         return view('admin.approval.administration.index', [
             'statuss'=> $statuss,
             'user'=> $user,
@@ -24,7 +24,7 @@ class StatusController extends Controller
     public function indexinterview()
     {
         $user = Auth::user();
-        $statuss = Status::whereIn('status_admin', ['Approve'])->orderBy('people_status_id', 'DESC')->get();
+        $statuss = Status::whereIn('status_admin', ['Passed'])->orderBy('people_status_id', 'DESC')->get();
 
         $completedUsers = [];
 
@@ -78,7 +78,7 @@ class StatusController extends Controller
     public function indexdocclear()
     {
         $user = Auth::user();
-        $statuss = Status::whereIn('status_docclear', ['In Process', 'Approve'])->orderBy('people_status_id', 'DESC')->get();
+        $statuss = Status::whereIn('status_docclear', ['In Process', 'Passed', 'Not Passed'])->orderBy('people_status_id', 'DESC')->get();
         return view('admin.approval.docclear.index', [
             'statuss'=> $statuss,
             'user'=> $user,
@@ -88,7 +88,7 @@ class StatusController extends Controller
     public function indexoje()
     {
         $user = Auth::user();
-        $statuss = Status::whereIn('status_oje', ['In Process', 'Approve'])->orderBy('people_status_id', 'DESC')->get();
+        $statuss = Status::whereIn('status_oje', ['In Process', 'Passed', 'Not Passed'])->orderBy('people_status_id', 'DESC')->get();
         return view('admin.approval.oje.index', [
             'statuss'=> $statuss,
             'user'=> $user,
@@ -98,7 +98,7 @@ class StatusController extends Controller
     public function indexonboarding()
     {
         $user = Auth::user();
-        $statuss = Status::whereIn('status_onboarding', ['In Process', 'Approve'])->orderBy('people_status_id', 'DESC')->get();
+        $statuss = Status::whereIn('status_onboarding', ['In Process', 'Passed', 'Not Passed'])->orderBy('people_status_id', 'DESC')->get();
         return view('admin.approval.onboarding.index', [
             'statuss'=> $statuss,
             'user'=> $user,
