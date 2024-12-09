@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\SubmittedMail;
 use App\Models\Apply;
 use App\Models\ApplyDetail;
 use App\Models\PeopleStatus;
@@ -9,7 +10,10 @@ use App\Models\RegistJob;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
 
 class ApplyController extends Controller
 {
@@ -51,6 +55,47 @@ class ApplyController extends Controller
             $jobDetails = null;
         }
         return view('admin.apply.index', [
+            'statusapplys'=> $statusapplys,         
+            'user'=> $user,
+        ]);
+    }
+
+    public function indexapplicant()
+    {
+        //
+        $user = Auth::check() ? Auth::user() : null;
+
+        $statusapplys = RegistJob::join('r_apply', 'r_registjob.reg_code', '=', 'r_apply.reg_id')
+        ->join('r_people_status', 'r_apply.apply_id', '=', 'r_people_status.apply_id')
+        ->select(
+            'r_apply.*',
+            'r_people_status.*',
+            'r_registjob.*'
+        )
+        ->orderBy('r_registjob.reg_id', 'DESC')
+        ->where('r_people_status.user_id', '=', $user->id)
+        ->get();
+
+        $applys = $user
+        ? $statusapplys->filter(fn($job) => $job->user_id === $user->id)->values()
+        : collect();
+        // Ambil data user terkait pekerjaan
+        if ($user) {
+            // Mengambil data pekerjaan yang terhubung dengan user berdasarkan email
+            $jobDetails = Apply::where('email', $user->email)
+                ->leftJoin('r_registjob', 'r_registjob.reg_code', '=', 'r_apply.reg_id')
+                ->leftJoin('r_people_status', 'r_apply.apply_id', '=', 'r_people_status.apply_id')
+                ->select(
+                    'r_apply.*',
+                    'r_people_status.*',
+                    'r_registjob.*'
+                )
+                ->orderBy('r_registjob.reg_id', 'DESC')
+                ->first(); // Mengambil data pekerjaan pertama yang ditemukan
+        } else {
+            $jobDetails = null;
+        }
+        return view('admin.apply.indexapplicant', [
             'statusapplys'=> $statusapplys,         
             'user'=> $user,
         ]);
@@ -196,11 +241,17 @@ class ApplyController extends Controller
         $applyDetail->photo = $photoFileName;
         $applyDetail->save();
 
-        $peopleStatus = new PeopleStatus();
-        $peopleStatus->user_id = Auth::id();  
+        $peopleStatus = new PeopleStatus(); 
+        $peopleStatus->user_id = Auth::id(); 
         $peopleStatus->apply_id = $apply_id; 
         $peopleStatus->status_admin = 'In Process';
         $peopleStatus->save();
+
+        Mail::to($validated['email'])->send(new SubmittedMail(
+            $validated['name'],
+            $validated['email'],
+            $apply_id
+        ));
 
         return redirect()->route('jobdetail', ['reg_code' => $validated['reg_code']])->with('success', 'Form berhasil disubmit!');
     }

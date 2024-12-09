@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Apply;
+use App\Models\RegistJob;
 use App\Models\Status; // sesuaikan dengan model yang digunakan
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -11,6 +13,53 @@ use Illuminate\Support\Str;
 
 class StatusController extends Controller
 {
+    public function indexstatus()
+    {
+        $user = Auth::user();
+        $statuss = Status::whereIn('status_admin', ['In Process', 'Not Passed', 'Passed'])->orderBy('people_status_id', 'DESC')->get();
+
+        $completedUsers = [];
+
+        foreach ($statuss as $status) {
+            $userId = $status->user_id;
+    
+            $courseIds = DB::table('r_people')
+                ->where('user_id', $userId)
+                ->pluck('course_id');
+    
+            $allCoursesCompleted = true;
+    
+            foreach ($courseIds as $courseId) {
+                $questionIds = DB::table('r_question')
+                    ->where('course_id', $courseId)
+                    ->pluck('question_id');
+    
+                $answeredQuestionIds = DB::table('r_people_answers')
+                    ->where('user_id', $userId)
+                    ->pluck('question_id');
+    
+                if ($questionIds->diff($answeredQuestionIds)->isNotEmpty()) {
+                    $allCoursesCompleted = false;
+                    break;
+                }
+            }
+    
+            if ($allCoursesCompleted) {
+                $completedUsers[] = $userId;
+            }
+        }
+
+        $users = DB::table('r_people_status')
+            ->whereIn('user_id', $completedUsers)
+            ->get();
+
+        return view('admin.approval.status.index', [
+            'statuss'=> $statuss,
+            'user'=> $user,
+            'users'=> $users,
+        ]);
+    }
+
     public function indexadmin()
     {
         $user = Auth::user();
@@ -159,12 +208,25 @@ class StatusController extends Controller
         return redirect()->route('dashboard.approval.' . $type . '.index');
     }
 
+    public function editstatus(Status $people_status_id)
+    {
+        $user = Auth::user();
+        return view('admin.approval.status.edit', [
+            'user' => $user,
+            'status' => $people_status_id
+        ]);
+    }
+
     public function editadmin(Status $people_status_id)
     {
         $user = Auth::user();
+        
+        $statusapplys = Apply::with('details')->find($people_status_id->apply_id)->first();
+
         return view('admin.approval.administration.edit', [
             'user' => $user,
-            'status' => $people_status_id
+            'status' => $people_status_id,
+            'statusapply' => $statusapplys,
         ]);
     }
 
@@ -269,7 +331,7 @@ class StatusController extends Controller
 
             DB::commit();
 
-            return redirect()->route('dashboard.approval.administration.index');
+            return redirect()->route('dashboard.approval.status.index');
         }
         
         catch (\Exception $e){
@@ -303,6 +365,65 @@ class StatusController extends Controller
         catch (\Exception $e){
             DB::rollBack();
             return redirect()->back()->withErrors(['system_error' => 'System Error !'. $e->getMessage()]);
+        }
+    }
+
+    public function updatestatus(Request $request, Status $people_status_id)
+    {
+        //
+        $validated = $request->validate([
+            'status_interview' => 'nullable|string|max:255',
+            'status_docclear' => 'nullable|string|max:255',
+            'status_oje' => 'nullable|string|max:255',
+            'status_onboarding' => 'nullable|string|max:255',
+            'join_date' => 'nullable|string|max:255',
+        ]);
+
+        DB::beginTransaction();
+
+        try {
+            // Set default values
+            $updates = [];
+
+        // Jika status_interview diperbarui, isi interview_date
+        if ($request->filled('status_interview')) {
+            $updates['status_interview'] = $request->status_interview;
+            $updates['interview_date'] = Carbon::now()->toDateString();
+        }
+
+        // Jika status_docclear diperbarui, isi docclear_date
+        if ($request->filled('status_docclear')) {
+            $updates['status_docclear'] = $request->status_docclear;
+            $updates['docclear_date'] = Carbon::now()->toDateString();
+        }
+
+        // Jika status_interview diperbarui, isi interview_date
+        if ($request->filled('status_oje')) {
+            $updates['status_oje'] = $request->status_oje;
+            $updates['oje_date'] = Carbon::now()->toDateString();
+        }
+
+        // Jika status_docclear diperbarui, isi docclear_date
+        if ($request->filled('status_onboarding')) {
+            $updates['status_onboarding'] = $request->status_onboarding;
+            $updates['onboarding_date'] = Carbon::now()->toDateString();
+        }
+
+        // Perbarui field lain tanpa memengaruhi status_admin
+        foreach (['status_interview', 'status_docclear','status_oje', 'status_onboarding', 'join_date'] as $field) {
+            if ($request->filled($field)) {
+                $updates[$field] = $request->$field;
+            }
+        }
+    
+            // Update the status
+            $people_status_id->update($updates);
+    
+            DB::commit();
+            return redirect()->route('dashboard.approval.interview.index')->with('success', 'Status updated successfully!');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->withErrors(['system_error' => 'System Error! ' . $e->getMessage()]);
         }
     }
     

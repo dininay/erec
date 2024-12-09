@@ -33,4 +33,8 @@ class ApplyDetail extends Model
         return $this->belongsTo(Apply::class, 'apply_id', 'apply_id');
     }
 
+    public function details()
+    {
+        return $this->hasMany(ApplyDetail::class, 'apply_id', 'apply_id');
+    }
 }

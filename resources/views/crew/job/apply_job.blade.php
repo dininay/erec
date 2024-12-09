@@ -41,7 +41,7 @@
                                     <div class="row">
                                         <div class="col-lg-6">
                                             <label class="form-label">Posisi yang dituju : {{ $jobs->job_title }}</label><br>
-                                            <label class="form-label">Lokasi Kerja : {{ $jobs->workloc->workloc_name }}</label>
+                                            <label class="form-label">Lokasi Kerja : {{ $jobs->workloc->workloc_name }} - {{ $jobs->specwork->city }}</label>
                                         </div>
                                         <div class="col-lg-6">
                                             <label class="form-label">Job Type : {{ $jobs->jobtype->jobtype_name }}</label><br>

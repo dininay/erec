@@ -35,7 +35,7 @@ class WelcomeController extends Controller
     {
         //
         $user = Auth::user();
-        $jobs = RegistJob::orderBy('reg_id', 'DESC')->get();
+        $jobs = RegistJob::with('specwork')->orderBy('reg_id', 'DESC')->get();
         $headOfficeJobs = RegistJob::where('reg_code', 'like', 'HOF%')
         ->where('status_job', 'Aktif')
             ->orderBy('created_at', 'DESC')
@@ -114,6 +114,7 @@ class WelcomeController extends Controller
             'r_people_status.*',
             'r_registjob.*'
         )
+        ->where('r_apply.user_id', '=', $user->id)
         ->orderBy('r_registjob.reg_id', 'DESC')
         ->get();
 
@@ -134,6 +135,7 @@ class WelcomeController extends Controller
                     'r_registjob.*'
                 )
                 ->orderBy('r_registjob.reg_id', 'DESC')
+                ->where('r_apply.user_id', '=', $user->id)
                 ->first(); // Mengambil data pekerjaan pertama yang ditemukan
         } else {
             $jobDetails = null;

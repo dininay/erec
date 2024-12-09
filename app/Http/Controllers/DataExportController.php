@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Apply;
+use App\Models\City;
 use App\Models\Courses;
 use App\Models\PeopleAnswer;
 use App\Models\Question;
@@ -65,6 +66,93 @@ class DataExportController extends Controller
 
         return view('admin.report.index', [
             'statusapplys'=> $statusapplys,         
+            'user'=> $user,
+        ]);
+    }
+    
+    public function indexfilter(Request $request)
+    {
+        //
+        $user = Auth::check() ? Auth::user() : null;
+
+        $cities = City::all();
+
+        $statusapplys = RegistJob::join('r_apply', 'r_registjob.reg_code', '=', 'r_apply.reg_id')
+        ->join('r_people_status', 'r_apply.apply_id', '=', 'r_people_status.apply_id')
+        ->select(
+            'r_apply.*',
+            'r_people_status.*',
+            'r_registjob.*'
+        )
+        ->orderBy('r_registjob.reg_id', 'DESC');
+
+        if ($request->filled('option')) {
+            $option = $request->input('option');
+            $startDate = $request->input('start_date');
+            $endDate = $request->input('end_date');
+    
+            if ($startDate && $endDate) {
+                $statusapplys->whereBetween($option, [$startDate, $endDate]);
+            }
+    
+            if ($option === 'specwork_id') {
+                $statusapplys->whereIn('r_registjob.specwork_id', $request->input('cities', []));
+            }
+    
+            switch ($option) {
+                case 'status_admin':
+                    if ($request->filled('status_admin')) {
+                        // Filter based on the status_admin value selected
+                        $statusapplys->where('r_people_status.status_admin', $request->input('status_admin'));
+                    }
+                    break;
+    
+                case 'status_psikotes':
+                    if ($request->filled('status_psikotes')) {
+                        $statusapplys->where('r_people_status.status_psikotes', $request->input('status_psikotes'));
+                    }
+                    break;
+    
+                case 'status_interview':
+                    if ($request->filled('status_interview')) {
+                        $statusapplys->where('r_people_status.status_interview', $request->input('status_interview'));
+                    }
+                    break;
+    
+                case 'status_docclear':
+                    if ($request->filled('status_docclear')) {
+                        $statusapplys->where('r_people_status.status_docclear', $request->input('status_docclear'));
+                    }
+                    break;
+    
+                case 'status_oje':
+                    if ($request->filled('status_oje')) {
+                        $statusapplys->where('r_people_status.status_oje', $request->input('status_oje'));
+                    }
+                    break;
+    
+                default:
+                    // Option not found, return with no filter
+                    break;
+            }
+        }
+    
+        $statusapplys = $statusapplys->get();
+    
+        // Status Passed/Not Passed
+        foreach ($statusapplys as $statusapply) {
+            $peopleAnswers = PeopleAnswer::where('user_id', $statusapply->user_id)
+                ->whereNull('r_people_answers.deleted_at')
+                ->get();
+    
+            $allCorrect = $peopleAnswers->every(fn($answer) => $answer->answer === 'correct');
+            $statusapply->passed = $allCorrect;
+            $statusapply->status = $allCorrect ? 'Passed' : 'Not Passed';
+        }
+
+        return view('admin.reportfilter.index', [
+            'statusapplys'=> $statusapplys,    
+            'cities' => $cities,     
             'user'=> $user,
         ]);
     }
@@ -340,6 +428,136 @@ class DataExportController extends Controller
             $sheet->setCellValue('P' . $row, $apply->status->join_date);
             $sheet->setCellValue('Q' . $row, $apply->status->modified_by);
             $sheet->setCellValue('R' . $row, $apply->status->updated_at);
+            $row++;
+        }
+
+        $writer = new Xlsx($spreadsheet);
+
+        $filename = 'data-detail-status-applicant.xlsx';
+
+        return response()->stream(function() use ($writer) {
+            $writer->save('php://output');
+        }, 200, [
+            'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            'Content-Disposition' => 'attachment;filename="data-detail-status-applicant.xlsx"',
+            'Cache-Control' => 'max-age=0',
+        ]);
+    }
+
+    public function unduhFilterExcel(Request $request)
+    {
+        $option = $request->input('option');
+        $startDate = $request->input('start_date');
+        $endDate = $request->input('end_date');
+        
+        $statusapplys = RegistJob::join('r_apply', 'r_registjob.reg_code', '=', 'r_apply.reg_id')
+            ->join('r_people_status', 'r_apply.apply_id', '=', 'r_people_status.apply_id')
+            ->select(
+                'r_apply.*',
+                'r_people_status.*',
+                'r_registjob.*'
+            );
+
+        // Terapkan filter yang sama dengan filter di indexfilter
+        if ($request->filled('option')) {
+            if ($startDate && $endDate) {
+                $statusapplys->whereBetween($option, [$startDate, $endDate]);
+            }
+
+            if ($option === 'specwork_id') {
+                $statusapplys->whereIn('r_registjob.specwork_id', $request->input('cities', []));
+            }
+
+            switch ($option) {
+                case 'status_admin':
+                    if ($request->filled('status_admin')) {
+                        $statusapplys->where('r_people_status.status_admin', $request->input('status_admin'));
+                    }
+                    break;
+
+                case 'status_psikotes':
+                    if ($request->filled('status_psikotes')) {
+                        $statusapplys->where('r_people_status.status_psikotes', $request->input('status_psikotes'));
+                    }
+                    break;
+
+                case 'status_interview':
+                    if ($request->filled('status_interview')) {
+                        $statusapplys->where('r_people_status.status_interview', $request->input('status_interview'));
+                    }
+                    break;
+
+                case 'status_docclear':
+                    if ($request->filled('status_docclear')) {
+                        $statusapplys->where('r_people_status.status_docclear', $request->input('status_docclear'));
+                    }
+                    break;
+
+                case 'status_oje':
+                    if ($request->filled('status_oje')) {
+                        $statusapplys->where('r_people_status.status_oje', $request->input('status_oje'));
+                    }
+                    break;
+            }
+        }
+
+        // Ambil data setelah filter diterapkan
+        $statusapplys = $statusapplys->get();
+
+        // Status Passed/Not Passed
+        foreach ($statusapplys as $statusapply) {
+            $peopleAnswers = PeopleAnswer::where('user_id', $statusapply->user_id)
+                ->whereNull('r_people_answers.deleted_at')
+                ->get();
+
+            $allCorrect = $peopleAnswers->every(fn($answer) => $answer->answer === 'correct');
+            $statusapply->passed = $allCorrect;
+            $statusapply->status = $allCorrect ? 'Passed' : 'Not Passed';
+        }
+
+        // Buat file Excel dengan data yang sudah difilter
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+
+        $sheet->setCellValue('A1', 'Nama');
+        $sheet->setCellValue('B1', 'Email');
+        $sheet->setCellValue('C1', 'Phone Number');
+        $sheet->setCellValue('D1', 'Applied Department');
+        $sheet->setCellValue('E1', 'Applied Job Title');
+        $sheet->setCellValue('F1', 'Job Expertise');
+        $sheet->setCellValue('G1', 'Applied Work Location');
+        $sheet->setCellValue('H1', 'Specified Work Area');
+        $sheet->setCellValue('I1', 'Application Date ');
+        $sheet->setCellValue('J1', 'Administration Screening Status');
+        $sheet->setCellValue('K1', 'Psychotest Status');
+        $sheet->setCellValue('L1', 'Interview Status');
+        $sheet->setCellValue('M1', 'Document Clearance Status');
+        $sheet->setCellValue('N1', 'OJE Status');
+        $sheet->setCellValue('O1', 'Onboarding Status');
+        $sheet->setCellValue('P1', 'Join Date');
+        $sheet->setCellValue('Q1', 'Last Modified By');
+        $sheet->setCellValue('R1', 'Modified date');
+
+        $row = 2;
+        foreach ($statusapplys as $apply) {
+            $sheet->setCellValue('A' . $row, $apply->name);
+            $sheet->setCellValue('B' . $row, $apply->email);
+            $sheet->setCellValue('C' . $row, $apply->wa_aktif);
+            $sheet->setCellValue('D' . $row, $apply->dept->dept_name);
+            $sheet->setCellValue('E' . $row, $apply->job_title);
+            $sheet->setCellValue('F' . $row, $apply->job_desc);
+            $sheet->setCellValue('G' . $row, $apply->workloc->workloc_name);
+            $sheet->setCellValue('H' . $row, $apply->workloc->workloc_name);
+            $sheet->setCellValue('I' . $row, $apply->created_at);
+            $sheet->setCellValue('J' . $row, $apply->status_admin);
+            $sheet->setCellValue('K' . $row, $apply->status);
+            $sheet->setCellValue('L' . $row, $apply->status_interview);
+            $sheet->setCellValue('M' . $row, $apply->status_docclear);
+            $sheet->setCellValue('N' . $row, $apply->status_oje);
+            $sheet->setCellValue('O' . $row, $apply->status_onboarding);
+            $sheet->setCellValue('P' . $row, $apply->join_date);
+            $sheet->setCellValue('Q' . $row, $apply->modified_by);
+            $sheet->setCellValue('R' . $row, $apply->updated_at);
             $row++;
         }
 

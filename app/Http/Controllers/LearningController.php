@@ -80,10 +80,28 @@ class LearningController extends Controller
                 }
             }
         }
+        if ($my_course->isNotEmpty()) {
+            $courseTime = DB::table('r_course')
+                ->where('course_id', $my_course->first()->course_id)
+                ->value('course_time');
+        } else {
+            $courseTime = null; // Atur default jika tidak ada kursus
+        }
 
-        $courseTime = DB::table('r_course')
-        ->where('course_id', $course->course_id)
-        ->value('course_time');
+        if ($my_course->isEmpty()) {
+            $my_course = collect([
+                (object)[
+                    'course_id' => null,
+                    'is_completed' => false,
+                    'nextQuestionId' => null,
+                    'can_start' => false,
+                ]
+            ]);
+        }
+
+        // $courseTime = DB::table('r_course')
+        // ->where('course_id', $course->course_id)
+        // ->value('course_time');
         
         return view('crew.course.learning', [
             'courses' => $courses,

@@ -46,14 +46,14 @@
             <div class="flex flex-col px-5 mt-5">
                 <div class="w-full flex justify-between items-center">
                     <div class="flex flex-col gap-1">
-                        <p class="font-extrabold text-[30px] leading-[45px]">Information Detail Data Management</p>
+                        <p class="font-extrabold text-[30px] leading-[45px]">Information Status Applicant</p>
                         <p class="text-[#7F8190]">Provide high quality for best students</p>
                     </div>
-                    <div class="relative">
-                        <a href="{{ route('dashboard.unduh.excel') }}" class="btn btn-primary">
+                    {{-- <div class="relative">
+                        <a href="{{ route('dashboard.data.download.excel') }}" class="btn btn-primary">
                             <p class="font-semibold text-sm">Unduh Data (Excel)</p>
                         </a>
-                    </div>
+                    </div> --}}
                     
                     {{-- <a href="{{ route('dashboard.joblevel.create') }}" class="h-[52px] p-[14px_20px] bg-[#6436F1] rounded-full font-bold text-white transition-all duration-300 hover:shadow-[0_4px_15px_0_#6436F14D]">Add New Status</a> --}}
                 </div>
@@ -72,7 +72,7 @@
                     <div class="flex shrink-0 w-[150px]">
                         <p class="text-[#7F8190]">Status Akhir</p>
                     </div>
-                    <div class="flex justify-center shrink-0 w-[150px]">
+                    <div class="flex justify-center shrink-0 w-[200px]">
                         <p class="text-[#7F8190]">Date Created</p>
                     </div>
                     <div class="flex justify-center shrink-0 w-[120px]">
@@ -106,11 +106,7 @@
                                             In Process Seleksi Document Clearance
                                         @elseif($status->status_docclear === 'Not Passed')
                                             Tidak Lolos
-                                        @elseif($status->status_oje === 'In Process')
-                                            In Process Seleksi OJE
-                                        @elseif($status->status_oje === 'Not Passed')
-                                            Tidak Lolos
-                                        @elseif($status->status_onboarding === 'Approve')
+                                        @elseif($status->status_onboarding === 'Passed')
                                             Lolos
                                         @elseif($status->status_onboarding === 'In Process')
                                             In Process Seleksi Onboarding
@@ -125,7 +121,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="flex shrink-0 w-[150px] items-center justify-center">
+                        <div class="flex shrink-0 w-[200px] items-center justify-center">
                             <p class="font-semibold">{{ \Carbon\Carbon::parse($status->created_at)->format('d F Y') }}</p>
                         </div>
                         <div class="flex shrink-0 w-[120px] items-center">
@@ -135,7 +131,7 @@
                                         menu
                                         <img src="{{asset('images/icons/arrow-down.svg')}}" alt="icon">
                                     </button>
-                                    <a href="{{ route('dashboard.report.show', ['apply' => $status->apply_id]) }}" class="flex items-center justify-between font-bold text-sm w-full">
+                                    <a href="{{ route('dashboard.apply.show', ['apply' => $status->apply_id]) }}" class="flex items-center justify-between font-bold text-sm w-full">
                                         Detail
                                     </a>
                                     {{-- <a href="{{ route('dashboard.statusapply.edit', $status) }}" class="flex items-center justify-between font-bold text-sm w-full">

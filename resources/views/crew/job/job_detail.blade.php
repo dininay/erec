@@ -45,7 +45,7 @@
                         <div class="">
                           <h3>{{ $jobs->job_title }}</h3>
                           <p>{{ $jobs->division->div_name }} - {{ $jobs->dept->dept_name }}</p>
-                          <p>{{ $jobs->workloc->workloc_name }}</p>
+                          <p>{{ $jobs->workloc->workloc_name }} - {{ $jobs->specwork->city }}</p>
                         </div>
                         <div class="col-lg-12 d-flex align-items-center">
                             @if($applyExists)
@@ -71,21 +71,22 @@
                       </div>
                     </div>
                     <div class="col-lg-12 mt-5">
-                      <h5>Job Description</h5>
-                      <p>{{ $jobs->job_desc }}</p>
-                    </div>
+                      <div class="col-lg-12 mt-2">
+                          <h5>Qualification</h5>
+                        <p>{{ $jobs->qualification }}</p>
+                      </div>
                     <div class="col-lg-12 mt-5">
                       <h5>Responsibilities</h5>
                       <p>{{ $jobs->job_respons }}</p>
                     </div>
-                    <div class="col-lg-12 mt-5">
+                    <div class="col-lg-12 mt-5 mb-5">
                         <h5>General Requirements</h5>
                       <p>{{ $jobs->general_req }}</p>
                     </div>
-                    <div class="col-lg-12 mt-5">
+                    {{-- <div class="col-lg-12 mt-5">
                         <h5>Qualification</h5>
                       <p>{{ $jobs->qualification }}</p>
-                    </div>
+                    </div> --}}
                   </div>
                 </div>
               </div>
@@ -95,7 +96,7 @@
           
         <div class="container">
               <div class="row">
-                <div class="col-lg-12">
+                <div class="col-lg-12 mt-5">
                   <div class="heading-section">
                     <h4>Other Related</h4>
                   </div>
@@ -106,7 +107,8 @@
                       <div class="item">
                         <img src="assets/images/game-01.jpg" alt="" class="templatemo-item">
                         <h5><a href="{{ route('jobdetail', ['reg_code' => $job->reg_code]) }}">{{ $job->job_title }}</a> </h5>
-                        <span>{{ $job->workloc->workloc_name }} - {{ $job->jobtype->jobtype_name }}</span>
+                        <span>{{ $job->workloc->workloc_name }} - {{ $jobs->specwork->city }}</span>
+                        <span>{{ $job->jobtype->jobtype_name }}</span>
                         <div class="main-border-button mt-4">
                           <a href="{{ route('jobdetail', ['reg_code' => $job->reg_code]) }}" class="btn btn-primary">Cek Details!</a>
                           <button class="" type="button" title="Simpan">

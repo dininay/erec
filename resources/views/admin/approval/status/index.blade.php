@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="{{ asset('css/output.css') }}" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
 </head>
 <body class="font-poppins text-[#0A090B]">
     <section id="content" class="flex">
@@ -46,87 +48,96 @@
             <div class="flex flex-col px-5 mt-5">
                 <div class="w-full flex justify-between items-center">
                     <div class="flex flex-col gap-1">
-                        <p class="font-extrabold text-[30px] leading-[45px]">Information Detail Data Management</p>
+                        <p class="font-extrabold text-[30px] leading-[45px]">Manage Status</p>
                         <p class="text-[#7F8190]">Provide high quality for best students</p>
                     </div>
-                    <div class="relative">
-                        <a href="{{ route('dashboard.unduh.excel') }}" class="btn btn-primary">
-                            <p class="font-semibold text-sm">Unduh Data (Excel)</p>
-                        </a>
-                    </div>
-                    
                     {{-- <a href="{{ route('dashboard.joblevel.create') }}" class="h-[52px] p-[14px_20px] bg-[#6436F1] rounded-full font-bold text-white transition-all duration-300 hover:shadow-[0_4px_15px_0_#6436F14D]">Add New Status</a> --}}
                 </div>
             </div>
             <div class="course-list-container flex flex-col px-5 mt-[30px] gap-[30px]">
                 <div class="course-list-header flex flex-nowrap justify-between pb-4 pr-10 border-b border-[#EEEEEE]">
                     <div class="flex shrink-0 w-[150px]">
+                        <p class="text-[#7F8190]">User</p>
+                    </div>
+                    <div class="flex shrink-0 w-[200px]">
                         <p class="text-[#7F8190]">ID Apply</p>
                     </div>
                     <div class="flex shrink-0 w-[150px]">
                         <p class="text-[#7F8190]">Job Title</p>
                     </div>
                     <div class="flex shrink-0 w-[150px]">
-                        <p class="text-[#7F8190]">Work Location</p>
+                        <p class="text-[#7F8190]">CV</p>
                     </div>
                     <div class="flex shrink-0 w-[150px]">
-                        <p class="text-[#7F8190]">Status Akhir</p>
+                        <p class="text-[#7F8190]">Photos</p>
+                    </div>
+                    <div class="flex shrink-0 w-[150px]">
+                        <p class="text-[#7F8190]">Status Administration</p>
                     </div>
                     <div class="flex justify-center shrink-0 w-[150px]">
-                        <p class="text-[#7F8190]">Date Created</p>
+                        <p class="text-[#7F8190]">Administration Date</p>
                     </div>
                     <div class="flex justify-center shrink-0 w-[120px]">
                         <p class="text-[#7F8190]">Action</p>
                     </div>
                 </div>
-                @forelse($statusapplys as $status)
+                @forelse($statuss as $status)
                     <div class="list-items flex flex-nowrap justify-between pr-10">
+                        <div class="flex shrink-0 w-[150px] items-center justify-center">
+                            <p class="font-semibold">{{ $status->apply->user->name }}</p>
+                        </div>
                         <div class="flex shrink-0 w-[150px] items-center justify-center">
                             <p class="font-semibold">{{ $status->apply_id }}</p>
                         </div>
                         <div class="flex shrink-0 w-[150px] items-center justify-center">
-                            <p class="font-semibold">{{ $status->job_title }}</p>
+                            <p class="font-semibold">{{ $status->apply->registjob->job_title }}</p>
                         </div>
                         <div class="flex shrink-0 w-[150px] items-center justify-center">
-                            <p class="font-semibold">{{ $status->workloc->workloc_name }}</p>
+                            <div class="flex gap-2 items-center">
+                                <a 
+                                    href="{{ asset('images/' . $status->apply->reg_id . '/' . $status->apply->details->cv) }}" 
+                                    target="_blank" 
+                                    class="text-blue-500 hover:text-blue-700"
+                                >
+                                    <i class="fa fa-eye h-6 w-6"></i>
+                                </a>
+                                <a 
+                                    href="{{ asset('images/' . $status->apply->reg_id . '/' . $status->apply->details->cv) }}" 
+                                    download 
+                                    class="text-green-500 hover:text-green-700"
+                                >
+                                    <i class="fa fa-download h-6 w-6"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="flex shrink-0 w-[150px] items-center justify-center">
+                            <div class="flex gap-2 items-center">
+                                <a 
+                                    href="{{ asset('images/' . $status->apply->reg_id . '/' . $status->apply->details->photo) }}" 
+                                    target="_blank" 
+                                    class="text-blue-500 hover:text-blue-700"
+                                >
+                                    <i class="fa fa-eye h-6 w-6"></i>
+                                </a>
+                                <a 
+                                    href="{{ asset('images/' . $status->apply->reg_id . '/' . $status->apply->details->photo) }}" 
+                                    download 
+                                    class="text-green-500 hover:text-green-700"
+                                >
+                                    <i class="fa fa-download h-6 w-6"></i>
+                                </a>
+                            </div>
                         </div>
                         <div class="flex shrink-0 w-[150px]">
                             <div class="flex items-center gap-4">
                                 <div class="flex flex-col gap-[2px]">
-                                    <p class="font-bold text-lg">
-                                        @if($status->status_admin === 'In Process')
-                                            In Process Seleksi Administrasi
-                                        @elseif($status->status_admin === 'Not Passed')
-                                            Tidak Lolos
-                                        @elseif($status->status_interview === 'In Process')
-                                            In Process Seleksi Interview
-                                        @elseif($status->status_interview === 'Not Passed')
-                                            Tidak Lolos
-                                        @elseif($status->status_docclear === 'In Process')
-                                            In Process Seleksi Document Clearance
-                                        @elseif($status->status_docclear === 'Not Passed')
-                                            Tidak Lolos
-                                        @elseif($status->status_oje === 'In Process')
-                                            In Process Seleksi OJE
-                                        @elseif($status->status_oje === 'Not Passed')
-                                            Tidak Lolos
-                                        @elseif($status->status_onboarding === 'Approve')
-                                            Lolos
-                                        @elseif($status->status_onboarding === 'In Process')
-                                            In Process Seleksi Onboarding
-                                        @elseif($status->status_onboarding === 'Not Passed')
-                                            Tidak Lolos
-                                        @else
-                                            Status belum tersedia
-                                        @endif
-                                    </p>
-                                    {{-- Optional Subtitle --}}
-                                    {{-- <p class="text-[#7F8190]">Additional Information</p> --}}
+                                    <p class="font-bold text-lg">{{ $status->status_admin }}</p>
+                                    {{-- <p class="text-[#7F8190]">Beginners</p> --}}
                                 </div>
                             </div>
                         </div>
                         <div class="flex shrink-0 w-[150px] items-center justify-center">
-                            <p class="font-semibold">{{ \Carbon\Carbon::parse($status->created_at)->format('d F Y') }}</p>
+                            <p class="font-semibold">{{ \Carbon\Carbon::parse($status->admin_date)->format('d F Y') }}</p>
                         </div>
                         <div class="flex shrink-0 w-[120px] items-center">
                             <div class="relative h-[41px]">
@@ -135,12 +146,19 @@
                                         menu
                                         <img src="{{asset('images/icons/arrow-down.svg')}}" alt="icon">
                                     </button>
-                                    <a href="{{ route('dashboard.report.show', ['apply' => $status->apply_id]) }}" class="flex items-center justify-between font-bold text-sm w-full">
+                                    <a href="{{ route('dashboard.approval.administration.edit', $status->people_status_id) }}" class="flex items-center justify-between font-bold text-sm w-full">
                                         Detail
                                     </a>
-                                    {{-- <a href="{{ route('dashboard.statusapply.edit', $status) }}" class="flex items-center justify-between font-bold text-sm w-full">
-                                        Update
-                                    </a> --}}
+                                    <a href="{{ route('dashboard.approval.status.edit', $status->people_status_id) }}" class="flex items-center justify-between font-bold text-sm w-full">
+                                        Edit
+                                    </a>
+                                    {{-- <form method="POST" action="{{ route('dashboard.approval.administration.destroy', $status) }}" class="">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="flex items-center justify-between font-bold text-sm w-full text-[#FD445E]">
+                                            Delete
+                                        </button>
+                                    </form> --}}
                                 </div>
                             </div>
                         </div>

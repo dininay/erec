@@ -64,7 +64,7 @@
                                                 <h5 class="mt-2 mx-2"><a
                                                         href="{{ route('jobdetail', ['reg_code' => $job->reg_code]) }}">
                                                         {{ $job->job_title }}</a><br>
-                                                    <p>{{ $job->workloc->workloc_name ?? '-' }}</p>
+                                                    <p>{{ $job->workloc->workloc_name ?? '-' }} - {{ $job->specwork->city ?? '-' }}</p>
                                                 </h5>
                                                 <h4 class="mx-2"
                                                     style="border-top: 1px solid #b0b0b0; padding-top: 10px; margin-top: 15px;">

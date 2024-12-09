@@ -68,7 +68,9 @@ Route::middleware('auth')->group(function () {
         Route::get('/export-excel', [DataExportController::class, 'downloadExcel'])->name('data.download.excel');
         Route::post('/upload-excel', [DataExportController::class, 'uploadExcel'])->name('upload.excel');
         Route::get('/unduh-excel', [DataExportController::class, 'unduhExcel'])->name('unduh.excel');
+        Route::get('/unduhfilter-excel', [DataExportController::class, 'unduhFilterExcel'])->name('unduhfilter.excel');
         Route::get('report', [DataExportController::class, 'index'])->name('report.index');
+        Route::get('reportfilter', [DataExportController::class, 'indexfilter'])->name('reportfilter.index');
         Route::get('report/{apply}', [DataExportController::class, 'show'])->name('report.show');
 
         // Master Data
@@ -97,6 +99,14 @@ Route::middleware('auth')->group(function () {
 
         Route::prefix('approval')->name('approval.')->group(function () {
             // Rute untuk 'administration'
+            Route::get('status', [StatusController::class, 'indexstatus'])->name('status.index');
+            Route::get('status/create', [StatusController::class, 'create'])->name('status.create');
+            Route::post('status', [StatusController::class, 'store'])->name('status.store');
+            Route::get('status/{id}', [StatusController::class, 'showstatus'])->name('status.show');
+            Route::get('status/{people_status_id}/edit', [StatusController::class, 'editstatus'])->name('status.edit');
+            Route::put('status/{people_status_id}', [StatusController::class, 'updatestatus'])->name('status.update');
+            Route::delete('status/{id}', [StatusController::class, 'destroystatus'])->name('status.destroy');
+
             Route::get('administration', [StatusController::class, 'indexadmin'])->name('administration.index');
             Route::get('administration/create', [StatusController::class, 'create'])->name('administration.create');
             Route::post('administration', [StatusController::class, 'store'])->name('administration.store');
@@ -176,7 +186,7 @@ Route::middleware('auth')->group(function () {
 
 
         // Applied Job Crew
-        Route::get('/statusapply', [ApplyController::class, 'index'])
+        Route::get('/statusapply', [ApplyController::class, 'indexapplicant'])
             ->middleware('role:Crew')->name('statusapply.index');
 
         Route::get('/statusapply/edit/{apply}', [ApplyController::class, 'edit'])

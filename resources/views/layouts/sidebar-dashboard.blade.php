@@ -90,17 +90,50 @@
                 </a>
             </li>
             <li>
-                <a href="{{ route('dashboard.approval.administration.index') }}" class="p-[10px_16px] flex items-center gap-[14px] rounded-full h-11 transition-all duration-300
-                    @if(request()->routeIs('dashboard.approval.administration.index', 'dashboard.approval.administration.create', 'dashboard.approval.administration.edit', 'dashboard.approval.administration.manage')) bg-[#2B82FE] text-white @else hover:bg-[#2B82FE] @endif">
+                <a href="{{ route('dashboard.report.index') }}" class="p-[10px_16px] flex items-center gap-[14px] rounded-full h-120 transition-all duration-300
+                    @if(request()->routeIs('dashboard.report.index')) bg-[#2B82FE] text-white @else hover:bg-[#2B82FE] @endif">
                     <div>
-                        <img src="{{asset('images/icons/sms.svg')}}" alt="icon">
+                        <img src="{{asset('images/icons/more.svg')}}" alt="icon">
                     </div>
-                    <p class="font-semibold transition-all duration-300 @if(request()->routeIs('dashboard.approval.administration.index', 'dashboard.approval.administration.create', 'dashboard.approval.administration.edit', 'dashboard.approval.administration.manage')) text-white @else hover:text-white @endif">
-                        Status Administration
+                    <p class="font-semibold transition-all duration-300 @if(request()->routeIs('dashboard.report.index')) text-white @else hover:text-white @endif">
+                        Report Detail Data Applicant - Operations
                     </p>
                 </a>
             </li>
             <li>
+                <a href="{{ route('dashboard.reportfilter.index') }}" class="p-[10px_16px] flex items-center gap-[14px] rounded-full h-11 transition-all duration-300
+                    @if(request()->routeIs('dashboard.reportfilter.index')) bg-[#2B82FE] text-white @else hover:bg-[#2B82FE] @endif">
+                    <div>
+                        <img src="{{asset('images/icons/more.svg')}}" alt="icon">
+                    </div>
+                    <p class="font-semibold transition-all duration-300 @if(request()->routeIs('dashboard.reportfilter.index')) text-white @else hover:text-white @endif">
+                        Report Filtering
+                    </p>
+                </a>
+            </li>
+            <li>
+                <a href="{{ route('dashboard.approval.status.index') }}" class="p-[10px_16px] flex items-center gap-[14px] rounded-full h-11 transition-all duration-300
+                    @if(request()->routeIs('dashboard.approval.status.index', 'dashboard.approval.status.create', 'dashboard.approval.status.edit', 'dashboard.approval.status.manage', 'dashboard.approval.administration.edit')) bg-[#2B82FE] text-white @else hover:bg-[#2B82FE] @endif">
+                    <div>
+                        <img src="{{asset('images/icons/sms.svg')}}" alt="icon">
+                    </div>
+                    <p class="font-semibold transition-all duration-300 @if(request()->routeIs('dashboard.approval.status.index', 'dashboard.approval.status.create', 'dashboard.approval.status.edit', 'dashboard.approval.status.manage')) text-white @else hover:text-white @endif">
+                        Status
+                    </p>
+                </a>
+            </li>
+            {{-- <li>
+                <a href="{{ route('dashboard.approval.administration.index') }}" class="p-[10px_16px] flex items-center gap-[14px] rounded-full h-11 transition-all duration-300
+                    @if(request()->routeIs('dashboard.approval.administration.index', 'dashboard.approval.administration.create', 'dashboard.approval.administration.manage')) bg-[#2B82FE] text-white @else hover:bg-[#2B82FE] @endif">
+                    <div>
+                        <img src="{{asset('images/icons/sms.svg')}}" alt="icon">
+                    </div>
+                    <p class="font-semibold transition-all duration-300 @if(request()->routeIs('dashboard.approval.administration.index', 'dashboard.approval.administration.create', 'dashboard.approval.administration.manage')) text-white @else hover:text-white @endif">
+                        Status Administration
+                    </p>
+                </a>
+            </li> --}}
+            {{-- <li>
                 <a href="{{ route('dashboard.approval.interview.index') }}" class="p-[10px_16px] flex items-center gap-[14px] rounded-full h-11 transition-all duration-300
                     @if(request()->routeIs('dashboard.approval.interview.index', 'dashboard.approval.interview.create', 'dashboard.approval.interview.edit', 'dashboard.approval.interview.manage')) bg-[#2B82FE] text-white @else hover:bg-[#2B82FE] @endif">
                     <div>
@@ -143,18 +176,7 @@
                         Status Onboarding
                     </p>
                 </a>
-            </li>
-            <li>
-                <a href="{{ route('dashboard.report.index') }}" class="p-[10px_16px] flex items-center gap-[14px] rounded-full h-11 transition-all duration-300
-                    @if(request()->routeIs('dashboard.report.index')) bg-[#2B82FE] text-white @else hover:bg-[#2B82FE] @endif">
-                    <div>
-                        <img src="{{asset('images/icons/more.svg')}}" alt="icon">
-                    </div>
-                    <p class="font-semibold transition-all duration-300 @if(request()->routeIs('dashboard.report.index')) text-white @else hover:text-white @endif">
-                        Report Detail
-                    </p>
-                </a>
-            </li>
+            </li> --}}
         </ul>
         <ul class="flex flex-col gap-3">
             @role('HR')

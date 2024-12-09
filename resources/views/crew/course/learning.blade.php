@@ -70,7 +70,13 @@
                         <p class="text-[#7F8190]">Action</p>
                     </div>
                 </div>
-                @forelse($my_course as $course)
+                @if (!$my_course->isEmpty())
+                    <div class="row">
+                        <!-- Konten kursus -->
+                    </div>
+                @elseif ($my_course->isNotEmpty())
+                    
+                    @forelse($my_course as $course)
                     <div class="list-items flex flex-nowrap justify-between pr-10">
                         <div class="flex shrink-0 w-[300px]">
                             <div class="flex items-center gap-4">
@@ -203,6 +209,7 @@
                     </div>
                 @empty
                 @endforelse
+                @endif
 
             </div>
             {{-- <div id="pagiantion" class="flex gap-4 items-center mt-[37px] px-5">
